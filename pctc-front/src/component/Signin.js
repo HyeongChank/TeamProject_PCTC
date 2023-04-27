@@ -6,10 +6,22 @@ import './signin.css'
 const Signin = () => {
   // 로그인 상태인지 아닌지에 따라 
 
+  const popupSigninPage = (signState) => {
+    switch(signState){
+      case 'login': 
+        window.open('http://www.naver.com', 'example', 'width=800,height=600');
+        break;
+      case 'join':
+        window.open('http://www.naver.com', 'example', 'width=800,height=600');
+        break;
+      default: return;
+    }
+  };
+
   return(
     <div className='signin'>
-      <button className='signin-btn'>Login</button>
-      <button className='signin-btn'>Join</button>
+      <button className='signin-btn' onClick={() => {popupSigninPage('login')}}>Login</button>
+      <button className='signin-btn' onClick={() => {popupSigninPage('join')}}>Join</button>
     </div>
   )
 }

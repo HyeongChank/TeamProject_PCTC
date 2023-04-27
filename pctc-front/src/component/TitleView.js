@@ -2,11 +2,12 @@
 
 import Signin from "./Signin";
 import './componentstyle.css'
+import logo from '../assets/logo.png'
 
 const TitleView = () => {
   return(
     <div className='titleview'>
-      <span className='logo'>Logo(추후IMG로 변경)</span>
+      <img className="titleview-logo" src={logo} alt="logo" />
       <Signin />
     </div>
   )

@@ -5,6 +5,7 @@ import FooterView from "./component/FooterView";
 import Middle from "./component/Middle";
 import ServiceView from "./component/ServiceView";
 import TitleView from "./component/TitleView";
+import Apps from './Apps';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Middle />
       <ServiceView />
       <FooterView />
+      {/* <Apps /> */}
     </>
   );
 }

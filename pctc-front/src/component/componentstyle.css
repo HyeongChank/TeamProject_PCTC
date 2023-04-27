@@ -1,6 +1,13 @@
 .titleview {
-  background-color: blue;
+  /* background-color: darkmagenta; */
   height: 100px;
+}
+
+.titleview-logo {
+  position: absolute;
+  top: 20px;
+  left: 40px;
+  width: 200px;
 }
 
 .logo {
