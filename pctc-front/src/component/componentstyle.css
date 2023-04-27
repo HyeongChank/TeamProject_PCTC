@@ -1,0 +1,21 @@
+.titleview {
+  background-color: blue;
+  height: 100px;
+}
+
+.logo {
+  background-color: aqua;
+  position: absolute;
+  top: 15px;
+  left: 10px;
+}
+
+.middle {
+  background-color: darkgreen;
+  height: 100px;
+}
+
+.footerview {
+  background-color: coral;
+  height: 200px;
+}
