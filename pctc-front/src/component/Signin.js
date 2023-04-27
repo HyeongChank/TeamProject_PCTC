@@ -9,7 +9,7 @@ const Signin = () => {
   const popupSigninPage = (signState) => {
     switch(signState){
       case 'login': 
-        window.open('http://www.naver.com', 'example', 'width=800,height=600');
+        window.open('./signin', 'example', 'width=800,height=600');
         break;
       case 'join':
         window.open('http://www.naver.com', 'example', 'width=800,height=600');

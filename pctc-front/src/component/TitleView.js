@@ -3,11 +3,12 @@
 import Signin from "./Signin";
 import './componentstyle.css'
 import logo from '../assets/logo.png'
+import { Link } from "react-router-dom";
 
 const TitleView = () => {
   return(
     <div className='titleview'>
-      <img className="titleview-logo" src={logo} alt="logo" />
+      <Link to='/'><img className="titleview-logo" src={logo} alt="logo" /></Link>
       <Signin />
     </div>
   )

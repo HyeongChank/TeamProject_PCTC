@@ -1,20 +1,22 @@
 /* Level 0 */
+import React from 'react';
+import { BrowserRouter as Router, Route, Link, BrowserRouter, Routes } from 'react-router-dom';
+
 import './App.css';
 
-import FooterView from "./component/FooterView";
-import Middle from "./component/Middle";
-import ServiceView from "./component/ServiceView";
-import TitleView from "./component/TitleView";
 import Apps from './Apps';
+import Login from './component/Login';
+import Home from './component/Home';
 
 function App() {
   return (
     <>
-      <TitleView />
-      <Middle />
-      <ServiceView />
-      <FooterView />
-      {/* <Apps /> */}
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' Component={Home} />
+          <Route path='/signin' Component={Login} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }
