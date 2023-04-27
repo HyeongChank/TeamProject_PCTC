@@ -1,10 +1,19 @@
 /* Level 0 */
 import './App.css';
-import MainHome from './component/MainHome';
+
+import FooterView from "./component/FooterView";
+import Middle from "./component/Middle";
+import ServiceView from "./component/ServiceView";
+import TitleView from "./component/TitleView";
 
 function App() {
   return (
-    <MainHome />
+    <>
+      <TitleView />
+      <Middle />
+      <ServiceView />
+      <FooterView />
+    </>
   );
 }
 
