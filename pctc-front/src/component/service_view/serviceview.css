@@ -23,6 +23,9 @@
   height: 90%;
   margin: 10px;
   border: solid 3px #282828;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .sadrs {
