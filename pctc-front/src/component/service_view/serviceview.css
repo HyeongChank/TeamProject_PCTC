@@ -13,24 +13,28 @@
   margin: 10px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 .cpvs {
   box-sizing: border-box;
   background-color: white;
   width: 60%;
-  height: 100%;
+  height: 90%;
   margin: 10px;
+  border: solid 3px #282828;
 }
 
 .sadrs {
   background-color: white;
   width: 100%;
-  height: 200px;
+  height: 45%;
+  border: solid 3px #282828;
 }
 
 .cddrs {
   background-color: white;
   width: 100%;
-  height: 200px;
+  height: 45%;
+  border: solid 3px #282828;
 }
