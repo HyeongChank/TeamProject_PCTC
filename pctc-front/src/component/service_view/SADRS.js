@@ -7,7 +7,7 @@ import './serviceview.css'
 const SADRS = () => {
   return(
     <div className='sadrs'>
-      
+      <div style={{'fontSize': '2em', fontWeight:'bold', textAlign: 'center'}}>SADRS Area</div>
     </div>
   )
 }

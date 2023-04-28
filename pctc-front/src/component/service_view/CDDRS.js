@@ -6,7 +6,7 @@ import './serviceview.css'
 const CDDRS = () => {
   return(
     <div className='cddrs'>
-      
+      <div style={{'fontSize': '2em', fontWeight:'bold', textAlign: 'center'}}>CDDRS Area</div>
     </div>
   )
 }

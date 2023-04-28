@@ -7,7 +7,7 @@ import './serviceview.css'
 const CPVS = () => {
   return(
     <div className='cpvs'>
-      
+      <div style={{'fontSize': '2em', fontWeight:'bold', textAlign: 'center'}}>CPVS Area</div>
     </div>
   )
 }

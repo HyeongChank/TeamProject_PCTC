@@ -9,6 +9,7 @@ const TitleView = () => {
   return(
     <div className='titleview'>
       <Link to='/'><img className="titleview-logo" src={logo} alt="logo" /></Link>
+      <div style={{'fontSize': '2em', fontWeight:'bold', textAlign: 'center'}}>TitleView Area</div>
       <Signin />
     </div>
   )
