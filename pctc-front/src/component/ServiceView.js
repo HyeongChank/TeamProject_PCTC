@@ -5,14 +5,15 @@ import CPVS from "./service_view/CPVS";
 import SADRS from "./service_view/SADRS";
 import CDDRS from "./service_view/CDDRS";
 import './service_view/serviceview.css'
+import { useEffect } from "react";
 
-const ServiceView = () => {
-  return(
+const ServiceView = ({ isLogin }) => {
+  return (
     <div className='serviceview'>
-      <CPVS />
+      <CPVS isLogin={isLogin} />
       <div className='serviceview-right'>
-        <SADRS />
-        <CDDRS />
+        <SADRS isLogin={isLogin} />
+        <CDDRS isLogin={isLogin} />
       </div>
     </div>
   )

@@ -6,8 +6,8 @@ import Modal from 'react-modal';
 import './signin.css'
 
 
-const Signin = ({isLogin, setIsLogin}) => {
-  
+const Signin = ({ isLogin, setIsLogin }) => {
+
   const [signinView, setSigninView] = useState();
   const [popupIsOpen, setPopupIsOpen] = useState(false);
   const [popupInfo, setPopupInfo] = useState({});
@@ -31,25 +31,29 @@ const Signin = ({isLogin, setIsLogin}) => {
     }
   };
 
-  const selectFunction = (functionName) => {
-    switch(functionName){
-      case 'login': 
+  const selectFunction = (functionName, loginType) => {
+    switch (functionName) {
+      case 'login':
         setPopupInfo({
-          'submitButtonName': "로그인",
-          'content': "로그인 창",
+          'kakaoButtonName': "카카오 계정으로 로그인하기",
+          'naverButtonName': "네이버 계정으로 로그인하기",
+          'googleButtonName': "구글 계정으로 로그인하기",
+          'content': "로그인",
         });
         setPopupIsOpen(true);
         break;
 
-      case 'join': 
+      case 'join':
         setPopupInfo({
-          'submitButtonName': "회원가입",
-          'content': "대충 회원가입하라는 말",
+          'kakaoButtonName': "카카오 계정으로 회원가입",
+          'naverButtonName': "네이버 계정으로 회원가입",
+          'googleButtonName': "구글 계정으로 회원가입",
+          'content': "회원가입",
         });
         setPopupIsOpen(true);
         break;
 
-      case 'logout': 
+      case 'logout':
         setIsLogin(false);
         break;
 
@@ -61,16 +65,26 @@ const Signin = ({isLogin, setIsLogin}) => {
         break;
 
       case 'close':
-        switch(popupInfo.submitButtonName){
-          case '로그인':
-            /* 실제 로그인 로직 구현 */
+        switch (loginType) {
+          case 'kakao':
+            /* 실제 카카오 로그인 로직 구현 */
+            setIsLogin(true); // 임시로 만든 로그인 세션
+            break;
+
+          case 'naver':
+            /* 실제 카카오 로그인 로직 구현 */
+            setIsLogin(true); // 임시로 만든 로그인 세션
+            break;
+
+          case 'google':
+            /* 실제 카카오 로그인 로직 구현 */
             setIsLogin(true); // 임시로 만든 로그인 세션
             break;
 
           case '회원가입':
             /* 실제 회원가입 로직 구현 */
             break;
-          
+
           default: break;
         }
         setPopupIsOpen(false);
@@ -81,15 +95,15 @@ const Signin = ({isLogin, setIsLogin}) => {
   }
 
   useEffect(() => {
-    if(isLogin){
+    if (isLogin) {
       setSigninView(
         <>
           <Modal style={ModalStyle} isOpen={popupIsOpen} >
             {popupInfo.content}
-            <button onClick={()=> selectFunction('close')}>{popupInfo.submitButtonName}</button>
+            <button onClick={() => selectFunction('close')}>{popupInfo.submitButtonName}</button>
           </Modal>
-          <button className='signin-btn' onClick={() => {selectFunction('mypage')}}>My Page</button>
-          <button className='signin-btn' onClick={() => {selectFunction('logout')}}>Logout</button>
+          <button className='signin-btn' onClick={() => selectFunction('mypage') }>My Page</button>
+          <button className='signin-btn' onClick={() => selectFunction('logout') }>Logout</button>
         </>
       )
     } else {
@@ -97,18 +111,20 @@ const Signin = ({isLogin, setIsLogin}) => {
         <>
           <Modal style={ModalStyle} isOpen={popupIsOpen} >
             {popupInfo.content}
-            <button onClick={()=> selectFunction('close')}>{popupInfo.submitButtonName}</button>
+            <button className='submit_btn kakao' onClick={() => selectFunction('close', 'kakao')}>{popupInfo.kakaoButtonName}</button>
+            <button className='submit_btn naver' onClick={() => selectFunction('close', 'naver')}>{popupInfo.naverButtonName}</button>
+            <button className='submit_btn google' onClick={() => selectFunction('close', 'google')}>{popupInfo.googleButtonName}</button>
           </Modal>
-          <button className='signin-btn' onClick={() => {selectFunction('login')}}>Login</button>
-          <button className='signin-btn' onClick={() => {selectFunction('join')}}>Join</button>
+          <button className='signin-btn' onClick={() => selectFunction('login')}>Login</button>
+          <button className='signin-btn' onClick={() => selectFunction('join')}>Join</button>
         </>
       )
     }
   }, [isLogin, signinView, popupInfo]);
 
   const popupSigninPage = (signState) => {
-    switch(signState){
-      case 'login': 
+    switch (signState) {
+      case 'login':
         window.open('./login', 'example', 'width=800,height=600');
         break;
       case 'join':
@@ -118,7 +134,7 @@ const Signin = ({isLogin, setIsLogin}) => {
     }
   };
 
-  return(
+  return (
     <div className='signin'>
       {signinView}
     </div>
