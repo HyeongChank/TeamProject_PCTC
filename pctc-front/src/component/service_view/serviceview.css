@@ -51,7 +51,7 @@
   width: 70px;
   height: 70px;
   /* transform: rotate(25deg); */
-  background-color: #FFFF0033;
+  background-color: #FFFF0055;
   z-index: 2;
 }
 
@@ -65,6 +65,22 @@
   /* transform: rotate(25deg); */
   background-color: #00FF0033;
   z-index: 2;
+}
+
+.area-anim {
+  animation: blink 0.5s linear infinite;
+}
+
+@keyframes blink {
+  from {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 
 .sadrs {

@@ -8,7 +8,7 @@ const Home = (props) => {
     <>
       <TitleView isLogin={props.isLogin} setIsLogin={props.setIsLogin}/>
       <Middle />
-      <ServiceView />
+      <ServiceView isLogin={props.isLogin} />
       <FooterView />
     </>
   )
