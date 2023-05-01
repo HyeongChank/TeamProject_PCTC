@@ -1,6 +1,6 @@
 .serviceview {
   background-color: blueviolet;
-  height: 500px;
+  height: 700px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -17,15 +17,54 @@
 }
 
 .cpvs {
-  box-sizing: border-box;
-  background-color: white;
   width: 60%;
   height: 90%;
   margin: 10px;
-  border: solid 3px #282828;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+}
+
+#map {
+  position: relative;
+  top: 0px;
+  left: 0px;
+  border: solid 1px #282828;
+  border-radius: 10px;
+  z-index: 1;
+}
+
+#area-1 {
+  position: relative;
+  top: 90px;
+  left: 140px;
+  border-radius: 50%;
+  width: 300px;
+  height: 200px;
+  transform: rotate(25deg);
+  background-color: #FF000033;
+  z-index: 2;
+}
+
+#area-2 {
+  position: relative;
+  top: 10px;
+  left: 430px;
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  /* transform: rotate(25deg); */
+  background-color: #FFFF0033;
+  z-index: 2;
+}
+
+#area-3 {
+  position: relative;
+  top: -80px;
+  left: 580px;
+  border-radius: 50%;
+  width: 150px;
+  height: 100px;
+  /* transform: rotate(25deg); */
+  background-color: #00FF0033;
+  z-index: 2;
 }
 
 .sadrs {
@@ -41,3 +80,4 @@
   height: 45%;
   border: solid 3px #282828;
 }
+
