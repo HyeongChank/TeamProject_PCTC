@@ -1,5 +1,4 @@
 .serviceview {
-  background-color: blueviolet;
   height: 700px;
   display: flex;
   justify-content: center;
@@ -7,7 +6,6 @@
 }
 
 .serviceview-right {
-  background-color: blueviolet;
   width: 30%;
   height: 100%;
   margin: 10px;

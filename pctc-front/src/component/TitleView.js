@@ -4,12 +4,21 @@ import Signin from "./signin/Signin";
 import './componentstyle.css'
 import logo from '../assets/logo.png'
 import { Link } from "react-router-dom";
+import TitleMenu from "./TitleMenu";
 
 const TitleView = (props) => {
-  return(
+  return (
     <div className='titleview'>
-      <Link to='/'><img className="titleview-logo" src={logo} alt="logo" /></Link>
-      <div style={{'fontSize': '2em', fontWeight:'bold', textAlign: 'center'}}>TitleView Area</div>
+      <div className="titleview-logo-area">
+        <Link to='/'><img className="titleview-logo" src={logo} alt="logo" /></Link>
+      </div>
+      <div className="titleMenus">
+        <Link to='/bas'><TitleMenu name="선석배정현황" /></Link>
+        <Link to='/sws'><TitleMenu name="본선작업현황" /></Link>
+        <Link to='/cts'><TitleMenu name="컨테이너 반출입현황" /></Link>
+        <Link to='/ctas'><TitleMenu name="컨테이너터미널 재박현황" /></Link>
+        <Link to='/ctads'><TitleMenu name="컨테이너터미널 입출항현황" /></Link>
+      </div>
       <Signin isLogin={props.isLogin} setIsLogin={props.setIsLogin} />
     </div>
   )

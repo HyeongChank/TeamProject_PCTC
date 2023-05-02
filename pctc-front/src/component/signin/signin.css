@@ -1,8 +1,5 @@
 .signin {
-  /* background-color: red; */
-  position: absolute;
-  top: 15px;
-  right: 28px;
+  width: 10vw;
 }
 
 .signin-btn, .signin-btn:visited {
