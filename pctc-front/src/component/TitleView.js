@@ -1,6 +1,6 @@
 /* Level 2 */
 
-import Signin from "./Signin";
+import Signin from "./signin/Signin";
 import './componentstyle.css'
 import logo from '../assets/logo.png'
 import { Link } from "react-router-dom";
