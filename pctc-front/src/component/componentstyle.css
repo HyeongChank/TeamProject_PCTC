@@ -1,13 +1,19 @@
 .titleview {
-  /* background-color: darkmagenta; */
-  height: 100px;
+  height: 9vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.titleview-logo-area {
+  width: 15vw;
+  height: 5vh;
+  display: flex;
+  justify-content: center;
 }
 
 .titleview-logo {
-  position: absolute;
-  top: 20px;
-  left: 40px;
-  width: 200px;
+  height: 5vh;
 }
 
 .logo {
@@ -18,11 +24,65 @@
 }
 
 .middle {
-  background-color: darkgreen;
+  background-color: rgba(0, 100, 0, 0.11);
   height: 100px;
 }
 
 .footerview {
-  background-color: coral;
-  height: 100px;
+  background-color: rgba(255, 127, 80, 0.089);
+  height: 5vh;
+}
+
+.titleMenus {
+  width: 60vw;
+  display: flex;
+  justify-content: space-between;
+}
+
+.titleMenu, .titleMenu:visited {
+  display: inline-block;
+  position: static;
+  font-size: 1.2em;
+  font-weight: bold;
+  text-shadow: none;
+  margin: 0 5px 0 5px;
+  border: none;
+  background: none;
+  color: #282828;
+}
+
+.titleMenu:hover {
+  position: relative;
+  bottom: 1px;
+  right: 1px;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.titleMenu:active {
+  position: relative;
+  bottom: 0px;
+  right: 0px;
+  text-shadow: none;
+}
+
+.menuTableArea {
+  display: flex;
+  justify-content: center;
+}
+
+.menuTableArea > table {
+  border-top: solid 2px #282828;
+  border-bottom: solid 2px #282828;
+  width: 80vw;
+  margin-bottom: 10vh;
+}
+
+th {
+  height: 7vh;
+  border-bottom: solid 2px #282828;
+}
+
+.table-td {
+  height: 5vh;
+  text-align: center;
 }

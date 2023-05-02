@@ -5,7 +5,6 @@ import CPVS from "./service_view/CPVS";
 import SADRS from "./service_view/SADRS";
 import CDDRS from "./service_view/CDDRS";
 import './service_view/serviceview.css'
-import { useEffect } from "react";
 
 const ServiceView = ({ isLogin }) => {
   return (
