@@ -10,16 +10,55 @@ import './block.css'
  * @param {number} scale
  * @returns 
  */
-export default function Block({ locationX, locationY, congestion, sizeWidth, sizeHeight, scale }) {
+// export default function Block({ locationX, locationY, congestion, sizeWidth, sizeHeight, scale, blockName }) {
 
-  const fontScale = `${(sizeWidth * sizeHeight * scale) / 3000}em`;
+//   const fontScale = `${(sizeWidth * sizeHeight * scale) / 3000}em`;
+
+//   let lampColor = "";
+
+//   if(congestion < 0.5){
+//     // 원활(그린)
+//     lampColor = "lamp-green";
+//   } else if (congestion < 0.9) {
+//     // 혼잡(오렌지)
+//     lampColor = "lamp-orange";
+//   } else {
+//     // 매우 혼잡(레드)
+//     lampColor = "lamp-red"
+//   }
+
+//   return (
+//     <span className={lampColor}
+//       style={{
+//         display: 'flex',
+//         justifyContent: 'center',
+//         alignItems: 'center',
+//         position: 'relative',
+//         top: locationY,
+//         left: locationX,
+//         width: sizeWidth * scale,
+//         height: sizeHeight * scale,
+//         border: 'solid 1px #282828',
+//         fontSize: fontScale,
+//         zIndex: 10
+//       }} >
+//         {blockName}
+//     </span>
+//   );
+// }
+
+export default function Block({ blockData }) {
+
+  console.log(blockData.nameText)
+
+  const fontScale = `${(blockData.nameText.sizeHeight * blockData.nameText.scale) / 20}em`;
 
   let lampColor = "";
 
-  if(congestion < 0.5){
+  if(blockData.nameText.congestion < 0.5){
     // 원활(그린)
     lampColor = "lamp-green";
-  } else if (congestion < 0.9) {
+  } else if (blockData.nameText.congestion < 0.9) {
     // 혼잡(오렌지)
     lampColor = "lamp-orange";
   } else {
@@ -34,15 +73,15 @@ export default function Block({ locationX, locationY, congestion, sizeWidth, siz
         justifyContent: 'center',
         alignItems: 'center',
         position: 'relative',
-        top: locationY,
-        left: locationX,
-        width: sizeWidth * scale,
-        height: sizeHeight * scale,
+        top: blockData.nameText.locationY,
+        left: blockData.nameText.locationX,
+        width: blockData.nameText.sizeWidth * blockData.nameText.scale,
+        height: blockData.nameText.sizeHeight * blockData.nameText.scale,
         border: 'solid 1px #282828',
         fontSize: fontScale,
         zIndex: 10
       }} >
-        1A
+        {blockData.nameText.name}
     </span>
   );
 }
