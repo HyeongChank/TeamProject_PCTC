@@ -82,7 +82,7 @@ const CPVS = ({ isLogin }) => {
     <div className='cpvs'>
       <div id="map" style={{ width: '100%', height: '100%', opacity: serviceViewOpacity }}>
         <article>
-          {block}
+          {block}/
         </article>
       </div>
     </div>
