@@ -37,7 +37,7 @@ export default function Login() {
             state: sessionStorage.getItem("PCTCLoginSuccess"),
             name: sessionStorage.getItem("PCTCName")
           });
-          router.push("/");
+          window.location.href = '/';
         });
     }
   }
