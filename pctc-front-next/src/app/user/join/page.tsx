@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-export default function Login() {
+export default function Join() {
 
   const [loginSession, setLoginSession] = useState({
     state: sessionStorage.getItem("PCTCLoginSuccess"),
@@ -12,6 +12,7 @@ export default function Login() {
 
   const userID = useRef<HTMLInputElement>(null);
   const userPW = useRef<HTMLInputElement>(null);
+  const userName = useRef<HTMLInputElement>(null);
 
   const router = useRouter();
 
@@ -23,30 +24,34 @@ export default function Login() {
   }
 
   function submit() {
-    fetch('/api/user/login', {
+    fetch('/api/user/join', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         userID: userID.current?.value,
-        userPW: userPW.current?.value
+        userPW: userPW.current?.value,
+        userName: userName.current?.value
       })
     }).then(response => response.json())
       .then(result => {
         console.log(result);
         if (result?.islogin) {
           sessionStorage.setItem("PCTCLoginSuccess", result?.islogin);
-          sessionStorage.setItem("PCTCID", result?.user[0].id);
-          sessionStorage.setItem("PCTCPW", result?.user[0].pw);
-          sessionStorage.setItem("PCTCName", result?.user[0].name);
+          sessionStorage.setItem("PCTCID", result?.user.userID);
+          sessionStorage.setItem("PCTCPW", result?.user.userPW);
+          sessionStorage.setItem("PCTCName", result?.user.userName);
           setLoginSession({
             state: sessionStorage.getItem("PCTCLoginSuccess"),
             name: sessionStorage.getItem("PCTCName")
           });
           window.location.href = '/';
         } else {
-          alert("아이디 또는 비밀번호를 확인해주세요.");
+          if (result?.error === 400)
+            alert("아이디 또는 비밀번호, 이름을 확인해주세요.");
+          if (result?.error === 409)
+            alert("이미 사용 중인 아이디입니다. 다른 아이디를 사용해주세요.");
         }
       });
   }
@@ -59,10 +64,11 @@ export default function Login() {
     <>
       <div id="loginPage" className="flex flex-col items-center mt-4 p-4">
         <article>
-          <h1>로그인</h1>
+          <h1>회원가입</h1>
           <input type="text" name="user-id" ref={userID} placeholder="아이디를 입력하세요." />
-          <input type="password" name="user-pw" onKeyDown={submitKey} ref={userPW} placeholder="비밀번호를 입력하세요." />
-          <button type="button" id="loginbtn" onClick={submit} className="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded">로그인</button>
+          <input type="password" name="user-pw" ref={userPW} placeholder="비밀번호를 입력하세요." />
+          <input type="text" name="user-name" onKeyDown={submitKey} ref={userName} placeholder="이름을 입력하세요." />
+          <button type="button" id="joinbtn" onClick={submit} className="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded">회원가입</button>
 
           <button><Image src="/kakao_login_large_narrow.png" width={244} height={60} alt="Kakao login" /></button>
         </article>
@@ -102,7 +108,7 @@ export default function Login() {
       button {
         margin-top: 1rem;
       }
-      #loginbtn {
+      #joinbtn {
         margin-bottom: 2rem;
       }
       `}</style>
