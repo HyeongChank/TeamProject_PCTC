@@ -10,7 +10,7 @@ PCTC: Prediction of container terminal congestion.
 <br>
 
 ### Frontend Development Environment
-> React.js, VScode
+> Next.js, VScode
 
 ### Backend Development Environment
 > Spring Boot 3.0, IntelliJ
