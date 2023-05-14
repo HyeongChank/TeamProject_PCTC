@@ -26,7 +26,7 @@ const TitleView = () => {
         <Link href='/service/ctads'><TitleMenu name="컨테이너터미널 입출항현황" /></Link>
       </div>
       <div className="w-1/12"></div>
-      <div className="w-1/12 h-16 flex flex-col justify-center items-center">
+      <div className="w-1/12 h-16">
         <Signin />
       </div>
     </div>

@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react'
 export default function Signin() {
   // isLogin : 로그인 여부
   // setIsLogin : 로그인/로그아웃
-
+  
   const [loginSession, setLoginSession] = useState({
     state: sessionStorage.getItem("PCTCLoginSuccess"),
     name: sessionStorage.getItem("PCTCName")
@@ -32,7 +32,7 @@ export default function Signin() {
     "join": "회원가입",
   };
 
-  function signout(){
+  function signout() {
     sessionStorage.removeItem("PCTCLoginSuccess");
     sessionStorage.removeItem("PCTCName");
     sessionStorage.removeItem("PCTCID");
@@ -46,25 +46,28 @@ export default function Signin() {
   useEffect(() => {
     if (loginSession.state === "true") {
       setSigninView(
-        <>
+        <div className='w-full h-full flex flex-col justify-center items-center'>
           <div className='w-32 text-base font-bold text-center'>
             <button onClick={() => setPopupIsOpen(true)}>{loginSession.name} 님</button>
           </div>
           <div className='w-32 text-center'>
             <button onClick={signout}>Sign out</button>
           </div>
-        </>
+        </div>
       );
     } else {
       setSigninView(
-        <>
-        <Link href='/user/login' ><button>Sign in</button></Link>
-        </>
+        <div className='w-full h-full flex justify-center items-center'>
+          <Link href='/user/login' style={{margin: "0.5rem"}}><button>Sign in</button></Link>
+          <Link href='/user/join' style={{margin: "0.5rem"}}><button>Join</button></Link>
+        </div>
       );
     }
-  }, [loginSession.state]);
+  }, [loginSession]);
 
   return (
-    <>{signinView}</>
+    <>
+      {signinView}
+    </>
   )
 }
