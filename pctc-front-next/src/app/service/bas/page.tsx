@@ -1,5 +1,10 @@
-export default function BAS(){
+import Table from "@/app/components/server/Table";
+
+export default function BAS() {
+  
   return (
-    <>BAS</>
+    <>
+      <Table tableTitle={"선석배정현황"} tableHead={["번호","터미널","선석","모선항차","년도","선박명 Bitt(M)","접안(예정)일시","반입마감일시","출항(예정)일시","선사","양하수량(VAN)","적하수량(VAN)","Shift"]} />
+    </>
   );
 }
