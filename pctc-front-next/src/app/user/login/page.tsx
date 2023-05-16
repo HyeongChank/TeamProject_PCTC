@@ -51,6 +51,11 @@ export default function Login() {
       });
   }
 
+  function 성동환() {
+    
+  }
+
+
   useEffect(() => {
 
   }, [loginSession])
@@ -64,7 +69,7 @@ export default function Login() {
           <input type="password" name="user-pw" onKeyDown={submitKey} ref={userPW} placeholder="비밀번호를 입력하세요." />
           <button type="button" id="loginbtn" onClick={submit} className="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded">로그인</button>
 
-          <button><Image src="/kakao_login_large_narrow.png" width={244} height={60} alt="Kakao login" /></button>
+          <button onClick={성동환}><Image src="/kakao_login_large_narrow.png" width={244} height={60} alt="Kakao login" /></button>
         </article>
       </div>
       <style jsx>{`
