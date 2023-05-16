@@ -1,4 +1,7 @@
 'use client'
+import { createCookie } from "@/function/cookie/CreateCookie";
+import { getCookie } from "@/function/cookie/GetCookie";
+import { goto } from "@/function/goto/Goto";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -6,8 +9,8 @@ import { useEffect, useRef, useState } from "react";
 export default function Login() {
 
   const [loginSession, setLoginSession] = useState({
-    state: sessionStorage.getItem("PCTCLoginSuccess"),
-    name: sessionStorage.getItem("PCTCName")
+    state: getCookie(),
+    name: getCookie()
   });
 
   const userID = useRef<HTMLInputElement>(null);
@@ -36,15 +39,12 @@ export default function Login() {
       .then(result => {
         console.log(result);
         if (result?.islogin) {
-          sessionStorage.setItem("PCTCLoginSuccess", result?.islogin);
-          sessionStorage.setItem("PCTCID", result?.user[0].id);
-          sessionStorage.setItem("PCTCPW", result?.user[0].pw);
-          sessionStorage.setItem("PCTCName", result?.user[0].name);
+          createCookie(result ?? {});
           setLoginSession({
-            state: sessionStorage.getItem("PCTCLoginSuccess"),
-            name: sessionStorage.getItem("PCTCName")
+            state: getCookie(),
+            name: getCookie()
           });
-          window.location.href = '/';
+          goto('/')
         } else {
           alert("아이디 또는 비밀번호를 확인해주세요.");
         }

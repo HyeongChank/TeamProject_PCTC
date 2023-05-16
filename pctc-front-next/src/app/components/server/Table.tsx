@@ -12,16 +12,12 @@ export default function Table({tableTitle, tableHead, tableBodyJSON}: any): any 
     let tableRow = [];
     tableRow.push(<td className="border border-gray-800 text-center p-1">{key}</td>);
 
-    // console.log("value >> ", value);
-
     for(let [key_, item] of Object.entries(value ?? {})){
       tableRow.push(<td key={key_} className="border border-gray-800 text-center p-1">{item}</td>);
     }
 
     tableBody.push([<tr key={key}>{...tableRow}</tr>]);
   }
-
-  // console.log("Body >>", tableBody);
 
 
   return (
