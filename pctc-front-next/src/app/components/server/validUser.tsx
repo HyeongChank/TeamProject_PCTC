@@ -1,5 +1,11 @@
-import { createConnection } from "mysql";
+import { connectionDB } from "@/function/database/ConnectionDB";
 import { promisify } from "util";
+
+interface QueryResult {
+  id: string,
+  pw: string,
+  name: string
+}
 
 /**
  * @param userInfo user ID
@@ -16,8 +22,8 @@ export default async function validUser(userInfo: string) {
   let query = promisify(connection.query).bind(connection);
 
   try {
-    let resultSet = await query(`SELECT * FROM USER WHERE ID='${userInfo}'`)
-    user = resultSet ?? {};
+    let [resultSet] = await query(`SELECT * FROM USER WHERE ID='${userInfo}'`) as QueryResult[]
+    user = {id: resultSet.id, pw: resultSet.pw, name: resultSet.name}
   } catch (err) {
     console.error('SQL error: ', err);
     return;
@@ -26,14 +32,4 @@ export default async function validUser(userInfo: string) {
   }
 
   return user;
-}
-
-function connectionDB() {
-  return createConnection({  // mysql 접속 설정
-    host: process.env.DB_HOST,
-    port: 3306,
-    user: process.env.DB_ID,
-    password: process.env.DB_PW,
-    database: process.env.DB_NAME
-  }); // DB 커넥션 생성
 }
