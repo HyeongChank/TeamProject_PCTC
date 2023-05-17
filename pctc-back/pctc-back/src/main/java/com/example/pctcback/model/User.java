@@ -17,9 +17,9 @@ import javax.management.relation.Role;
 public class User {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY)
+    @GeneratedValue( strategy = GenerationType.AUTO)
     private String id;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 200)
     private String username;
     private String nickname;
     private String password;

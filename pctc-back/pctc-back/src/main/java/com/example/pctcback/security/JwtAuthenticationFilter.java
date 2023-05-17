@@ -50,7 +50,6 @@ import java.io.IOException;
             }
             filterChain.doFilter(request, response);
         }
-
         private String parserBearerToken(HttpServletRequest request) {
             //HTTP 요청의 헤더 파싱- bearer 토큰 리턴
             String bearerToken = request.getHeader("Authorization");
