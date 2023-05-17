@@ -1,4 +1,7 @@
 'use client'
+import { createCookie } from "@/function/cookie/CreateCookie";
+import { getCookie } from "@/function/cookie/GetCookie";
+import { goto } from "@/function/goto/Goto";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -6,8 +9,8 @@ import { useEffect, useRef, useState } from "react";
 export default function Join() {
 
   const [loginSession, setLoginSession] = useState({
-    state: sessionStorage.getItem("PCTCLoginSuccess"),
-    name: sessionStorage.getItem("PCTCName")
+    state: getCookie('islogin')?.toString(),
+    name: getCookie('name')
   });
 
   const userID = useRef<HTMLInputElement>(null);
@@ -36,17 +39,14 @@ export default function Join() {
       })
     }).then(response => response.json())
       .then(result => {
-        console.log(result);
-        if (result?.islogin) {
-          sessionStorage.setItem("PCTCLoginSuccess", result?.islogin);
-          sessionStorage.setItem("PCTCID", result?.user.userID);
-          sessionStorage.setItem("PCTCPW", result?.user.userPW);
-          sessionStorage.setItem("PCTCName", result?.user.userName);
+        if (result?.isLogin) {
+          console.log(result);
+          createCookie(result ?? {});
           setLoginSession({
-            state: sessionStorage.getItem("PCTCLoginSuccess"),
-            name: sessionStorage.getItem("PCTCName")
+            state: getCookie('isLogin')?.toString(),
+            name: getCookie('name')
           });
-          window.location.href = '/';
+          // goto('/')
         } else {
           if (result?.error === 400)
             alert("아이디 또는 비밀번호, 이름을 확인해주세요.");

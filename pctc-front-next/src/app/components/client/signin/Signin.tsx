@@ -1,5 +1,7 @@
 'use client'
 
+import { deleteCookie } from '@/function/cookie/DeleteCookie';
+import { getCookie } from '@/function/cookie/GetCookie';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react'
@@ -10,8 +12,8 @@ export default function Signin() {
   // setIsLogin : 로그인/로그아웃
   
   const [loginSession, setLoginSession] = useState({
-    state: sessionStorage.getItem("PCTCLoginSuccess"),
-    name: sessionStorage.getItem("PCTCName")
+    state: getCookie('isLogin')?.toString(),
+    name: getCookie('name')
   });
 
 
@@ -33,16 +35,16 @@ export default function Signin() {
   };
 
   function signout() {
-    sessionStorage.removeItem("PCTCLoginSuccess");
-    sessionStorage.removeItem("PCTCName");
-    sessionStorage.removeItem("PCTCID");
-    sessionStorage.removeItem("PCTCPW");
+    deleteCookie('isLogin')
+    deleteCookie('name')
+    deleteCookie('id')
+    deleteCookie('pw')
     setLoginSession({
       state: "false",
       name: ""
     });
   }
-
+  
   useEffect(() => {
     if (loginSession.state === "true") {
       setSigninView(
