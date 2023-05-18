@@ -1,5 +1,12 @@
 ## 진행상황.
-- predict_LSTM_test = > 이전 데이터의 대기시간(5분 단위) 학습하여 향후 대기시간 예측(LSTM 사용)
+- predict_LSTM_test = > 기 데이터의 대기시간 학습하여 향후 대기시간(5분 단위) 예측(LSTM 사용)
+    + 향후 예측시간(현재 기준 5분단위 개수) 입력 시 기 학습 내용으로 향후 대기시간s 출력
+
 - main.py = > 대기시간, 야드 내 트럭 대수를 통한 혼잡도 분석 및 Congest_level 출력
+    + 입력값으로 예측 입차시기를 입력하면 예측 대기시간 및 혼잡도 출력
+    + 현재는 실제 데이터 없어 -> 더미 데이터로 실행하기 위해 대기시간을 (작업지시 시간 - 작업완료 시간)으로 정해놨음
+    + 이에 따라 1.작업지시 시간, 2.작업완료 시간, 3.작업 코드를 입력해야 함
+
 - simulator 로 데이터 생성 및 애니메이션 실행
-+ simulator_make_data.py -> simulator_sort_graph.py
+    + simulator_make_data.py -> simulator_sort_graph.py
+    

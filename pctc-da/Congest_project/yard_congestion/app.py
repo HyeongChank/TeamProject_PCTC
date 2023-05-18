@@ -31,22 +31,6 @@ def congestion():
 #     retraining.add_data(response)
     
 #     return jsonify(response.json())
-# @app.route('/api/congtranstime', methods=['GET', 'POST'])
-# def congestion():
-#     if request.method == 'POST':
-#         data = request.get_json()
-
-#         time = data['time']
-#         result_model_at_block, block_list = congestAnal.test2(time)
-#         json_data = jsonify({
-#             'congest_at_block': result_model_at_block,
-#             'block_list': block_list
-#         })
-
-#         return json_data
-#     else:
-#         return 'error'    
-
 
 
 if __name__ == '__main__':

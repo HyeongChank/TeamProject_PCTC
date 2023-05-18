@@ -38,7 +38,7 @@ def commit_model(new_data):
     # 기존 데이터와 new_data Concat 및 작업코드, 누적 컨테이너 열 정리
     def add_data(data, new_data):
         
-        new_data = pd.DataFrame(new_data)
+        # new_data = pd.DataFrame(new_data)
         new_data = new_data[['작업 지시 시간', '작업 완료 시간', '작업코드']]
         # new_data['작업코드'] = new_data['작업코드'].replace({'양하': 1, '적하': -1, '반입': 1, '반출': -1})        
         print('new_data', new_data)
@@ -105,13 +105,10 @@ def commit_model(new_data):
 
 
         n_data['입차시간'] = n_data['입차시간'].dt.round('5min')  # 5분 단위로 그룹화
-
         n_data = n_data.groupby('입차시간').mean().reset_index()  # 나머지 열의 평균값 계산
-
-        print(n_data)
         return n_data, congest_level
     
-    def make_model(data, new_data2):
+    def make_model(data):
         # 데이터 전처리
         data = n_data[['입차시간', '대기시간new']].copy()
         data.set_index('입차시간', inplace=True)
@@ -151,6 +148,7 @@ def commit_model(new_data):
         predictions = pd.DataFrame({'입차시간': data.index[train_size+window_size:], '예측 대기시간new': y_pred.flatten()})
         print('predictions',predictions)
         predict_time = predictions['예측 대기시간new'].iloc[-1]
+        # 입력한 시간의 예측 대기시간###################################
         print(predict_time)
         # 시간 복원
         test_dates = data.index[train_size+window_size:]
@@ -191,15 +189,12 @@ def commit_model(new_data):
         return predict_time
 
     # 새로운 데이터 포인트 생성
-    new_data2 = pd.DataFrame({'입차시간': ['2021-02-07 20:12:00'], '대기시간new': [0.0]})
-    print(new_data)
-    new_data2['입차시간'] = pd.to_datetime(new_data2['입차시간'])    
-    print(new_data2)
+
     data = load()
     combined_data = add_data(data, new_data)
     n_data, congest_level = preprocessing(combined_data)
-    waiting_time = make_model(n_data, new_data2)
-    return waiting_time, congest_level
+    predict_time = make_model(n_data)
+    return predict_time, congest_level
 
     # new_pred = make_model(n_data)
     # print(new_pred)

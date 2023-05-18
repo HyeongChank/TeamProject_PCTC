@@ -53,9 +53,7 @@ def preprocessing(combined_data):
     df = pd.DataFrame(combined_data)
     df['작업 지시 시간'] = pd.to_datetime(df['작업 지시 시간'])
     df['작업 완료 시간'] = pd.to_datetime(df['작업 완료 시간'])
-
     df['대기시간'] = df['작업 완료 시간'] - df['작업 지시 시간']
-
     n_data = df.copy()
     n_data['작업 지시 시간'] = n_data['작업 지시 시간'].dt.round('5min')  # 5분 단위로 그룹화
     n_data = n_data.groupby('작업 지시 시간').mean().reset_index()  # 나머지 열의 평균값 계산
@@ -73,6 +71,10 @@ def preprocessing(combined_data):
     column_list = n_data['대기시간new'].tolist()
 
     print(column_list)
+    # 파일에 리스트 저장
+    with open("list_data.txt", "w") as file:
+        for item in column_list:
+            file.write(str(item) + "\n")
 
     return column_list
 
@@ -112,7 +114,7 @@ model.fit(X, y, epochs=20, batch_size=32)
 # 이후 30개의 대기시간 예측
 last_sequence = data[-lookback:]  # 최근 30개의 대기시간 데이터를 가져옵니다.
 predicted_data = []
-for _ in range(10):
+for _ in range(1):
     sequence = np.array(last_sequence)
     sequence = np.reshape(sequence, (1, lookback, 1))
     prediction = model.predict(sequence)[0][0]
@@ -124,7 +126,7 @@ print(predicted_data)
 
 # 그래프로 예측 결과와 실제 데이터를 표현합니다.
 x_axis_previous = range(len(data)-30, len(data))  # 기존 데이터 중 마지막 30개의 인덱스
-x_axis_predicted = range(len(data), len(data) + 10)  # 이후 3개의 예측 데이터
+x_axis_predicted = range(len(data), len(data) + 1)  # 이후 2개의 예측 데이터
 # 개수 오류 계속 났었음. ( x_axis_previous = previous_data 맞춰줘야 하고, x_axis_predicted = predicted_data 맞춰줘야 함)
 plt.plot(x_axis_previous, previous_data, label='Previous Data')
 plt.scatter(x_axis_predicted, predicted_data, label='Predicted Data', color='red')
