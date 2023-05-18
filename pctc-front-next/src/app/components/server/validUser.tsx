@@ -1,6 +1,12 @@
 import { connectionDB } from "@/function/database/ConnectionDB";
 import { promisify } from "util";
 
+interface QueryResult {
+  id: string,
+  pw: string,
+  name: string
+}
+
 /**
  * @param userInfo user ID
  * @returns true is User
@@ -16,8 +22,8 @@ export default async function validUser(userInfo: string) {
   let query = promisify(connection.query).bind(connection);
 
   try {
-    let resultSet = await query(`SELECT * FROM USER WHERE ID='${userInfo}'`)
-    user = resultSet ?? {};
+    let [resultSet] = await query(`SELECT * FROM USER WHERE ID='${userInfo}'`) as QueryResult[]
+    user = {id: resultSet.id, pw: resultSet.pw, name: resultSet.name}
   } catch (err) {
     console.error('SQL error: ', err);
     return;

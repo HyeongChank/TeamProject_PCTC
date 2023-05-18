@@ -9,8 +9,8 @@ import { useEffect, useRef, useState } from "react";
 export default function Login() {
 
   const [loginSession, setLoginSession] = useState({
-    state: getCookie(),
-    name: getCookie()
+    state: getCookie('islogin')?.toString(),
+    name: getCookie('name')
   });
 
   const userID = useRef<HTMLInputElement>(null);
@@ -32,23 +32,24 @@ export default function Login() {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        userID: userID.current?.value,
-        userPW: userPW.current?.value
+        id: userID.current?.value,
+        pw: userPW.current?.value
       })
     }).then(response => response.json())
-      .then(result => {
-        console.log(result);
-        if (result?.islogin) {
+    .then(result => {
+      console.log("result >> ", result);
+      if (result?.isLogin) {
           createCookie(result ?? {});
           setLoginSession({
-            state: getCookie(),
-            name: getCookie()
+            state: getCookie('isLogin')?.toString(),
+            name: getCookie('name')
           });
           goto('/')
         } else {
           alert("아이디 또는 비밀번호를 확인해주세요.");
         }
-      });
+      })
+      .catch(error => console.log("error! >> ", error));
   }
 
   useEffect(() => {
