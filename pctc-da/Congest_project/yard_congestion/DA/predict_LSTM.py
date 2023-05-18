@@ -34,7 +34,10 @@ def load():
 
 # 기존 데이터와 new_data Concat 및 작업코드, 누적 컨테이너 열 정리
 def add_data(data, new_data):
-    new_data = pd.DataFrame(new_data, columns=['작업 지시 시간', '작업 완료 시간', '작업코드'])
+    new_data = pd.DataFrame(new_data)
+    new_data['작업 지시 시간'] = new_data['입차시간']
+    new_data['작업 완료 시간'] = new_data['작업 지시 시간']
+    # new_data = pd.DataFrame(new_data, columns=['작업 지시 시간', '작업 완료 시간', '작업코드'])
     # new_data['작업코드'] = new_data['작업코드'].replace({'양하': 1, '적하': -1, '반입': 1, '반출': -1})        
     print('new_data', new_data)
     data = data[['작업 지시 시간', '작업 완료 시간', '작업코드']]
@@ -130,11 +133,10 @@ def make_model(column_list):
     plt.show()
 
 if __name__=='__main__':
-    new_data = {'작업 지시 시간': ['2021-02-07 20:15:37'], '작업 완료 시간': ['2021-02-07 20:28:52'], '작업코드':['적하']}
+    new_data = {'입차시간': ['2021-02-07 20:15:37'], '작업코드':['적하']}
     data = load()
     combined_data = add_data(data, new_data)
 
     # 대기시간을 list로 만듦
     column_list = preprocessing(combined_data)
-    lookback = 30
     make_model(column_list)
