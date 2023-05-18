@@ -16,9 +16,6 @@ export async function POST(request: Request) {
 
   const user = await validUser(parameters?.id);
 
-  console.log("user12312 >> ", user);
-  console.log("param1238123 >> ", parameters);
-
   let user2 = { ...user } ?? {};
   if (validLogin(parameters, user)) {
     // 아이디 중복 회원가입 실패
