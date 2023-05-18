@@ -1,7 +1,11 @@
 import simpy 
 import random
 import csv
-from matplotlib.animation import FuncAnimation
+import numpy as np
+import matplotlib.dates as mdates
+import csv
+from datetime import datetime, timedelta
+import matplotlib.animation as animation
 import matplotlib.pyplot as plt
 from matplotlib import font_manager, rc
 # 한글 폰트 설정
@@ -9,130 +13,91 @@ font_path = "C:/Windows/Fonts/malgun.ttf"  # 한글 폰트 경로
 font_name = font_manager.FontProperties(fname=font_path).get_name()
 rc('font', family=font_name)
 
-class Truck:
-    def __init__(self, env, name, arrival_time, in_trucks_completed, out_trucks_completed, in_out_trucks_completed, waiting_time, result_waiting):
-        self.env = env
-        self.name = name
-        self.in_trucks_completed = in_trucks_completed
-        self.out_trucks_completed = out_trucks_completed
-        self.arrival_time = arrival_time
-        self.in_out_trucks_completed = in_out_trucks_completed
-        self.waiting_time = waiting_time
-        self.result_waiting = result_waiting
+# ## 데이터 정렬해서 다시 저장
+# file_path = './truck_simulation_results.csv'
+# with open(file_path, 'r') as file:
+#     reader = csv.reader(file)
+#     data = list(reader)
 
-        #분포에 따라 customer 도착
-        self.action = env.process(self.truck_generate())
+# header = data[0]
+# data_rows = data[1:]
+# sorted_data = sorted(data_rows, key =lambda row: int(row[0]))
+# sorted_data.insert(0,header)
+# # 정렬된 데이터를 CSV 파일로 저장
+# sorted_file_path = './sorted_truck_simulation_results.csv'
+# with open(sorted_file_path, 'w', newline='') as file:
+#     writer = csv.writer(file)
+#     writer.writerows(sorted_data)
 
-    def truck_generate(self):
-        yield env.timeout(self.arrival_time)
-   
-        print(f"트럭 {self.name}이(가) 입차했습니다. 시간: {env.now}")
-        
-        in_yard_time = env.now
-        waiting_times[self.name] = in_yard_time
-        self.env.process(self.in_out_work(waiting_times))
+# print("데이터를 첫 번째 트럭 열을 기준으로 오름차순으로 정렬하여 저장했습니다.")
 
 
-    def in_out_work(self, waiting_times):
-        select_num = random.randint(1,10)
-        if select_num <= 4:
-            # 작업 시간
-            in_work_time = random.randint(5,20)
-            yield env.timeout(in_work_time)
-   
-            print(f"트럭 {self.name}이(가) 반입을 완료했습니다. 시간: {env.now}")
-            
-            print(f"트럭 {self.name}이(가) 출차했습니다. 시간: {env.now}")
-            out_yard_time = env.now
+## 애니메이션 구현 부분
+file_path = './sorted_truck_simulation_results.csv'
+with open(file_path, 'r') as file:
+    reader = csv.reader(file)
+    data = list(reader)
+header = data[0]
+data_rows = data[1:]
+in_time_out = []
+waiting_time = []
 
-            in_yard_time = waiting_times[self.name]
-            print('key', in_yard_time)
-            waiting_time = out_yard_time- in_yard_time
-            result_waiting.append(waiting_time)
-            print(f"트럭 {self.name}의 반입만 대기시간: {waiting_time}")
-            new_data = [self.name, "in", in_yard_time, out_yard_time, waiting_time]
-            in_trucks_completed.append(new_data)
+start_time = '2021-02-01 12:00:00'
+new_start_time = datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
+print(new_start_time)
 
-        elif select_num <= 8:
-            # 작업 시간
-            in_work_time = random.randint(5,10)
-            yield env.timeout(in_work_time)
+## str을 datetime 형식으로 바꾸기 위해 int -> timedelta 로 변경
+min_before = '30'
+min_int = int(min_before)
+min_new = timedelta(minutes = min_int)
+
+print(new_start_time + min_new)
+
+for row in data_rows:
+    min_before = row[2]
+    min_int = int(min_before)
+    min_tr= timedelta(minutes=min_int)
     
-            print(f"트럭 {self.name}이(가) 반입을 완료했습니다. 시간: {env.now}")
-            
-            out_work_time = random.randint(5,10)
-            yield env.timeout(out_work_time)
-       
-            print(f"트럭 {self.name}이(가) 반출 작업을 완료했습니다. 시간: {env.now}")
-            print(f"트럭 {self.name}이(가) 출차했습니다. 시간: {env.now}")
-            out_yard_time = env.now
-            print(out_yard_time)
+    new_time = new_start_time + min_tr
+    print(new_time)
+    in_time_out.append(new_time)
+    waiting_time.append(int(row[4]))
 
-            in_yard_time = waiting_times[self.name]
-            print('key', in_yard_time)
-            waiting_time = out_yard_time- in_yard_time
-            result_waiting.append(waiting_time)
-            print(f"트럭 {self.name}의 반입, 출차 대기시간: {waiting_time}")
-            new_data = [self.name, "in_out", in_yard_time, out_yard_time, waiting_time]
-            in_out_trucks_completed.append(new_data)
+## 리스트 안의 datetime 값 모두 str로 변경하기
+str_list = [dt.strftime('%Y-%m-%d %H:%M:%S') for dt in in_time_out]
+print(str_list)
 
-        else:
-            out_work_time = random.randint(5,20)
-            yield env.timeout(out_work_time)
-      
-            print(f"트럭 {self.name}이(가) 반출 작업을 완료했습니다. 시간: {env.now}")
-            print(f"트럭 {self.name}이(가) 출차했습니다. 시간: {env.now}")
-            out_yard_time = env.now
+max_time = str_list[-1]
+print(max_time)
+x_min = start_time
+x_max = max_time 
 
-            in_yard_time = waiting_times[self.name]
-            print('key', in_yard_time)
-            waiting_time = out_yard_time- in_yard_time
-            result_waiting.append(waiting_time)
-            
-            print(f"트럭 {self.name}의 반출만 대기시간: {waiting_time}")
-            new_data = [self.name, "out", in_yard_time, out_yard_time, waiting_time]
-            out_trucks_completed.append(new_data)
+## 리스트 안의 datetime 값 모두 int로 변경하기
+print(in_time_out)
+x = mdates.date2num(in_time_out)
+x_int_list = [int(num) for num in x]
+print(x_int_list)
 
-env = simpy.Environment()
-arrival_interval = random.randint(3,18)  # 트럭 도착 주기 (분 단위)
-in_trucks_completed = []
-out_trucks_completed = []
-waiting_times = {}
-result_waiting = []
-in_out_trucks_completed = []
-waiting_time = 1
+x_min = x_int_list[0]
+x_max = x_int_list[-1]
 
-# 트럭 대수
-for i in range(30):
-    Truck(env, i+1, i*arrival_interval, in_trucks_completed, out_trucks_completed, in_out_trucks_completed, waiting_time,result_waiting)
 
-#env.run(until=240)  # 시뮬레이션 시간 (분 단위)
+sinegraph = plt.figure()
+sine = plt.axes()
+sine.set_xlim(x_min, x_max)
+sine.set_ylim(0, max(waiting_time))
 
-fig, ax = plt.subplots()
-x_data, y_data = [], []
-line, = ax.plot([], [], 'bo')
+x = np.array(x_int_list)
+y = np.array(waiting_time)
 
-def init():
-    ax.set_xlim(0, 100)  # 시뮬레이션 시간에 맞게 x축 범위 설정
-    ax.set_ylim(0, 30)  # 트럭 대수에 맞게 y축 범위 설정
+line, = sine.plot([],[])
+
+def update(num, x, y, line):
+    line.set_data(x[:num], y[:num])
     return line,
-
-def update(frame):
-    time_interval = arrival_interval  # 트럭 도착 주기
-    env.run(until=(frame+1) * time_interval)  # 프레임에 해당하는 시간까지 시뮬레이션 실행
-    print(result_waiting)
-    
-    # 시뮬레이션 결과를 이용한 데이터 업데이트
-    x_data.append(frame)
-    y_data.append(result_waiting[frame])
-    line.set_data(x_data, y_data)
-    return line,
-
-# 애니메이션 생성
-ani = FuncAnimation(fig, update, frames=range(100), init_func=init, blit=True)
-print(result_waiting)
-# 애니메이션 저장
-animation_filename = "truck_simulation_animation.gif"
-ani.save(animation_filename, writer="pillow")
-
+sineani = animation.FuncAnimation(sinegraph, update, frames = len(x) +1, fargs=(x,y, line),
+                                  interval = 100, repeat = False)
+animation_filename = "test2_animation.gif"
+sineani.save(animation_filename, writer="pillow")
 print(f"애니메이션을 '{animation_filename}' 파일로 저장했습니다.")
+plt.show()

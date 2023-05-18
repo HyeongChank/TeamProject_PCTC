@@ -28,7 +28,7 @@ class Truck:
         select_num = random.randint(1,10)
         if select_num <= 4:
             # 작업 시간
-            in_work_time = random.randint(5,20)
+            in_work_time = random.randint(10,13)
             yield env.timeout(in_work_time)
    
             print(f"트럭 {self.name}이(가) 반입을 완료했습니다. 시간: {env.now}")
@@ -44,14 +44,14 @@ class Truck:
             new_data = [self.name, "in", in_yard_time, out_yard_time, waiting_time]
             in_trucks_completed.append(new_data)
 
-        elif select_num <= 8:
+        elif select_num <= 7:
             # 작업 시간
-            in_work_time = random.randint(5,10)
+            in_work_time = random.randint(10,13)
             yield env.timeout(in_work_time)
     
             print(f"트럭 {self.name}이(가) 반입을 완료했습니다. 시간: {env.now}")
             
-            out_work_time = random.randint(5,10)
+            out_work_time = random.randint(5,7)
             yield env.timeout(out_work_time)
        
             print(f"트럭 {self.name}이(가) 반출 작업을 완료했습니다. 시간: {env.now}")
@@ -68,7 +68,7 @@ class Truck:
             in_out_trucks_completed.append(new_data)
 
         else:
-            out_work_time = random.randint(5,20)
+            out_work_time = random.randint(5,7)
             yield env.timeout(out_work_time)
       
             print(f"트럭 {self.name}이(가) 반출 작업을 완료했습니다. 시간: {env.now}")
@@ -85,7 +85,7 @@ class Truck:
             out_trucks_completed.append(new_data)
 
 env = simpy.Environment()
-arrival_interval = random.randint(3,18)  # 트럭 도착 주기 (분 단위)
+arrival_interval = random.randint(5,15)  # 트럭 도착 주기 (분 단위)
 in_trucks_completed = []
 out_trucks_completed = []
 waiting_times = {}
@@ -93,10 +93,11 @@ result_waiting = []
 in_out_trucks_completed = []
 
 # 트럭 대수
-for i in range(100):
+for i in range(500):
     Truck(env, i+1, i*arrival_interval, in_trucks_completed, out_trucks_completed, in_out_trucks_completed)
 
-env.run(until=240)  # 시뮬레이션 시간 (분 단위)
+### 파일에 저장되는 데이터 개수와 관련됨
+env.run(until=1440)  # 시뮬레이션 시간 (분 단위)
 
 print(f"반입 작업을 완료한 트럭 수: {len(in_trucks_completed)}")
 print(f"반출 작업을 완료한 트럭 수: {len(out_trucks_completed)}")
@@ -124,7 +125,7 @@ def save_results_to_csv(filename, in_trucks_completed, out_trucks_completed, in_
         
             writer.writerow([truck[0], truck[1], truck[2], truck[3], truck[4]])
 
-        env.run(until=300)  # 시뮬레이션 시간 (분 단위)
+        env.run(until=1441)  # 시뮬레이션 시간 (분 단위)
 
         print(f"반입 작업을 완료한 트럭 수: {len(in_trucks_completed)}")
         print(f"반출 작업을 완료한 트럭 수: {len(out_trucks_completed)}")

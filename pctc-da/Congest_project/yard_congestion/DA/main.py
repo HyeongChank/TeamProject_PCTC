@@ -38,7 +38,7 @@ def commit_model(new_data):
     # 기존 데이터와 new_data Concat 및 작업코드, 누적 컨테이너 열 정리
     def add_data(data, new_data):
         
-        # new_data = pd.DataFrame(new_data)
+        new_data = pd.DataFrame(new_data)
         new_data = new_data[['작업 지시 시간', '작업 완료 시간', '작업코드']]
         # new_data['작업코드'] = new_data['작업코드'].replace({'양하': 1, '적하': -1, '반입': 1, '반출': -1})        
         print('new_data', new_data)
@@ -60,8 +60,7 @@ def commit_model(new_data):
 
     # 실제 혼잡도 구하고, 예측에 사용할 데이터 전처리
     def preprocessing(combined_data):
-        # data = data
- 
+
         df = pd.DataFrame(combined_data)
         df['작업 지시 시간'] = pd.to_datetime(df['작업 지시 시간'])
         df['작업 완료 시간'] = pd.to_datetime(df['작업 완료 시간'])
@@ -112,7 +111,7 @@ def commit_model(new_data):
         print(n_data)
         return n_data, congest_level
     
-    def make_model(data, new_data):
+    def make_model(data, new_data2):
         # 데이터 전처리
         data = n_data[['입차시간', '대기시간new']].copy()
         data.set_index('입차시간', inplace=True)
@@ -175,13 +174,10 @@ def commit_model(new_data):
         # # 예측 결과 출력
         # new_predictions = pd.DataFrame({'입차시간': new_dates, '예측 대기시간new': new_y_pred.flatten()})
         # print('new_predictions', new_predictions)
-
-
         
         # 예측 결과 그래프로 출력
         plt.figure(figsize=(12, 6))
-        # plt.plot(test_dates, y_pred, label='Predicted')
-        # plt.plot(test_dates, data['대기시간new'].values[train_size+window_size:], label='Actual')
+
         plt.scatter(test_dates, y_pred, label='Predicted', color='blue')
         plt.scatter(test_dates, data['대기시간new'].values[train_size+window_size:], label='Actual', color='red')
         # plt.scatter(new_dates, new_y_pred, label='New Prediction', color='green')  # 새로운 데이터 예측 추가
@@ -191,10 +187,10 @@ def commit_model(new_data):
         plt.ylim(0, 30)  # y축 범위 설정
         plt.legend()
         plt.grid(True)
-        # plt.show()
+        plt.show()
         return predict_time
 
-    # 예시로 새로운 데이터 포인트 생성
+    # 새로운 데이터 포인트 생성
     new_data2 = pd.DataFrame({'입차시간': ['2021-02-07 20:12:00'], '대기시간new': [0.0]})
     print(new_data)
     new_data2['입차시간'] = pd.to_datetime(new_data2['입차시간'])    
@@ -216,12 +212,12 @@ def commit_model(new_data):
 # with open(model_file, 'wb') as f:
 #     pickle.dump(commit_model, f)
 
-# if __name__=="__main__":
-#     new_data = {
-#     "작업 지시 시간": ["2021-02-07 12:10:37"],
-#     "작업 완료 시간": ["2021-02-07 12:28:52"],
-#     "대기차량": [15],
-#     "작업코드": ["적하"]
-# }
-#     commit_model(new_data)
+if __name__=="__main__":
+    new_data = {
+    "작업 지시 시간": ["2021-02-07 20:10:37", "2021-02-07 20:15:37", "2021-02-07 20:20:37"],
+    "작업 완료 시간": ["2021-02-07 20:28:52", "2021-02-07 20:33:52", "2021-02-07 20:38:52"],
+    "대기차량": [15, 17, 20],
+    "작업코드": ["적하", "적하", "적하"]
+}
+    commit_model(new_data)
     
