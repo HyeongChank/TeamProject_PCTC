@@ -1,8 +1,18 @@
 ## 진행상황.
-- 시간(30분 단위)별 블록별 누적 컨테이너 개수와 혼잡도(Level) 출력 -- test4.py 실행
-- 플라스크 서버 실행(app.py) -- http://10.125.121.220:5001//api/congest2로 json 형식 time 전달하면 블록별 혼잡도 구해짐
-- 블록별 혼잡도(cong)가 2 --> 1 이 되는데 소요되는 시간들을 구하고 향후 몇 분 뒤에 혼잡도가 1이 될 지 예측하는 모델을 만들어야 함 = > LinearRegression 모델로 완료 -- congestAnal.py 실행
-- 특정 시간 입력 시 해당 시간의 혼잡도 변화 예측 만들어야 함(데이터에서 특정 시간 이전의 데이터를 제외하면 됨) -- 완료  congestAnal.py 
-## Todo.
-- 그래프 시간 조절하기 -- imp_testnew.py
-- simulator 에 반입, 반출 조건 부여하기
+- predict_LSTM.py = > 기 데이터의 대기시간 학습하여 향후 대기시간(5분 단위) 예측(LSTM 사용)
+    + 향후 예측시간(현재 기준 5분단위 개수) 입력 시 기 학습 내용으로 향후 대기시간s 출력
+
+- main.py = > 대기시간, 야드 내 트럭 대수를 통한 혼잡도 분석 및 Congest_level 출력
+    + 입력값으로 예측 입차시기를 입력하면 예측 대기시간 및 혼잡도 출력
+    + 이에 따라 1.입차시기, 2.작업 코드를 입력해야 함
+
+- simulator 데이터 생성 및 시뮬레이션(Auto) 및 애니메이션 실행
+    + simulator_make_data.py => Auto로 데이터 생성
+    + simulator_sort_graph.py => simulator animation 생성
+    
+- randomForest.py = > 현재 대기차량, 혼잡도 입력 시 대기시간 예측(+오차 측정)
+- xgboost_test2.py = > 야드 내 블록별 혼잡도를 분석하고, 혼잡도 level이 2 -> 1이 되는 데 걸리는 시간 분석(+정확도 측정)
+- Arima.py = > 시간 입력 시 해당 시간의 야드 내 트럭 대수 분석
+
+## Todo
+- 

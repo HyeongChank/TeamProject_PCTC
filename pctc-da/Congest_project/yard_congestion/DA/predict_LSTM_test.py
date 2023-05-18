@@ -47,7 +47,7 @@ def add_data(data, new_data):
     print('combined_data', combined_data)
     return combined_data
 
-# 실제 혼잡도 구하고, 예측에 사용할 데이터(5분 단위)
+# 실제 혼잡도 구하고, 예측에 사용할 데이터 전처리(5분 단위)
 def preprocessing(combined_data):
 
     df = pd.DataFrame(combined_data)
@@ -78,63 +78,63 @@ def preprocessing(combined_data):
 
     return column_list
 
+# 현재 코드에서는 new_data 를 쌓아서 재학습 시키기 위해
+new_data = {'작업 지시 시간': ['2021-02-07 20:15:37'], '작업 완료 시간': ['2021-02-07 20:28:52'], '작업코드':['적하']}
+data = load()
+combined_data = add_data(data, new_data)
 
-def make_model(column_list):
-    data = column_list
-    lookback = 30
+# 대기시간을 list로 만듦
+column_list = preprocessing(combined_data)
+data = column_list
+
+# 데이터 전처리
+def preprocess_data(data, lookback):
     X, y = [], []
     for i in range(len(data) - lookback):
         X.append(data[i:i+lookback])
         y.append(data[i+lookback])
     X = np.array(X)
     y = np.array(y)
-    previous_data = data[-30:]
+    return X, y
 
-    # LSTM 모델 구성
-    model = keras.Sequential()
-    model.add(keras.layers.LSTM(units=64, input_shape=(lookback, 1)))
-    model.add(keras.layers.Dense(units=1))
+lookback = 30
+X, y = preprocess_data(data, lookback)
+previous_data = data[-30:]
+# LSTM 모델 구성
+model = keras.Sequential()
+model.add(keras.layers.LSTM(units=64, input_shape=(lookback, 1)))
+model.add(keras.layers.Dense(units=1))
 
-    # 모델 컴파일
-    model.compile(loss='mean_squared_error', optimizer='adam')
+# 모델 컴파일
+model.compile(loss='mean_squared_error', optimizer='adam')
 
-    # 모델 학습
-    model.fit(X, y, epochs=20, batch_size=32)
+# 모델 학습
+model.fit(X, y, epochs=20, batch_size=32)
 
-    # 이후 30개의 대기시간 예측
-    last_sequence = data[-lookback:]  # 최근 30개의 대기시간 데이터를 가져옵니다.
-    predicted_data = []
-    for _ in range(1):
-        sequence = np.array(last_sequence)
-        sequence = np.reshape(sequence, (1, lookback, 1))
-        prediction = model.predict(sequence)[0][0]
-        predicted_data.append(prediction)
-        last_sequence.append(prediction)
-        last_sequence = last_sequence[1:]
-    print(predicted_data)
+# 이후 30개의 대기시간 예측
+last_sequence = data[-lookback:]  # 최근 30개의 대기시간 데이터를 가져옵니다.
+predicted_data = []
+for _ in range(1):
+    sequence = np.array(last_sequence)
+    sequence = np.reshape(sequence, (1, lookback, 1))
+    prediction = model.predict(sequence)[0][0]
+    predicted_data.append(prediction)
+    last_sequence.append(prediction)
+    last_sequence = last_sequence[1:]
+print(predicted_data)
 
 
-    # 그래프로 예측 결과와 실제 데이터를 표현합니다.
-    x_axis_previous = range(len(data)-30, len(data))  # 기존 데이터 중 마지막 30개의 인덱스
-    x_axis_predicted = range(len(data), len(data) + 1)  # 이후 2개의 예측 데이터
-    # 개수 오류 계속 났었음. ( x_axis_previous = previous_data 맞춰줘야 하고, x_axis_predicted = predicted_data 맞춰줘야 함)
-    plt.plot(x_axis_previous, previous_data, label='Previous Data')
-    plt.scatter(x_axis_predicted, predicted_data, label='Predicted Data', color='red')
-    plt.xlabel('Time')
-    plt.ylabel('Waiting Time')
-    plt.ylim(0, 100)  # y축 범위 설정
-    plt.legend()
-    graph_image_filename = "test_graph.png"
-    plt.savefig(graph_image_filename)
-    print(f"그래프를 '{graph_image_filename}' 파일로 저장했습니다.")
-    plt.show()
-
-if __name__=='__main__':
-    new_data = {'작업 지시 시간': ['2021-02-07 20:15:37'], '작업 완료 시간': ['2021-02-07 20:28:52'], '작업코드':['적하']}
-    data = load()
-    combined_data = add_data(data, new_data)
-
-    # 대기시간을 list로 만듦
-    column_list = preprocessing(combined_data)
-    lookback = 30
-    make_model(column_list)
+# 그래프로 예측 결과와 실제 데이터를 표현합니다.
+x_axis_previous = range(len(data)-30, len(data))  # 기존 데이터 중 마지막 30개의 인덱스
+x_axis_predicted = range(len(data), len(data) + 1)  # 이후 2개의 예측 데이터
+# 개수 오류 계속 났었음. ( x_axis_previous = previous_data 맞춰줘야 하고, x_axis_predicted = predicted_data 맞춰줘야 함)
+plt.plot(x_axis_previous, previous_data, label='Previous Data')
+plt.scatter(x_axis_predicted, predicted_data, label='Predicted Data', color='red')
+plt.xlabel('Time')
+plt.ylabel('Waiting Time')
+plt.ylim(0, 100)  # y축 범위 설정
+plt.legend()
+graph_image_filename = "test_graph.png"
+plt.savefig(graph_image_filename)
+print(f"그래프를 '{graph_image_filename}' 파일로 저장했습니다.")
+plt.show()
