@@ -28,7 +28,6 @@ public class TokenProvider {
                 .withIssuer("PCTC project")
                 .withIssuedAt(expiryDate)
                 .sign(algorithm);
-
     }
     public String validateAndGetUserId(String token){
         //parseClaimJWws method 가 base64로 디코딩- 파싱이 이루어진다.
