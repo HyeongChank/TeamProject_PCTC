@@ -41,8 +41,9 @@ header = data[0]
 data_rows = data[1:]
 in_time_out = []
 waiting_time = []
-print(data_rows[2][1])
-start = datetime.strptime(data_rows[2][1],'%Y-%m-%d %H:%M')
+print(data)
+print(data_rows[0][1])
+start = datetime.strptime(data_rows[0][1],'%Y-%m-%d %H:%M')
 print(start)
 
 #print(datetime.strptime([data_rows[2][1]], '%Y-%m-%d %H:%M') - datetime.strptime([data_rows[2][2]], '%Y-%m-%d %H:%M'))
@@ -50,27 +51,30 @@ for row in data_rows:
     start = datetime.strptime(row[1],'%Y-%m-%d %H:%M')
     end = datetime.strptime(row[2],'%Y-%m-%d %H:%M')
     wait = start-end
-    x = mdates.date2num(start)
-    print(x)
-    in_time_out.append(int(x))
+    wait_min = wait.minute
+    hour = int(start.hour)*60
+    minute = int(start.minute)
+    start_reg = hour + minute
+    in_time_out.append(start_reg)
+    print(start_reg)
     waiting_time.append(wait)
 
-# sinegraph = plt.figure()
-# sine = plt.axes()
-# sine.set_xlim(0, max(in_time_out))
-# sine.set_ylim(0, 50)
+makegraph = plt.figure()
+sine = plt.axes()
+sine.set_xlim(0, max(in_time_out))
+sine.set_ylim(0, 50)
 
-# x = np.array(in_time_out)
-# y = np.array(waiting_time)
+x = np.array(in_time_out)
+y = np.array(waiting_time)
 
-# line, = sine.plot([],[])
+line, = sine.plot([],[])
 
-# def update(num, x, y, line):
-#     line.set_data(x[:num], y[:num])
-#     return line,
-# sineani = animation.FuncAnimation(sinegraph, update, frames = len(x) +1, fargs=(x,y, line),
-#                                   interval = 100, repeat = False)
-# animation_filename = "test_R_animation.gif"
-# sineani.save(animation_filename, writer="pillow")
-# print(f"애니메이션을 '{animation_filename}' 파일로 저장했습니다.")
-# plt.show()
+def update(num, x, y, line):
+    line.set_data(x[:num], y[:num])
+    return line,
+sineani = animation.FuncAnimation(makegraph, update, frames = len(x) +1, fargs=(x,y, line),
+                                  interval = 100, repeat = False)
+animation_filename = "test_R_animation.gif"
+sineani.save(animation_filename, writer="pillow")
+print(f"애니메이션을 '{animation_filename}' 파일로 저장했습니다.")
+plt.show()

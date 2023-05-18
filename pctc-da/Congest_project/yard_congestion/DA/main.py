@@ -13,7 +13,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 import matplotlib.pyplot as plt
 import seaborn as sns
-from datetime import datetime
+from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
 from matplotlib import font_manager, rc
 # 한글 폰트 설정
@@ -37,7 +37,10 @@ def commit_model(new_data):
     
     # 기존 데이터와 new_data Concat 및 작업코드, 누적 컨테이너 열 정리
     def add_data(data, new_data):
-        
+        new_data = pd.DataFrame(new_data)
+        new_data['작업 지시 시간'] = new_data['입차시간']
+        new_data['작업 완료 시간'] = new_data['작업 지시 시간']
+        print(new_data['작업 완료 시간'])
         # new_data = pd.DataFrame(new_data)
         new_data = new_data[['작업 지시 시간', '작업 완료 시간', '작업코드']]
         # new_data['작업코드'] = new_data['작업코드'].replace({'양하': 1, '적하': -1, '반입': 1, '반출': -1})        
@@ -209,10 +212,8 @@ def commit_model(new_data):
 
 if __name__=="__main__":
     new_data = {
-    "작업 지시 시간": ["2021-02-07 20:10:37", "2021-02-07 20:15:37", "2021-02-07 20:20:37"],
-    "작업 완료 시간": ["2021-02-07 20:28:52", "2021-02-07 20:33:52", "2021-02-07 20:38:52"],
-    "대기차량": [15, 17, 20],
-    "작업코드": ["적하", "적하", "적하"]
+    "입차시간": ["2021-02-07 23:10:37"],
+    "작업코드": ["적하"]
 }
     commit_model(new_data)
     

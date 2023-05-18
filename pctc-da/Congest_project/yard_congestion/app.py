@@ -18,7 +18,6 @@ def congestion():
         new_data = request.get_json()
         print('json 전달 받은 데이터', new_data)
         new_data_df = pd.DataFrame(new_data)
-        # new_data_df = pd.concat([])
         waitingTime, congest_level = main.commit_model(new_data_df)
         
         return jsonify({'congest_level': congest_level.tolist()}, {'waiting_time': waitingTime.tolist()})

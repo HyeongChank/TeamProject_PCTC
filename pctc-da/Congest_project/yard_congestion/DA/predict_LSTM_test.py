@@ -138,4 +138,3 @@ graph_image_filename = "test_graph.png"
 plt.savefig(graph_image_filename)
 print(f"그래프를 '{graph_image_filename}' 파일로 저장했습니다.")
 plt.show()
-
