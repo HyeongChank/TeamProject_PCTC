@@ -33,9 +33,9 @@ export default function Join() {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        userID: userID.current?.value,
-        userPW: userPW.current?.value,
-        userName: userName.current?.value
+        id: userID.current?.value,
+        pw: userPW.current?.value,
+        name: userName.current?.value
       })
     }).then(response => response.json())
       .then(result => {
@@ -46,7 +46,7 @@ export default function Join() {
             state: getCookie('isLogin')?.toString(),
             name: getCookie('name')
           });
-          // goto('/')
+          goto('/')
         } else {
           if (result?.error === 400)
             alert("아이디 또는 비밀번호, 이름을 확인해주세요.");

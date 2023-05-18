@@ -35,7 +35,8 @@ export default function Login() {
         id: userID.current?.value,
         pw: userPW.current?.value
       })
-    }).then(response => response.json())
+    })
+    .then(response => response.json())
     .then(result => {
       console.log("result >> ", result);
       if (result?.isLogin) {
