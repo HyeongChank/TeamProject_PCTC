@@ -6,7 +6,7 @@ import { promisify } from "util";
  * @returns true is User
  * @returns false is not User
  */
-export default async function validJoin(userInfo: {userID: string, userPW: string, userName: string}) {
+export default async function validJoin(userInfo: {id: string, pw: string, name: string}) {
   // 유효한 회원가입 요청인가 검증
   let connection = connectionDB() // DB 커넥션 생성
 
@@ -15,7 +15,7 @@ export default async function validJoin(userInfo: {userID: string, userPW: strin
   let query = promisify(connection.query).bind(connection);
 
   try {
-    await query("INSERT INTO USER(`id`,`pw`,`name`) VALUES('"+ userInfo?.userID +"','"+ userInfo?.userPW +"','"+ userInfo?.userName +"')");
+    await query("INSERT INTO USER(`id`,`pw`,`name`) VALUES('"+ userInfo?.id +"','"+ userInfo?.pw +"','"+ userInfo?.name +"')");
   } catch (err) {
     console.error('SQL error: ', err);
     return false;
