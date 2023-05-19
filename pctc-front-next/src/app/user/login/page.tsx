@@ -53,7 +53,7 @@ export default function Login() {
       .catch((error) => console.error("error! >> ", error));
   }
 
-  const handleSocialLogin = (provider :string) => {
+  const handleSocialLogin = (provider: string) => {
     // 서버에 전달
     socialLogin(provider);
     console.log(provider);
@@ -90,14 +90,40 @@ export default function Login() {
 
           <button
             onClick={() => {
-              handleSocialLogin("github");
+              handleSocialLogin("kakao");
             }}
           >
             <Image
               src="/kakao_login_large_narrow.png"
               width={244}
               height={60}
-              alt="Kakao login"
+              alt="kakao login"
+            />
+          </button>
+
+          <button
+            onClick={() => {
+              handleSocialLogin("naver");
+            }}
+          >
+            <Image
+              src="/naver_login_large_narrow.png"
+              width={244}
+              height={60}
+              alt="naver login"
+            />
+          </button>
+
+          <button
+            onClick={() => {
+              handleSocialLogin("google");
+            }}
+          >
+            <Image
+              src="/google_login_large_narrow.png"
+              width={244}
+              height={60}
+              alt="google login"
             />
           </button>
         </article>

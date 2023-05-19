@@ -7,8 +7,6 @@ import Signin from "../client/signin/Signin";
 
 const TitleView = () => {
 
-
-
   return (
     <div className="flex h-24 items-center">
       <div className="w-2/12 h-16 m-3 flex justify-center items-center">
