@@ -10,6 +10,7 @@ declare global {
 
 export default function SWS() {
   const [apiKey, setApiKey] = useState("");
+  
   const container = useRef(null);
   (async function (){
     const res = await fetch('/api/data/getkey', {

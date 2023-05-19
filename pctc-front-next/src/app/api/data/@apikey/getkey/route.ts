@@ -6,7 +6,8 @@ export async function POST(request: Request) {
   const { done, value } = inReader ?? { done: true, value: null };
 
   const { token } = JSON.parse(value ?? "");
-  console.log(token);
+  // console.log(token);
+  // token = 
   
   return new NextResponse(process.env.KAKAO_MAP_API_KEY)
 }
