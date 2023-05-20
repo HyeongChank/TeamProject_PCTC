@@ -9,5 +9,5 @@ export function socialLogin(provider: any){
   
   const API_BASE_URL = backendHost;
   
-  window.location.href = API_BASE_URL + "/auth/authorize/"+ provider;
+  window.location.href = API_BASE_URL + "oauth2/authorization/"+ provider;
 }

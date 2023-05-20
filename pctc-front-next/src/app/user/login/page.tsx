@@ -90,7 +90,7 @@ export default function Login() {
 
           <button
             onClick={() => {
-              handleSocialLogin("github");
+              handleSocialLogin("kakao");
             }}
           >
             <Image
