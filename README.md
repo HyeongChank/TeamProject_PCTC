@@ -6,7 +6,25 @@ PCTC: Prediction of container terminal congestion.
 
 ## Skill Stack
   #### Front Side: Web Page
-  <img src="https://img.shields.io/badge/-Next.JS 13.4.2-000000?logo=next.js&logoColor=white">   <img src="https://img.shields.io/badge/-TypeScript 5.0.4-3178C6?logo=typescript&logoColor=white">   <img src="https://img.shields.io/badge/-Tailwind 3.3.2-06B6D4?logo=tailwindcss&logoColor=white">   <img src="https://img.shields.io/badge/-VS Code 1.78.0-007ACC?logo=visual studio code&logoColor=white">
+
+> #### Core  
+> <img src="https://img.shields.io/badge/-Next.JS 13.4.2-000000?logo=next.js&logoColor=white">  <img src="https://img.shields.io/badge/-TypeScript 5.0.4-3178C6?logo=typescript&logoColor=white">
+
+> #### Package Manager  
+> <img src="https://img.shields.io/badge/-Yarn-2C8EBB?logo=yarn&logoColor=white">
+
+> #### Status Management  
+> <img src="https://img.shields.io/badge/-Redux Toolkit-764ABC?logo=redux&logoColor=white">
+
+> #### UI Kit / Styling  
+> <img src="https://img.shields.io/badge/-Tailwind 3.3.2-06B6D4?logo=tailwindcss&logoColor=white">  <img src="https://img.shields.io/badge/-React Icons-61DAFB?logo=react&logoColor=white">
+
+> #### Testing  
+> <img src="https://img.shields.io/badge/-Jest-C21325?logo=jest&logoColor=white">
+
+> #### Building  
+> <img src="https://img.shields.io/badge/-Webpack-8DD6F9?logo=webpack&logoColor=white">
+
 
   #### Back Side - Database Server
   <img src="https://img.shields.io/badge/-Spring Boot 3.0.5-6DB33F?logo=spring boot&logoColor=white">  <img src="https://img.shields.io/badge/-JDK 17-FF2222?logo=openjdk&logoColor=white">  <img src="https://img.shields.io/badge/-STS 4.18.0-6DB33F?logo=spring&logoColor=white">  <img src="https://img.shields.io/badge/gradle-02303A?logo=gradle">
