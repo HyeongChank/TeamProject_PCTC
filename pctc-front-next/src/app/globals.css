@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* .testcss {
+  transform: ro;
+} */
+
+#daum-maps-shape-0,#daum-maps-shape-1,#daum-maps-shape-2,#daum-maps-shape-3,#daum-maps-shape-4,#daum-maps-shape-5,#daum-maps-shape-6,#daum-maps-shape-7,#daum-maps-shape-8,#daum-maps-shape-9 {
+  animation-name: blink;
+}
