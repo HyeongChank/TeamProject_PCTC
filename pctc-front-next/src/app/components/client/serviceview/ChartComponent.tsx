@@ -1,8 +1,7 @@
-'use client';
+"use client";
 
-import { Chart } from 'chart.js/auto'
-import { useEffect, useRef } from 'react';
-
+import { Chart } from "chart.js/auto";
+import { useEffect, useRef } from "react";
 
 interface ChartComponentProps {
   data: number[];
@@ -11,22 +10,27 @@ interface ChartComponentProps {
   height?: number;
 }
 
-export default function ChartComponent({ data, labels, width, height }: any) {
+export default function ChartComponent({
+  data,
+  labels,
+  width,
+  height,
+}: ChartComponentProps) {
   const chartRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     if (chartRef.current) {
-      const ctx = chartRef.current.getContext('2d');
+      const ctx = chartRef.current.getContext("2d");
       if (ctx) {
         new Chart(ctx, {
-          type: 'bar',
+          type: "line",
           data: {
             labels: labels,
             datasets: [
               {
-                label: 'Chart Example',
+                label: "Chart Example",
                 data: data,
-                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                backgroundColor: "rgba(75, 192, 192, 0.6)",
               },
             ],
           },
@@ -43,5 +47,24 @@ export default function ChartComponent({ data, labels, width, height }: any) {
     }
   }, [data, labels]);
 
-  return <canvas ref={chartRef} width="400px" height={height} />;
-};
+  return (
+    <>
+      <div>
+        <canvas ref={chartRef} />
+      </div>
+      <style jsx>{`
+        div {
+          border: solid 1px #141414;
+          border-radius: 7px;
+          padding: 1rem;
+          display: flex;
+          justify-content: center;
+        }
+        canvas {
+          width:${width}vw;
+          height:${height}vh;
+        }
+      `}</style>
+    </>
+  );
+}

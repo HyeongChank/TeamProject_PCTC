@@ -2,8 +2,8 @@
 
 import { deleteCookie } from '@/function/cookie/DeleteCookie';
 import { getCookie } from '@/function/cookie/GetCookie';
+import { goto } from '@/function/goto/Goto';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react'
 
 
@@ -18,8 +18,6 @@ export default function Signin() {
 
 
   const [signinView, setSigninView] = useState(<>Log in</>); // 실제 Signin 컴포넌트 렌더링할 내용
-  const [popupIsOpen, setPopupIsOpen] = useState(false); // 팝업창 on/off 여부
-  const [popupInfo, setPopupInfo] = useState({}); // 팝업창 내용
 
   const translater = { // 번역기
     "kakao": "카카오",
@@ -43,6 +41,7 @@ export default function Signin() {
       state: "false",
       name: ""
     });
+    goto('/')
   }
   
   useEffect(() => {
@@ -50,7 +49,7 @@ export default function Signin() {
       setSigninView(
         <div className='w-full h-full flex flex-col justify-center items-center'>
           <div className='w-32 text-base font-bold text-center'>
-            <button onClick={() => setPopupIsOpen(true)}>{loginSession.name} 님</button>
+            <button>{loginSession.name} 님</button>
           </div>
           <div className='w-32 text-center'>
             <button onClick={signout}>Sign out</button>

@@ -20,17 +20,23 @@ const CPVS = ({apiKey}: any) => {
     document.head.appendChild(script);
 
     script.onload = () => {
-      if (typeof window !== 'undefined') {
+      if (typeof window !== "undefined") {
         const { kakao } = window;
+        const standardPoint = [35.104516, 129.095172];
+        console.log("kakao >> ", kakao);
         kakao.maps.load(() => {
-          const mapContainer = document.getElementById('container');
+          const mapContainer = document.getElementById("container");
           const mapOption = {
-            center: new kakao.maps.LatLng(35.106, 129.08),
+            center: new kakao.maps.LatLng(
+              standardPoint[0] + 0.0025,
+              standardPoint[1]
+            ),
             level: 4,
             draggable: false,
             disableDoubleClickZoom: true,
           };
           const map = new kakao.maps.Map(mapContainer, mapOption);
+          map.addOverlayMapTypeId(kakao.maps.MapTypeId.TERRAIN);
         });
       }
     };
@@ -40,16 +46,24 @@ const CPVS = ({apiKey}: any) => {
   return (
     <>
 
-      <div id='cpvs' className='w-full h-full flex justify-center mt-10'>
+      <div id='cpvs'>
         <div id="container" ref={container} />
       </div>
       <style jsx>{`
+      #cpvs {
+        width: 40vw;
+        height 80vh;
+        display: flex;
+        justify-content: center;
+        margin-top: 2rem;
+        margin-right: 1rem;
+      }
       #container {
-        width: 70vw;
-        height: 70vh;
+        width: 40vw;
+        height: 80vh;
         opacity: ${serviceViewOpacity};
         border: solid 1px #282828;
-        border-radius: 10px;
+        border-radius: 7px;
       }
     `}</style>
     </>
