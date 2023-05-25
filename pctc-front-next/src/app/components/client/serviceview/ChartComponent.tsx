@@ -58,8 +58,31 @@ export default function ChartComponent({
           options: {
             responsive: true,
             scales: {
+              x: {
+                beginAtZero: true,
+                title: {
+                  display: true,
+                  align: 'end',
+                  color: '#808080',
+                  font: {
+                    size: 12,
+                  },
+                  text: "시각",
+                }
+                
+              },
               y: {
                 beginAtZero: true,
+                title: {
+                  display: true,
+                  align: 'end',
+                  color: '#808080',
+                  font: {
+                    size: 12,
+                  },
+                  text: "Turn around time",
+                }
+                
               },
             },
             plugins: {
