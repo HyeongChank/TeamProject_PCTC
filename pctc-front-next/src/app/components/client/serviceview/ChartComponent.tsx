@@ -62,6 +62,16 @@ export default function ChartComponent({
                 beginAtZero: true,
               },
             },
+            plugins: {
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Turn around time',
+                font: {size: 30}
+              }
+            },
           },
         });
       }
