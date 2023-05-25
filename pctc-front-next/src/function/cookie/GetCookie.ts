@@ -15,6 +15,4 @@ export function getCookie(name: string) {
 
     return null;
   }
-  else
-    console.log("클라이언트에서만 지원하는 함수입니다.");
 }

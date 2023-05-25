@@ -1,5 +1,7 @@
-'use client'
+"use client";
 
-export default function Error(){
-  window.location.href = '/';
+export default function Error() {
+  if (typeof window !== "undefined") {
+    window.location.href = "/";
+  }
 }

@@ -17,7 +17,7 @@ import javax.management.relation.Role;
 public class User {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.AUTO)
+    @GeneratedValue( strategy = GenerationType.UUID)
     private String id;
     @Column(nullable = false, length = 200)
     private String username;

@@ -33,8 +33,9 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                         .requestMatchers("/","/auth/**").permitAll()
                         .shouldFilterAllDispatcherTypes(false)
                         .anyRequest()
-                        .authenticated()
-                );
+                        .authenticated())
+                .oauth2Login();
+
         return http.build();
     }
 

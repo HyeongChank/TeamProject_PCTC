@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  width: 100vw;
+  height: 90vh;
+}
+
+#daum-maps-shape-0,#daum-maps-shape-1,#daum-maps-shape-2,#daum-maps-shape-3,#daum-maps-shape-4,#daum-maps-shape-5,#daum-maps-shape-6,#daum-maps-shape-7,#daum-maps-shape-8,#daum-maps-shape-9 {
+  animation-name: blink;
+}
+
+#root-main {
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+#root-main-section {
+  height: 100%;
+  margin-top: 2rem;
+  margin-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
