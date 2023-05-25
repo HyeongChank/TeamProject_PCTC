@@ -26,31 +26,48 @@ export default function Login() {
   }
 
   function submit() {
-    fetch("/api/user/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: userID.current?.value,
-        pw: userPW.current?.value,
-      }),
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        console.log("result >> ", result);
-        if (result?.isLogin) {
-          createCookie(result ?? {});
-          setLoginSession({
-            state: getCookie("isLogin")?.toString(),
-            name: getCookie("name"),
-          });
-          goto("/");
-        } else {
-          alert("아이디 또는 비밀번호를 확인해주세요.");
-        }
+    if (process.env.NODE_ENV === "development") {
+      fetch("/api/user/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: userID.current?.value,
+          pw: userPW.current?.value,
+        }),
       })
-      .catch((error) => console.error("error! >> ", error));
+        .then((response) => response.json())
+        .then((result) => {
+          console.log("result >> ", result);
+          if (result?.isLogin) {
+            createCookie(result ?? {});
+            setLoginSession({
+              state: getCookie("isLogin")?.toString(),
+              name: getCookie("name"),
+            });
+            goto("/");
+          } else {
+            alert("아이디 또는 비밀번호를 확인해주세요.");
+          }
+        })
+        .catch((error) => console.error("error! >> ", error));
+    } else if (process.env.NODE_ENV === "production") {
+      createCookie({
+        isLogin: true,
+        user: {
+          id: "kko",
+          pw: "1234",
+          name: "고건",
+        }});
+      setLoginSession({
+        state: getCookie("isLogin")?.toString(),
+        name: getCookie("name"),
+      });
+      goto("/");
+    } else {
+      console.log("환경 변수를 확인할 수 없습니다.");
+    }
   }
 
   const handleSocialLogin = (provider: string) => {

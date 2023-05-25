@@ -1,8 +1,7 @@
 "use client";
 
-import { useContext, useEffect, useRef, useState } from "react";
-import { createBlocks } from "./createBlocks";
-import { createShip } from "./createShip";
+import { useEffect, useRef, useState } from "react";
+import { createShips } from "./createShips";
 
 declare global {
   interface Window {
@@ -10,24 +9,38 @@ declare global {
   }
 }
 
+let rendering = 0;
+
 export default function SWS() {
   const [apiKey, setApiKey] = useState("");
 
   const container = useRef(null);
-  (async function () {
-    const res = await fetch("/api/data/getkey", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify({
-        token: "회원 토큰",
-      }),
-    });
-    setApiKey(await res.text());
-  })();
 
   useEffect(() => {
+    const fetchApiKey = async () => {
+      if (process.env.NODE_ENV === "development") {
+        const res = await fetch("http://localhost:3000/api/data/getkey", {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          method: "POST",
+          body: JSON.stringify({
+            token: "ABCDEFGH", // 임시 하드코딩. 추후 back에서 받을것.
+          }),
+        });
+        setApiKey(await res.text());
+      } else if (process.env.NODE_ENV === "production") {
+        setApiKey("0ed00b3cb3e60ff887b0375a881a9b12");
+      } else {
+        console.log("환경 변수를 확인할 수 없습니다.");
+      }
+    };
+    fetchApiKey();
+  }, []);
+
+  useEffect(() => {
+    rendering++;
+    console.log(rendering);
     if (apiKey !== "") {
       const script = document.createElement("script");
       script.src =
@@ -43,8 +56,8 @@ export default function SWS() {
             const mapContainer = document.getElementById("container");
             const mapOption = {
               center: new kakao.maps.LatLng(
-                standardPoint[0] + 0.0025,
-                standardPoint[1]
+                standardPoint[0] + 0.001,
+                standardPoint[1] - 0.006
               ),
               level: 4,
               draggable: false,
@@ -53,48 +66,32 @@ export default function SWS() {
             const map = new kakao.maps.Map(mapContainer, mapOption);
             map.addOverlayMapTypeId(kakao.maps.MapTypeId.TERRAIN);
 
-            /**
-             * 임의로 지정한 변수. 추후 실제 input data에 맞게 바꿔야.
-             */
-            let blockStatus = {
-              "1A": Math.random(),
-              "1B": Math.random(),
-              "1C": Math.random(),
-              "1D": Math.random(),
-              "1E": Math.random(),
-              "2A": Math.random(),
-              "2B": Math.random(),
-              "2C": Math.random(),
-              "2D": Math.random(),
-              "2E": Math.random(),
-            };
-            /**
-             * 맵 객체를 전달하여 여러개의 블록을 그리는 함수
-             */
-            createBlocks(
+            createShips(
               kakao,
-              [standardPoint[0], standardPoint[1]],
-              new kakao.maps.LatLng(standardPoint[0], standardPoint[1]),
-              [120, 50],
-              5,
+              [
+                [35.1086, 129.093], // 배 위치는 일단 하드코딩으로 해둠. 추후 Back에서 데이터 받기.
+                [35.1078, 129.0934],
+                [35.107, 129.093],
+                [35.1062, 129.0931],
+                [35.1053, 129.0932],
+                [35.1045, 129.0933],
+                [35.103, 129.0885],
+                [35.103, 129.085],
+                [35.103, 129.0815],
+              ],
               map,
-              1,
-              blockStatus
+              [
+                Math.round(Math.random() * 100),
+                Math.round(Math.random() * 100),
+                Math.round(Math.random() * 100),
+                Math.round(Math.random() * 100),
+                Math.round(Math.random() * 100),
+                Math.round(Math.random() * 100),
+                Math.round(Math.random() * 100),
+                Math.round(Math.random() * 100),
+                Math.round(Math.random() * 100),
+              ]
             );
-            createBlocks(
-              kakao,
-              [standardPoint[0], standardPoint[1] + 0.001],
-              new kakao.maps.LatLng(
-                standardPoint[0] + 0.0001,
-                standardPoint[1] + 0.002
-              ),
-              [120, 50],
-              5,
-              map,
-              2,
-              blockStatus
-            );
-            createShip(kakao, { Ma: 35.1084, La: 129.093 }, map);
           });
         }
       };
@@ -112,7 +109,7 @@ export default function SWS() {
           z-index: 0;
         }
         #container {
-          width: 40vw;
+          width: 80vw;
           height: 80vh;
           border: solid 1px #282828;
           border-radius: 10px;

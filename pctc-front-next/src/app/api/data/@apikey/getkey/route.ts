@@ -6,8 +6,8 @@ export async function POST(request: Request) {
   const { done, value } = inReader ?? { done: true, value: null };
 
   const { token } = JSON.parse(value ?? "");
-  // console.log(token);
-  // token = 
-  
-  return new NextResponse(process.env.KAKAO_MAP_API_KEY)
+
+  if (token === "ABCDEFGH")
+    return new NextResponse(process.env.KAKAO_MAP_API_KEY);
+  else return new NextResponse("유효하지 않은 요청");
 }

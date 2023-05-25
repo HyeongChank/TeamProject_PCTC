@@ -1,5 +1,6 @@
 'use client'
 
+import { createBlocks } from '@/app/service/sws/createBlocks';
 import { useEffect, useRef, useState } from 'react';
 
 declare global {
@@ -37,11 +38,53 @@ const CPVS = ({apiKey}: any) => {
           };
           const map = new kakao.maps.Map(mapContainer, mapOption);
           map.addOverlayMapTypeId(kakao.maps.MapTypeId.TERRAIN);
+
+            /**
+             * 임의로 지정한 변수. 추후 실제 input data에 맞게 바꿔야.
+             */
+            let blockStatus = {
+              "1A": Math.random(),
+              "1B": Math.random(),
+              "1C": Math.random(),
+              "1D": Math.random(),
+              "1E": Math.random(),
+              "2A": Math.random(),
+              "2B": Math.random(),
+              "2C": Math.random(),
+              "2D": Math.random(),
+              "2E": Math.random(),
+            };
+            /**
+             * 맵 객체를 전달하여 여러개의 블록을 그리는 함수
+             */
+            createBlocks(
+              kakao,
+              [standardPoint[0], standardPoint[1]],
+              new kakao.maps.LatLng(standardPoint[0], standardPoint[1]),
+              [120, 50],
+              5,
+              map,
+              1,
+              blockStatus
+            );
+            createBlocks(
+              kakao,
+              [standardPoint[0], standardPoint[1] + 0.001],
+              new kakao.maps.LatLng(
+                standardPoint[0] + 0.0001,
+                standardPoint[1] + 0.002
+              ),
+              [120, 50],
+              5,
+              map,
+              2,
+              blockStatus
+            );
         });
       }
     };
 
-  }, [container]);
+  }, [container, apiKey]);
 
   return (
     <>

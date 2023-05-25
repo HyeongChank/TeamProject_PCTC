@@ -9,7 +9,7 @@ type User = {
 
 export function createCookie(userData: User) {
   console.log(">> " , userData);
-  if (window !== undefined) {
+  if (typeof window !== "undefined") {
     document.cookie = `id=${userData.user.id}; max-age=3600`;
     document.cookie = `pw=${userData.user.pw}; max-age=3600`;
     document.cookie = `name=${userData.user.name}; max-age=3600`;

@@ -10,15 +10,15 @@ import { createShip } from "./createShip";
  */
 export function createShips(
   kakao: any,
-  flag: any,
-  repeat = 1,
+  flag: [number, number][],
   map: any,
+  completeWorking: number[]
 ) {
   const rectangles = [];
   const blockAddress = ["A","B","C","D","E","F","G","H","I","J",];
 
-  for (let i = 0; i < repeat; i++) {
-    const ship = createShip(kakao, flag, map);
+  for (let i = 0; i < flag.length; i++) {
+    const ship = createShip(kakao, flag[i], map, completeWorking[i]);
     ship.setMap(map);
     // flag = anything.nextPosition;
   }
