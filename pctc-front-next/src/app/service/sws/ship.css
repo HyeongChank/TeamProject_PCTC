@@ -1,0 +1,33 @@
+.ship-working {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.ship-complete-working {
+  appearance: none;
+  width: 8rem;
+  height: 1rem;
+}
+.ship-complete-working::-webkit-progress-bar {
+  background:#f0f0f0;
+  width: 8rem;
+  height: 0.5rem;
+  border-radius:10px;
+  box-shadow: inset 3px 3px 10px #ccc;
+}
+.ship-complete-working::-webkit-progress-value {
+  border-radius:10px;
+  background: #1D976C;
+  background: -webkit-linear-gradient(to right, #93F9B9, #1D976C);
+  background: linear-gradient(to right, #93F9B9, #1D976C);
+
+}
+
+.ship {
+  width: 4rem;
+  height: 4rem;
+}

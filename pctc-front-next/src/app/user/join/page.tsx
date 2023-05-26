@@ -27,33 +27,53 @@ export default function Join() {
   }
 
   function submit() {
-    fetch('/api/user/join', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        id: userID.current?.value,
-        pw: userPW.current?.value,
-        name: userName.current?.value
-      })
-    }).then(response => response.json())
-      .then(result => {
-        if (result?.isLogin) {
-          console.log(result);
-          createCookie(result ?? {});
-          setLoginSession({
-            state: getCookie('isLogin')?.toString(),
-            name: getCookie('name')
-          });
-          goto('/')
-        } else {
-          if (result?.error === 400)
-            alert("아이디 또는 비밀번호, 이름을 확인해주세요.");
-          if (result?.error === 409)
-            alert("이미 사용 중인 아이디입니다. 다른 아이디를 사용해주세요.");
-        }
-      });
+
+    if (process.env.NODE_ENV === "development") {
+      fetch('/api/user/join', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: userID.current?.value,
+          pw: userPW.current?.value,
+          name: userName.current?.value
+        })
+      }).then(response => response.json())
+        .then(result => {
+          if (result?.isLogin) {
+            console.log(result);
+            createCookie(result ?? {});
+            setLoginSession({
+              state: getCookie('isLogin')?.toString(),
+              name: getCookie('name')
+            });
+            goto('/')
+          } else {
+            if (result?.error === 400)
+              alert("아이디 또는 비밀번호, 이름을 확인해주세요.");
+            if (result?.error === 409)
+              alert("이미 사용 중인 아이디입니다. 다른 아이디를 사용해주세요.");
+          }
+        });
+      
+    } else if (process.env.NODE_ENV === "production") {
+            createCookie({
+              isLogin: true,
+              user: {
+                id: "kko",
+                pw: "1234",
+                name: "고건",
+              }} ?? {});
+            setLoginSession({
+              state: getCookie('isLogin')?.toString(),
+              name: getCookie('name')
+            });
+            goto('/')
+    } else {
+      console.log("환경 변수를 확인할 수 없습니다.");
+    }
+
   }
 
   useEffect(() => {
