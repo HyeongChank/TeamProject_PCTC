@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import TitleMenu from "../client/TitleMenu";
-import Signin from "../client/signin/Signin";
+import Signin from "./components/client/signin/Signin";
+import TitleMenu from "./TitleMenu";
 
 const TitleView = () => {
   return (
