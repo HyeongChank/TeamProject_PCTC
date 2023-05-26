@@ -1,6 +1,6 @@
 import { makeTimeLabel, Time } from "@/function/util/makeTimeLabel";
 import { cookies } from "next/dist/client/components/headers";
-import Dashboard from "./components/client/Dashboard";
+import Dashboard from "./Dashboard";
 
 export default function Home() {
   let flag = true;

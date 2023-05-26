@@ -1,7 +1,10 @@
+/**
+ * 구조 : "/Home/Dashboard"
+ */
 'use client';
 
-import ChartComponent from "./serviceview/ChartComponent";
-import CPVS from "./serviceview/CPVS";
+import ChartComponent from "./components/client/serviceview/ChartComponent";
+import CPVS from "./components/client/serviceview/CPVS";
 
 export default function Dashboard ({apiKey, dataLabel, timeLabel} : any) {
   return (
