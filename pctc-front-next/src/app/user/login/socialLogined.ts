@@ -1,21 +1,19 @@
-"use client";
-
 import { getURL } from "next/dist/shared/lib/utils";
-import { useRouter } from "next/router";
 
 
-export default function LoginedPage() {
+export function socialLogined(){
   if (typeof window !== "undefined") {
     let search = window.location.search;
     let url = getURL();
     const token: string = url.split("?")[1];
     localStorage.setItem("ACCESS_TOKEN", token);
   }
-  useRouter().push("/");
-  return <></>;
 }
 
-
 /**
- * 이 페이지는 /user/login/page.js에 통합되어 삭제 예정
+ * http://localhost:3000/user/login
+http://10.125.121.207:3000/user/login
+http://10.125.121.222:8080/login/oauth2/code/kakao
+	
+http://localhost:8080/login/oauth2/code/kakao
  */
