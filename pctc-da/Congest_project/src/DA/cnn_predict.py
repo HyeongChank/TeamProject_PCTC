@@ -129,11 +129,15 @@ def operate():
         plt.ylabel('값')
         plt.title('예측값과 실제값')
         plt.legend()
-        plt.show()
+        # plt.show()
+        print(predictions)
+        print(len(predictions))
+        return predictions
 
     data = load()
     common_data = preprocessing(data)
-    make_model(common_data)
+    predictions = make_model(common_data)
+    return predictions
 
 if __name__=='__main__':
     operate()

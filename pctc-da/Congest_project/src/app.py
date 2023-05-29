@@ -1,6 +1,7 @@
 from flask import Flask, render_template, jsonify, request
 
 from DA import randomForest_predict
+from DA import cnn_predict
 import json
 import requests
 from flask_cors import CORS
@@ -21,6 +22,22 @@ def r_prediction():
         grouped_df_parsed = json.loads(grouped_df_json)
         grouped_df_clean = json.dumps(grouped_df_parsed, ensure_ascii=False)
         return jsonify({'grouped_df_json': grouped_df_clean})
+    else:
+        return 'error'
+
+@app.route('/api/cnn_predict', methods=['GET', 'POST'])
+def cnn_prediction():
+    if request.method == 'POST':
+        # new_data = request.get_json()
+        # print('json 전달 받은 데이터', new_data)
+        # new_data_df = pd.DataFrame(new_data)
+        
+        predict_df = cnn_predict.operate()
+        predict_df_list = predict_df.tolist()
+        # grouped_df_json = grouped_df.to_json(date_format='iso', orient='records')
+        # grouped_df_parsed = json.loads(grouped_df_json)
+        # grouped_df_clean = json.dumps(grouped_df_parsed, ensure_ascii=False)
+        return jsonify({'grouped_df_json': predict_df_list})
     else:
         return 'error'
 
