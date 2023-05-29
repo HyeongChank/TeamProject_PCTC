@@ -103,7 +103,7 @@ def operate():
         plt.xlabel('작업생성시간')
         plt.ylabel('예측값')
         plt.title('예측값 시간별 추이')
-        # plt.show()
+        plt.show()
         return grouped_df
 
 #############################################################################
