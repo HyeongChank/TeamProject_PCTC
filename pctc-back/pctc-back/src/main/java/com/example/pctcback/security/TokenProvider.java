@@ -5,9 +5,9 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.pctcback.model.User;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.security.Key;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -15,7 +15,8 @@ import java.util.Date;
 @Slf4j
 @Service
 public class TokenProvider {
-    private static final String SECRET_KEY = "INHe5oeRO4amRoCpXno5iQcyYGZ9PyYGZeL+tjRocS1OIM+sXPPNpx51lE2qheq/GZhKxICuP/uRnMCXW2GkURM=";
+    @Value("${my.secretary}")
+    private String SECRET_KEY;
     public String create(User userEntity) {
         // 기한 - 1일
         Date expiryDate = Date.from(
@@ -24,7 +25,7 @@ public class TokenProvider {
         Algorithm algorithm = Algorithm.HMAC512(SECRET_KEY);
         // JWT Token 생성
         return JWT.create()
-                .withSubject(userEntity.getId())
+                .withSubject(userEntity.getUsername())
                 .withIssuer("PCTC project")
                 .withIssuedAt(expiryDate)
                 .sign(algorithm);

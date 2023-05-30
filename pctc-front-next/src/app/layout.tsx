@@ -1,8 +1,7 @@
-import TitleView from "./components/server/TitleView";
-import "./globals.css";
-import { Gowun_Dodum } from "next/font/google";
-// import { Provider } from "react-redux";
 import { Providers } from "@/redux/provider";
+import { Gowun_Dodum } from "next/font/google";
+import "./globals.css";
+import TitleView from "./TitleView";
 
 const gowun_dodum = Gowun_Dodum({ subsets: ["latin"], weight: "400" });
 
@@ -28,3 +27,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+

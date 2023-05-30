@@ -4,8 +4,8 @@ import { getCookie } from "@/function/cookie/GetCookie";
 import { goto } from "@/function/goto/Goto";
 import { socialLogin } from "@/function/signin/SocialLogin";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { socialLogined } from "./socialLogined";
 
 export default function Login() {
   const [loginSession, setLoginSession] = useState({
@@ -16,7 +16,7 @@ export default function Login() {
   const userID = useRef<HTMLInputElement>(null);
   const userPW = useRef<HTMLInputElement>(null);
 
-  const router = useRouter();
+  socialLogined();
 
   function submitKey(e: any) {
     if (e.keyCode === 13) {
