@@ -5,13 +5,13 @@ import { useRouter } from "next/navigation";
 
 
 export default function LoginedPage() {
-  if (typeof window !== "undefined") {
-    let search = window.location.search;
-    let url = getURL();
-    const token: string = url.split("?")[1];
-    localStorage.setItem("ACCESS_TOKEN", token);
-  }
-  useRouter().push("/");
+  // if (typeof window !== "undefined") {
+  //   let search = window.location.search;
+  //   let url = getURL();
+  //   const token: string = url.split("?")[1];
+  //   localStorage.setItem("ACCESS_TOKEN", token);
+  // }
+  // useRouter().push("/");
   return <></>;
 }
 
