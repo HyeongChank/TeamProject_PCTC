@@ -28,19 +28,13 @@ def r_prediction():
 @app.route('/api/cnn_predict', methods=['GET', 'POST'])
 def cnn_prediction():
     if request.method == 'POST':
-        # new_data = request.get_json()
-        # print('json 전달 받은 데이터', new_data)
-        # new_data_df = pd.DataFrame(new_data)
         
-        predict_df = cnn_predict.operate()
-        predict_df_list = predict_df.tolist()
-        # grouped_df_json = grouped_df.to_json(date_format='iso', orient='records')
-        # grouped_df_parsed = json.loads(grouped_df_json)
-        # grouped_df_clean = json.dumps(grouped_df_parsed, ensure_ascii=False)
-        return jsonify({'grouped_df_json': predict_df_list})
+        time_group, predict_group, actual_group = cnn_predict.operate()
+        
+        return jsonify({'time': time_group, 'predict_group': predict_group, 'actual_group': actual_group})
     else:
         return 'error'
 
 if __name__ == '__main__':
     # host, port를 설정하고 여기로 요청을 하게 하면 됨
-    app.run(host='10.125.121.220', port=5001, debug=True)
+    app.run(host='0.0.0.0', port=5001, debug=True)
