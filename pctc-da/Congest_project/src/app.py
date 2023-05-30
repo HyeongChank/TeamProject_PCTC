@@ -1,6 +1,7 @@
 from flask import Flask, render_template, jsonify, request
 
 from DA import randomForest_predict
+from DA import cnn_predict
 import json
 import requests
 from flask_cors import CORS
@@ -24,6 +25,16 @@ def r_prediction():
     else:
         return 'error'
 
+@app.route('/api/cnn_predict', methods=['GET', 'POST'])
+def cnn_prediction():
+    if request.method == 'POST':
+        
+        time_group, predict_group, actual_group = cnn_predict.operate()
+        
+        return jsonify({'time': time_group, 'predict_group': predict_group, 'actual_group': actual_group})
+    else:
+        return 'error'
+
 if __name__ == '__main__':
     # host, port를 설정하고 여기로 요청을 하게 하면 됨
-    app.run(host='10.125.121.220', port=5001, debug=True)
+    app.run(host='0.0.0.0', port=5001, debug=True)
