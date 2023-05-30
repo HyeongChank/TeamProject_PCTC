@@ -4,6 +4,8 @@ import { Chart } from "chart.js/auto";
 import { useEffect, useRef } from "react";
 
 interface ChartComponentProps {
+  title: string,
+  legend: [string, string]
   data: number[];
   labels: string[];
   width?: number;
@@ -11,6 +13,8 @@ interface ChartComponentProps {
 }
 
 export default function ChartComponent({
+  title,
+  legend,
   data,
   labels,
   width,
@@ -67,7 +71,7 @@ export default function ChartComponent({
                   font: {
                     size: 12,
                   },
-                  text: "시각",
+                  text: legend[0],
                 }
                 
               },
@@ -80,7 +84,7 @@ export default function ChartComponent({
                   font: {
                     size: 12,
                   },
-                  text: "Turn around time",
+                  text: legend[1],
                 }
                 
               },
@@ -91,7 +95,7 @@ export default function ChartComponent({
               },
               title: {
                 display: true,
-                text: 'Turn around time',
+                text: title,
                 font: {size: 30}
               }
             },

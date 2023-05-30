@@ -1,7 +1,7 @@
 "use client";
 
 import { getURL } from "next/dist/shared/lib/utils";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 
 export default function LoginedPage() {
