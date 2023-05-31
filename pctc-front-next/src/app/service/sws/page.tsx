@@ -30,7 +30,7 @@ export default function SWS() {
         });
         setApiKey(await res.text());
       } else if (process.env.NODE_ENV === "production") {
-        setApiKey("0ed00b3cb3e60ff887b0375a881a9b12");
+        setApiKey("");
       } else {
         console.log("환경 변수를 확인할 수 없습니다.");
       }
@@ -81,7 +81,7 @@ export default function SWS() {
               ],
               map,
               [
-                Math.round(Math.random() * 100),
+                Math.round(Math.random() * 100), // 배마다 작업완료 수준 프로그레스바 하드코딩. 추후 데이터 보완.
                 Math.round(Math.random() * 100),
                 Math.round(Math.random() * 100),
                 Math.round(Math.random() * 100),

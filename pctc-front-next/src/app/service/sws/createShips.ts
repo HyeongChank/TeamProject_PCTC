@@ -19,7 +19,7 @@ export function createShips(
 
   for (let i = 0; i < flag.length; i++) {
     const ship = createShip(kakao, flag[i], map, completeWorking[i]);
-    ship.setMap(map);
+    // ship.setMap(map);
     // flag = anything.nextPosition;
   }
 }

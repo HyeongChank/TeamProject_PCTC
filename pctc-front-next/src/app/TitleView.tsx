@@ -15,20 +15,17 @@ const TitleView = () => {
       </div>
       <div className="w-1/12"></div>
       <div className="w-7/12 h-16 flex items-center justify-between">
-        <Link href="/service/bas">
-          <TitleMenu name="선석배정현황" />
-        </Link>
         <Link href="/service/sws">
           <TitleMenu name="본선작업현황" />
         </Link>
-        <Link href="/service/cts">
-          <TitleMenu name="컨테이너 반출입현황" />
+        <Link href="/service/yard">
+          <TitleMenu name="야드작업현황" />
         </Link>
-        <Link href="/service/ctas">
-          <TitleMenu name="컨테이너터미널 재박현황" />
+        <Link href="/service/empty">
+          <TitleMenu name="공컨테이너 현황(신선대)" />
         </Link>
-        <Link href="/service/ctads">
-          <TitleMenu name="컨테이너터미널 입출항현황" />
+        <Link href="/service/shipinout">
+          <TitleMenu name="선박입출항예정정보 " />
         </Link>
       </div>
       <div className="w-1/12"></div>
