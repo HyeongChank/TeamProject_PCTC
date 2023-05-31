@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify, request
-
+from DA import process_model
 from DA import randomForest_predict
 from DA import cnn_predict
 from DA import lstm_retrain
@@ -29,8 +29,8 @@ def r_prediction():
 @app.route('/api/cnn_predict', methods=['GET', 'POST'])
 def cnn_prediction():
     if request.method == 'POST':
-        
-        time_group, predict_group, actual_group = cnn_predict.operate()
+        print('******************request in*********************')
+        time_group, predict_group, actual_group = process_model.operate()
         
         return jsonify({'time': time_group, 'predict_group': predict_group, 'actual_group': actual_group})
     else:
@@ -40,15 +40,16 @@ def cnn_prediction():
 def lstm_prediction():
     if request.method == 'POST':
         new_data = request.get_json()
+        print(new_data)
         prediction_list = lstm_retrain.operate(new_data)
         # Convert float32 to native Python float
         prediction_list = [float(i) for i in prediction_list]
-        
-        return jsonify({'prediction_list': prediction_list})
+
+        return jsonify({'predict_group': prediction_list})
     else:
         return 'error'
         
 
 if __name__ == '__main__':
     # host, port를 설정하고 여기로 요청을 하게 하면 됨
-    app.run(host='0.0.0.0', port=5001, debug=True)
+    app.run(host='10.125.121.220', port=5001, debug=True)

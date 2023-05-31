@@ -87,22 +87,30 @@ def operate():
         # 데이터 분할
         X_train, X_test, y_train, y_test = train_test_split(X_scaled_df, y, test_size=0.2, random_state=42)
 
-        # CNN 모델 구성
-        model = Sequential()
-        model.add(Conv1D(64, 3, activation='relu', input_shape=(X_train.shape[1], 1)))
-        model.add(MaxPooling1D(2))
-        model.add(Flatten())
-        model.add(Dense(64, activation='relu'))
-        model.add(Dense(1))
+        # # CNN 모델 구성
+        # model = Sequential()
+        # model.add(Conv1D(64, 3, activation='relu', input_shape=(X_train.shape[1], 1)))
+        # model.add(MaxPooling1D(2))
+        # model.add(Flatten())
+        # model.add(Dense(64, activation='relu'))
+        # model.add(Dense(1))
 
-        # 모델 컴파일
-        model.compile(loss='mean_squared_error', optimizer='adam')
-        # 모델 훈련
-        model.fit(X_train, y_train, epochs=250, batch_size=10, validation_data=(X_test, y_test))
+        # # 모델 컴파일
+        # model.compile(loss='mean_squared_error', optimizer='adam')
+        # # 모델 훈련
+        # model.fit(X_train, y_train, epochs=10, batch_size=10, validation_data=(X_test, y_test))
 
 
-        # 모델 예측
-        predictions = model.predict(X_test)
+
+        # 모델 로드
+        with open('pctc-da/Congest_project/models/model.pkl', 'rb') as f:
+            loaded_model = pickle.load(f)
+
+        # 로드된 모델을 사용하여 예측 수행
+        predictions = loaded_model.predict(X_test)
+        print(predictions)
+
+
         X_test_df = pd.DataFrame(X_test)
         X_test_with_predictions = X_test_df.copy()
         X_test_with_predictions['예측값'] = predictions
@@ -139,25 +147,6 @@ def operate():
         print('평균 제곱근 오차 (RMSE):', rmse)
         print('평균 제곱 오차 (MSE):', mse)
         print('결정 계수 (R^2):', r2)
-        # 그래프 설정
-        # 모델 예측
-        # predictions = model.predict(X_test)
-
-    #     # 그래프 설정
-    #     plt.figure(figsize=(10, 5))
-    #     plt.plot(range(len(predictions)), predictions, label='예측값')
-    #     plt.plot(range(len(y_test)), y_test, label='실제값')
-    #     plt.xlabel('샘플 인덱스')
-    #     plt.ylabel('값')
-    #     plt.title('예측값과 실제값')
-    #     plt.legend()
-    #     # plt.show()
-    #     print(predictions)
-    #     print(len(predictions))
-        # 모델 저장
-        
-        with open('pctc-da/Congest_project/models/model.pkl', 'wb') as f:
-            pickle.dump(model, f)
 
         return time_group, predict_group, actual_group
 
