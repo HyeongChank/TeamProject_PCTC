@@ -29,7 +29,8 @@ export default function SWS() {
 
   useEffect(() => {
     (async () => {
-      if (process.env.NODE_ENV === "development") {
+      // if (process.env.NODE_ENV === "development") {
+        if (true) {
         const res = await fetch("http://localhost:3000/api/data/getkey", {
           headers: {
             "Content-Type": "application/json",

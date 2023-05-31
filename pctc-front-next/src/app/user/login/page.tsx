@@ -28,7 +28,8 @@ export default function Login() {
   }
 
   async function submit() {
-    if (process.env.NODE_ENV === "development") {
+    // if (process.env.NODE_ENV === "development") {
+      if (true) {
       const res = await fetch("http://10.125.121.222:8080/user/login", {
         method: "POST",
         headers: {
@@ -40,6 +41,7 @@ export default function Login() {
         }),
       });
 
+      console.log("daskdjsasldjh");
       
       
       
