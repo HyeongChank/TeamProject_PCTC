@@ -12,13 +12,24 @@ export function createShips(
   kakao: any,
   flag: [number, number][],
   map: any,
-  completeWorking: number[]
+  completeWorking: number[],
+  dataValue: {
+    data: {
+      arrival: string;
+      departure: string;
+      loading: string;
+      name: string;
+      order: string;
+      progress: string;
+      unloading: string;
+    };
+  }
 ) {
   const rectangles = [];
-  const blockAddress = ["A","B","C","D","E","F","G","H","I","J",];
+  const blockAddress = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
 
   for (let i = 0; i < flag.length; i++) {
-    const ship = createShip(kakao, flag[i], map, completeWorking[i]);
+    const ship = createShip(kakao, flag[i], map, completeWorking[i], dataValue);
     // ship.setMap(map);
     // flag = anything.nextPosition;
   }

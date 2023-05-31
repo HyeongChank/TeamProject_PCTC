@@ -54,7 +54,7 @@ export function createBlock(
     fillColor: blockStatusToString(blockStatus).color, // 채우기 색깔입니다
     fillOpacity: 0.5, // 채우기 불투명도 입니다
   });
-
+  
   function createOverlay() {
     const center = {
       La: (polygonPathRoteted[0].La + polygonPathRoteted[2].La) / 2,

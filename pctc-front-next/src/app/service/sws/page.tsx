@@ -13,12 +13,24 @@ let rendering = 0;
 
 export default function SWS() {
   const [apiKey, setApiKey] = useState("");
+  const [dataValue, setDataValue] = useState({
+    data: {
+      arrival: "",
+      departure: "",
+      loading: "",
+      name: "",
+      order: "",
+      progress: "",
+      unloading: "",
+    },
+  });
 
   const container = useRef(null);
 
   useEffect(() => {
-    const fetchApiKey = async () => {
-      if (process.env.NODE_ENV === "development") {
+    (async () => {
+      // if (process.env.NODE_ENV === "development") {
+        if (true) {
         const res = await fetch("http://localhost:3000/api/data/getkey", {
           headers: {
             "Content-Type": "application/json",
@@ -34,9 +46,23 @@ export default function SWS() {
       } else {
         console.log("환경 변수를 확인할 수 없습니다.");
       }
-    };
-    fetchApiKey();
+      const res = await fetch("http://localhost:3000/api/tempapi")
+      const data = await res.json();
+      setDataValue(data);
+      console.log("최초 렌더링!!!");
+    })();
+
+    setInterval(async () => {
+      const res = await fetch("http://localhost:3000/api/tempapi")
+      const data = await res.json();
+      setDataValue(data);
+      console.log("재렌더링!!!");
+    },10000);
   }, []);
+
+  useEffect(() => {
+    console.log(dataValue);
+  },[dataValue]);
 
   useEffect(() => {
     rendering++;
@@ -90,13 +116,14 @@ export default function SWS() {
                 Math.round(Math.random() * 100),
                 Math.round(Math.random() * 100),
                 Math.round(Math.random() * 100),
-              ]
+              ],
+              dataValue,
             );
           });
         }
       };
     }
-  }, [container, apiKey]);
+  }, [container, apiKey, dataValue]);
 
   return (
     <>

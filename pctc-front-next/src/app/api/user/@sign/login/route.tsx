@@ -19,7 +19,7 @@ export async function POST(request: Request) {
   const { done, value } = inReader ?? { done: true, value: null };
   const parameters = JSON.parse(value ?? "{}");
   let user = await validUser(parameters?.id);
-  
+
   if (validLogin(parameters, user)) {
     // 로그인 성공
     return new NextResponse(JSON.stringify({
