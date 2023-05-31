@@ -117,7 +117,8 @@ def make_model(common_df_complete):
     plt.ylabel('작업+대기시간')
     plt.title('Time Prediction(LSTM)')
     plt.legend()
-    plt.show()
+    # plt.show()
+    
  
 if __name__=='__main__':
     load_data = load()

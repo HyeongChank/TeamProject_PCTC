@@ -2,6 +2,7 @@ from flask import Flask, render_template, jsonify, request
 
 from DA import randomForest_predict
 from DA import cnn_predict
+from DA import lstm_retrain
 import json
 import requests
 from flask_cors import CORS
@@ -34,6 +35,19 @@ def cnn_prediction():
         return jsonify({'time': time_group, 'predict_group': predict_group, 'actual_group': actual_group})
     else:
         return 'error'
+    
+@app.route('/api/lstm_predict', methods=['GET', 'POST'])
+def lstm_prediction():
+    if request.method == 'POST':
+        new_data = request.get_json()
+        prediction_list = lstm_retrain.operate(new_data)
+        # Convert float32 to native Python float
+        prediction_list = [float(i) for i in prediction_list]
+        
+        return jsonify({'prediction_list': prediction_list})
+    else:
+        return 'error'
+        
 
 if __name__ == '__main__':
     # host, port를 설정하고 여기로 요청을 하게 하면 됨
