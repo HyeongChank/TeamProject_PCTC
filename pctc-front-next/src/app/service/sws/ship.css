@@ -31,3 +31,33 @@
   width: 4rem;
   height: 4rem;
 }
+
+
+.ship-unloading, .ship-loading {
+  appearance: none;
+  width: 8rem;
+  height: 1rem;
+  padding-top: 0.25rem;
+  margin: 0 0.5rem;
+}
+.ship-unloading::-webkit-progress-bar, .ship-loading::-webkit-progress-bar {
+  background:#f0f0f0;
+  width: 8rem;
+  height: 0.5rem;
+  border-radius:10px;
+  box-shadow: inset 3px 3px 10px #ccc;
+}
+.ship-unloading::-webkit-progress-value, .ship-loading::-webkit-progress-value {
+  border-radius:10px;
+  background: #1d5297;
+  background: -webkit-linear-gradient(to right, #93e4f9, #1d5297);
+  background: linear-gradient(to right, #93e4f9, #1d5297);
+
+}
+
+.temptemptemp {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
