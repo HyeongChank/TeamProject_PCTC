@@ -1,7 +1,7 @@
 'use client'
 
-import { createBlocks } from '@/app/service/sws/createBlocks';
 import { useEffect, useRef, useState } from 'react';
+import { createBlocks } from './createBlocks';
 
 declare global {
   interface Window {

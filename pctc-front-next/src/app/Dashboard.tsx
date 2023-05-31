@@ -20,7 +20,7 @@ export default function Dashboard({ apiKey, dataLabel, timeLabel }: any) {
           height={40}
         />
         <ChartComponent
-          title="예측) 반출입 시간대에 따른 대기시간"
+          title="반출입 시간대에 따른 대기시간"
           legend={["반출입 예측 시간", "대기 시간"]}
           data={dataLabel}
           labels={timeLabel ?? []}
