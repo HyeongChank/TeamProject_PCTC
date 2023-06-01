@@ -1,5 +1,7 @@
 ## 실행방법.
 - git에서 다운로드
+- 가상환경 : python -m venv venv
+            .\venv\Scripts\activate
 - 환경구축(requirements 다운로드) : pip install -r requirements.txt
 - FLASK 실행(src 폴더의 app.py 실행) 
 - cnn모델 : http://10.125.121.220:5001/api/cnn_predict
