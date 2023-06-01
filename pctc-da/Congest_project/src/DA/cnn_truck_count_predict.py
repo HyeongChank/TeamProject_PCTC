@@ -86,12 +86,15 @@ def operate():
         #print(common_df['작업+대기시간'].isna().sum())
         #print('common_df',common_df.info())
 
-        # plt.figure(figsize=(10, 6)) # 그래프 사이즈 지정
-        # plt.plot(common_df.index, common_df['작업+대기차량']) # 인덱스를 x축으로, '대기차량'을 y축으로 하는 선 그래프 생성
-        # plt.xlabel('Index') # x축 레이블 지정
-        # plt.ylabel('작업+대기차량') # y축 레이블 지정
-        # plt.title('작업+대기차량 선 그래프') # 그래프 제목 지정
-        # plt.show() # 그래프 출력
+
+        plt.figure(figsize=(10, 6)) # 그래프 사이즈 지정
+        plt.plot(common_df.index, common_df['작업+대기차량']) # 인덱스를 x축으로, '대기차량'을 y축으로 하는 선 그래프 생성
+        plt.xlabel('Index') # x축 레이블 지정
+        plt.ylabel('작업+대기차량') # y축 레이블 지정
+        plt.title('작업+대기차량 선 그래프') # 그래프 제목 지정
+        plt.show() # 그래프 출력
+
+
 
         common_df['풀(F)공(M)'] = common_df['풀(F)공(M)'].astype('int64')
         common_df = common_df.dropna(subset=['작업+대기시간'])
@@ -101,6 +104,7 @@ def operate():
         common_df['작업생성시간'] = common_df['작업생성시간'].astype('int64') // 10**9
         #########################################################################
         # common_df['작업+대기시간'] = common_df['작업+대기시간'].dt.total_seconds() /60.0
+        
         common_df['풀(F)공(M)'] = common_df['풀(F)공(M)'].astype('int64')
         #print('common_df',common_df.info())
         common_df = common_df.dropna(subset=['작업+대기시간'])
@@ -130,10 +134,13 @@ def operate():
 
         # 모델 컴파일
         model.compile(loss='mean_squared_error', optimizer='adam')
+
         # 모델 훈련
-        model.fit(X_train, y_train, epochs=250, batch_size=10, validation_data=(X_test, y_test))
+        model.fit(X_train, y_train, epochs=250, batch_size=32, validation_data=(X_test, y_test))
+
         # 모델 예측
         predictions = model.predict(X_test)
+    
 
         # predictions 배열의 각 요소를 반올림하여 정수로 변환
         predictions_rounded = np.round(predictions).astype(int)
@@ -207,13 +214,14 @@ def operate():
     #     # plt.show()
     #     print(predictions)
     #     print(len(predictions))
-        with open('pctc-da/Congest_project/models/count_model.pkl', 'wb') as f:
+        with open('pctc-da/Congest_project/models/cnn_model_truck_count.pkl', 'wb') as f:
             pickle.dump(model, f)
         print("cnn_model을 저장하였습니다.")
         return time_group, predict_group, actual_group
 
     data = load()
     common_data = preprocessing(data)
+    # make_model(common_data)
     time_group, predict_group, actual_group = make_model(common_data)
     return time_group, predict_group, actual_group
 

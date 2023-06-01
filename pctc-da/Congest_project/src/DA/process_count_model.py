@@ -87,12 +87,12 @@ def operate():
         #print('common_df',common_df.info())
 
 
-        plt.figure(figsize=(10, 6)) # 그래프 사이즈 지정
-        plt.plot(common_df.index, common_df['작업+대기차량']) # 인덱스를 x축으로, '대기차량'을 y축으로 하는 선 그래프 생성
-        plt.xlabel('Index') # x축 레이블 지정
-        plt.ylabel('작업+대기차량') # y축 레이블 지정
-        plt.title('작업+대기차량 선 그래프') # 그래프 제목 지정
-        plt.show() # 그래프 출력
+        # plt.figure(figsize=(10, 6)) # 그래프 사이즈 지정
+        # plt.plot(common_df.index, common_df['작업+대기차량']) # 인덱스를 x축으로, '대기차량'을 y축으로 하는 선 그래프 생성
+        # plt.xlabel('Index') # x축 레이블 지정
+        # plt.ylabel('작업+대기차량') # y축 레이블 지정
+        # plt.title('작업+대기차량 선 그래프') # 그래프 제목 지정
+        # plt.show() # 그래프 출력
 
 
 
@@ -125,7 +125,7 @@ def operate():
         X_train, X_test, y_train, y_test = train_test_split(X_scaled_df, y, test_size=0.2, random_state=42)
 
         # 모델 로드
-        with open('pctc-da/Congest_project/models/count_model.pkl', 'rb') as f:
+        with open('pctc-da/Congest_project/models/cnn_model_truck_count.pkl', 'rb') as f:
             loaded_model = pickle.load(f)
 
         # 로드된 모델을 사용하여 예측 수행
