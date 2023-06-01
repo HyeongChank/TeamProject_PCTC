@@ -46,8 +46,10 @@ def operate():
         
         # 외부트럭에 1 넣기
         common_df['야드트럭(번호)'] = common_df['야드트럭(번호)'].fillna(1)
+        # 구내이적, 임의이적 제외
+        common_df = common_df[~common_df['작업코드'].isin([5, 6])]
 
-        #print('common_df',common_df)
+        print('common_df',common_df)
     
         # 시간 타입 통합
         common_df['작업생성시간'] = pd.to_datetime(common_df['작업생성시간'], format='%Y%m%d%H%M%S')
@@ -56,9 +58,44 @@ def operate():
         #print(common_df['작업생성시간'])
         #print('작업완료시간',common_df['작업완료시간'].dtype)
         common_df['작업+대기시간'] = common_df['작업완료시간'] -common_df['작업생성시간']
+        print(common_df[['작업생성시간','작업완료시간']])
+   
+
+        common_df = common_df.sort_values(by='작업생성시간')
+        common_df = common_df.tail(1000)  # 마지막 300개 행만 선택
+        ## 리셋 안하면 오류남
+        common_df = common_df.reset_index(drop=True)  # 인덱스를 리셋
+        # common_df = common_df[-300:]
+        common_df['작업+대기차량'] = 0
+
+
+        # 행 인덱스를 역순으로 순회
+        for i in range(len(common_df) - 1, -1, -1):
+            # i번째 행의 작업생성시간
+            creation_time = common_df.loc[i, '작업생성시간']
+            # i번째 행보다 앞에 있는 행들 중에서 작업완료시간이 아직 지나지 않은 것들의 수를 계산
+            count = 0
+            for j in range(i - 1, -1, -1):
+                if common_df.loc[j, '작업완료시간'] > creation_time:
+                    count += 1
+            
+            # 계산한 수를 i번째 행의 '대기차량' 열에 저장
+            common_df.loc[i, '작업+대기차량'] = count
+
+        print(common_df[['작업+대기시간', '작업+대기차량']])
         #print(common_df['작업+대기시간'].isna().sum())
         #print('common_df',common_df.info())
-        # common_df = common_df[-300:]
+
+
+        plt.figure(figsize=(10, 6)) # 그래프 사이즈 지정
+        plt.plot(common_df.index, common_df['작업+대기차량']) # 인덱스를 x축으로, '대기차량'을 y축으로 하는 선 그래프 생성
+        plt.xlabel('Index') # x축 레이블 지정
+        plt.ylabel('작업+대기차량') # y축 레이블 지정
+        plt.title('작업+대기차량 선 그래프') # 그래프 제목 지정
+        plt.show() # 그래프 출력
+
+
+
         common_df['풀(F)공(M)'] = common_df['풀(F)공(M)'].astype('int64')
         common_df = common_df.dropna(subset=['작업+대기시간'])
 
@@ -66,7 +103,7 @@ def operate():
         # 작업생성시간을 Unix timestamp로 변환
         common_df['작업생성시간'] = common_df['작업생성시간'].astype('int64') // 10**9
         #########################################################################
-        common_df['작업+대기시간'] = common_df['작업+대기시간'].dt.total_seconds() /60.0
+        # common_df['작업+대기시간'] = common_df['작업+대기시간'].dt.total_seconds() /60.0
         
         common_df['풀(F)공(M)'] = common_df['풀(F)공(M)'].astype('int64')
         #print('common_df',common_df.info())
@@ -78,7 +115,7 @@ def operate():
         # print(common_df[['작업생성시간','작업코드','항차_x','야드트럭(번호)','컨테이너(사이즈 코드)','장비번호', '풀(F)공(M)', '수출/수입']])
         # 데이터 준비
         X = common_df[['작업생성시간','작업코드','항차_x','야드트럭(번호)','컨테이너(사이즈 코드)','장비번호', '풀(F)공(M)', '수출/수입']]
-        y = common_df['작업+대기시간']
+        y = common_df['작업+대기차량']
 
         # 데이터 전처리
         scaler = MinMaxScaler()
@@ -88,7 +125,7 @@ def operate():
         X_train, X_test, y_train, y_test = train_test_split(X_scaled_df, y, test_size=0.2, random_state=42)
 
         # 모델 로드
-        with open('pctc-da/Congest_project/models/model.pkl', 'rb') as f:
+        with open('pctc-da/Congest_project/models/count_model.pkl', 'rb') as f:
             loaded_model = pickle.load(f)
 
         # 로드된 모델을 사용하여 예측 수행

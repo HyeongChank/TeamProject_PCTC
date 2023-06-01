@@ -4,7 +4,10 @@
             .\venv\Scripts\activate
 - 환경구축(requirements 다운로드) : pip install -r requirements.txt
 - FLASK 실행(src 폴더의 app.py 실행) 
-- cnn모델 : http://10.125.121.220:5001/api/cnn_predict
+- cnn모델
+    - 작업+대기시간 예측 : http://10.125.121.220:5001/api/cnn_time_predict
+    - 작업+대기차량 수 예측 : http://10.125.121.220:5001/api/cnn_count_predict
+
 - lstm모델 : http://10.125.121.220:5001/api/lstm_predict
 - randomforest 모델 : http://10.125.121.220:5001/api/r_predict
 
