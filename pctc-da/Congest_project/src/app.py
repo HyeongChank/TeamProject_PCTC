@@ -1,6 +1,6 @@
 from flask import Flask, render_template, jsonify, request
 
-from DA import randomForest_predict
+# from DA import randomForest_predict
 from DA import cnn_predict
 import json
 import requests
@@ -10,20 +10,20 @@ app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
     
-@app.route('/api/r_predict', methods=['GET', 'POST'])
-def r_prediction():
-    if request.method == 'POST':
-        # new_data = request.get_json()
-        # print('json 전달 받은 데이터', new_data)
-        # new_data_df = pd.DataFrame(new_data)
+# @app.route('/api/r_predict', methods=['GET', 'POST'])
+# def r_prediction():
+#     if request.method == 'POST':
+#         # new_data = request.get_json()
+#         # print('json 전달 받은 데이터', new_data)
+#         # new_data_df = pd.DataFrame(new_data)
         
-        grouped_df = randomForest_predict.operate()
-        grouped_df_json = grouped_df.to_json(date_format='iso', orient='records')
-        grouped_df_parsed = json.loads(grouped_df_json)
-        grouped_df_clean = json.dumps(grouped_df_parsed, ensure_ascii=False)
-        return jsonify({'grouped_df_json': grouped_df_clean})
-    else:
-        return 'error'
+#         grouped_df = randomForest_predict.operate()
+#         grouped_df_json = grouped_df.to_json(date_format='iso', orient='records')
+#         grouped_df_parsed = json.loads(grouped_df_json)
+#         grouped_df_clean = json.dumps(grouped_df_parsed, ensure_ascii=False)
+#         return jsonify({'grouped_df_json': grouped_df_clean})
+#     else:
+#         return 'error'
 
 @app.route('/api/cnn_predict', methods=['GET', 'POST'])
 def cnn_prediction():
