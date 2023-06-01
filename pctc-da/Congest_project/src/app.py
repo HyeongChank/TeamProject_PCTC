@@ -1,13 +1,11 @@
 from flask import Flask, render_template, jsonify, request
-<<<<<<< HEAD
 
-# from DA import randomForest_predict
-=======
 from DA import process_model
-from DA import randomForest_predict
->>>>>>> 3981639f0cddab44c464f503bcb2cfb8e4e7e87b
-from DA import cnn_predict
-from DA import lstm_retrain
+# from DA import randomForest_predict
+# from DA import cnn_predict
+# from DA import lstm_retrain
+# from DA import cnn_truck_count_predict
+from DA import process_count_model
 import json
 import requests
 from flask_cors import CORS
@@ -31,7 +29,7 @@ cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 #     else:
 #         return 'error'
 
-@app.route('/api/cnn_predict', methods=['GET', 'POST'])
+@app.route('/api/cnn_time_predict', methods=['GET', 'POST'])
 def cnn_prediction():
     if request.method == 'POST':
         print('******************request in*********************')
@@ -40,19 +38,29 @@ def cnn_prediction():
         return jsonify({'time': time_group, 'predict_group': predict_group, 'actual_group': actual_group})
     else:
         return 'error'
-    
-@app.route('/api/lstm_predict', methods=['GET', 'POST'])
-def lstm_prediction():
-    if request.method == 'POST':
-        new_data = request.get_json()
-        print(new_data)
-        prediction_list = lstm_retrain.operate(new_data)
-        # Convert float32 to native Python float
-        prediction_list = [float(i) for i in prediction_list]
 
-        return jsonify({'predict_group': prediction_list})
+@app.route('/api/cnn_count_predict', methods=['GET', 'POST'])
+def cnn_count_prediction():
+    if request.method == 'POST':
+        print('******************request in*********************')
+        time_group, predict_group, actual_group = process_count_model.operate()
+        
+        return jsonify({'time': time_group, 'predict_group': predict_group, 'actual_group': actual_group})
     else:
         return 'error'
+
+# @app.route('/api/lstm_predict', methods=['GET', 'POST'])
+# def lstm_prediction():
+#     if request.method == 'POST':
+#         new_data = request.get_json()
+#         print(new_data)
+#         prediction_list = lstm_retrain.operate(new_data)
+#         # Convert float32 to native Python float
+#         prediction_list = [float(i) for i in prediction_list]
+
+#         return jsonify({'predict_group': prediction_list})
+#     else:
+#         return 'error'
         
 
 if __name__ == '__main__':
