@@ -5,7 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0dce4aee-1cb6-469d-a22e-167b99ebfdd7" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/pctc-front-next/src/app/user/login/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pctc-front-next/src/app/user/login/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/TeamProject_PCTC.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/TeamProject_PCTC.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pctc-front-next/src/app/components/client/serviceview/CPVS.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pctc-front-next/src/app/components/client/serviceview/CPVS.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,10 +27,11 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "D:/SDH/TeamProject/TeamProject_PCTC",
+    "last_opened_file_path": "D:/pnusw33/TeamProject_PCTC",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -46,6 +49,7 @@
       <option name="presentableId" value="Default" />
       <updated>1684201994922</updated>
       <workItem from="1684201995942" duration="712000" />
+      <workItem from="1685581578802" duration="263000" />
     </task>
     <servers />
   </component>

@@ -99,7 +99,10 @@ export default function ChartComponent({
               title: {
                 display: true,
                 text: title,
-                font: {size: 30}
+                font: {
+                  size: 30,
+                  family: "'Gowun Dodum', 'Helvetica', 'Arial', sans-serif"
+                }
               }
             },
           },

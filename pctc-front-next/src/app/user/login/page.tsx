@@ -1,24 +1,21 @@
 "use client";
-import { createCookie } from "@/function/cookie/CreateCookie";
 import { getCookie } from "@/function/cookie/GetCookie";
-import { goto } from "@/function/goto/Goto";
 import { socialLogin } from "@/function/signin/SocialLogin";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { socialLogined } from "./socialLogined";
 
 export default function Login() {
+  // 로그인 이력(쿠키, 로컬스토리지)이 있는지 확인.
+  // socialLogined();
+
   const [loginSession, setLoginSession] = useState({
     state: getCookie("islogin")?.toString(),
-    name: getCookie("name"),
+    name: decodeURIComponent(getCookie('username') as string),
   });
 
   const userID = useRef<HTMLInputElement>(null);
   const userPW = useRef<HTMLInputElement>(null);
-  const router = useRouter();
 
-  socialLogined();
 
   function submitKey(e: any) {
     if (e.keyCode === 13) {
@@ -40,36 +37,22 @@ export default function Login() {
           password: userPW.current?.value,
         }),
       });
-
-      console.log("daskdjsasldjh");
-      
-      
-      
       
       if (res.status === 200) {
+        const resettingLoginStatus = await import('./resettingLoginStatus');
         const { token, username } = await res.json();
 
-        createCookie({
-          isLogin: true,
-          user: {
-            username: username,
-            token: token,
-          }
-        })
-
-        setLoginSession({
-          state: getCookie("isLogin")?.toString(),
-          name: getCookie("id"),
-        });
-        goto("/");
+        resettingLoginStatus.resettingLoginStatus(username, token);
       }
     }
   }
 
+  /**
+   * 소셜로그인 사이트로 이동
+   * @param provider 
+   */
   const handleSocialLogin = (provider: string) => {
-    // 서버에 전달
     socialLogin(provider);
-    console.log(provider);
   };
 
   useEffect(() => {}, [loginSession]);

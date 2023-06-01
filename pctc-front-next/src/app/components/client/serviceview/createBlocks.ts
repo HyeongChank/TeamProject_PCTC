@@ -10,7 +10,6 @@ import { createBlock, meterTo } from "./createBlock";
  */
 export function createBlocks(
   kakao: any,
-  currentPoint: [number, number],
   flag: any,
   blockSize: [number, number],
   repeat = 1,
@@ -19,7 +18,7 @@ export function createBlocks(
   blockStatus: any // 추후 Input 방식 결정되면 타입 정의해야함.
 ) {
   const rectangles = [];
-  const blockAddress = ["A","B","C","D","E","F","G","H","I","J",];
+  const blockAddress = ["A","B","C","D","E","F","G","H","I","J","K",];
 
   for (let i = 0; i < repeat; i++) {
     const blockName = blockColumn + blockAddress[i];

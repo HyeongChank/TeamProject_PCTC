@@ -15,7 +15,7 @@ export class Time {
     this.hour = point.getHours();
     this.minute = point.getMinutes();
     this.second = point.getSeconds();
-    this.time = point.toTimeString().split(' ')[0];
+    this.time = point.toTimeString().split(" ")[0];
   }
 }
 
@@ -24,15 +24,25 @@ export class Time {
  * @param interval 시간 축의 간격
  * @returns
  */
-export function makeTimeLabel(slice: number, interval: number) : Time[] | undefined {
+export function makeTimeLabel(
+  slice: number,
+  interval: number
+): Time[] | undefined {
   if (slice < 1 || slice % 2 == 0) return;
 
   // 현재 시간 (중심축)
-  const timeLine :Time[] = [];
-  const center = Math.floor(slice / 2) + 1
+  const timeLine: Time[] = [];
+  const center = Math.floor(slice / 2) + 1;
 
-  for(let i = 1; i <= slice; i++){
-    timeLine.push(new Time(new Date(new Date().getTime() + (i - center) * interval * 60000)))
+  for (let i = 1; i <= slice; i++) {
+    timeLine.push(
+      new Time(
+        new Date(
+          Math.floor(new Date().getTime() / 600000) * 600000 +
+            (i - center) * interval * 60000
+        )
+      )
+    );
   }
 
   return timeLine;

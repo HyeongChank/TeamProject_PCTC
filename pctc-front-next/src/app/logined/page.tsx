@@ -1,22 +1,30 @@
 "use client";
 
-// import { getURL } from "next/dist/shared/lib/utils";
-// import { useRouter } from "next/navigation";
-
+import { createCookie } from "@/function/cookie/CreateCookie";
+import { getURL } from "next/dist/shared/lib/utils";
+import { useRouter } from "next/navigation";
 
 export default function LoginedPage() {
-  // if (typeof window !== "undefined") {
-  //   let search = window.location.search;
-  //   let url = getURL();
-  //   let params = new URLSearchParams(search);
-  //   const token: string = url.split("?")[1];
-  //   localStorage.setItem("ACCESS_TOKEN", token);
-  // }
+  console.log("111");
+  if (typeof window !== "undefined") {
+    let url = getURL();
+    const splitURL: string[] = url.split("?");
+    console.log("222");
+
+    if (typeof splitURL[1] !== "undefined") {
+      console.log("333");
+      const token: string = splitURL[1].slice(0, splitURL[1].length - 8);
+      const username: string = splitURL[2];
+      createCookie({
+        isLogin: true,
+        user: {
+          username: username,
+          token: token,
+        },
+      });
+      console.log("444");
+    }
+  }
   // useRouter().push("/");
   return <></>;
 }
-
-
-/**
- * 이 페이지는 /user/login/page.js에 통합되어 삭제 예정
- */

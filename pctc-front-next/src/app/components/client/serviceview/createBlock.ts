@@ -28,8 +28,8 @@ export function createBlock(
   blockStatus: number
 ) {
   const blockSizeConv = conversionMeterTo(blockSize);
-  const gapCol = meterTo(20); // 블럭 사이 간격(미터)
-  const gapRow = meterTo(15); // 블럭 사이 간격(미터)
+  const gapCol = meterTo(-67); // 블럭 사이 간격(미터)
+  const gapRow = meterTo(100); // 블럭 사이 간격(미터)
   let overlay = new kakao.maps.CustomOverlay();
 
   let polygonPath = [
@@ -39,7 +39,8 @@ export function createBlock(
     { Ma: flag.Ma + blockSizeConv.NE[0], La: flag.La + blockSizeConv.NE[1] },
   ];
 
-  let polygonPathRoteted = rotateRectangle(polygonPath, -6.1);
+  // let polygonPathRoteted = rotateRectangle(polygonPath, -5);
+  let polygonPathRoteted = rotateRectangle(polygonPath, -94);
   let polygonPath2 = polygonPathRoteted.map((onePoint) => {
     return new kakao.maps.LatLng(onePoint.Ma, onePoint.La);
   });
@@ -111,7 +112,7 @@ export function createBlock(
     polygon,
     nextPosition: new kakao.maps.LatLng(
       flag.Ma + blockSizeConv.NE[0] + gapCol,
-      flag.La + blockSizeConv.NE[1] - gapRow
+      flag.La + blockSizeConv.NE[1] + gapRow
     ),
   };
 }

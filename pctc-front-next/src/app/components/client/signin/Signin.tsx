@@ -13,7 +13,7 @@ export default function Signin() {
   
   const [loginSession, setLoginSession] = useState({
     state: getCookie('isLogin')?.toString(),
-    name: getCookie('username')
+    name: decodeURIComponent(getCookie('username') as string)
   });
 
 
