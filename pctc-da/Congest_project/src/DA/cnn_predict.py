@@ -87,7 +87,9 @@ def operate():
         # 데이터 분할
         X_train, X_test, y_train, y_test = train_test_split(X_scaled_df, y, test_size=0.2, random_state=42)
 
-        # CNN 모델 구성
+        # CNN 모델 구성 합성곱필터 64개, 각 필터의 길이는 3이며, 활성화 함수로 relu 사용
+        # maxpooling1d 는 합성곱 레이어의 출력 이미지에서 주요값(최대값)만 뽑아내는 역할
+        # 2 는 풀링 창의 크기를 2로 하는 maxpooling1d 레이어 생성
         model = Sequential()
         model.add(Conv1D(64, 3, activation='relu', input_shape=(X_train.shape[1], 1)))
         model.add(MaxPooling1D(2))

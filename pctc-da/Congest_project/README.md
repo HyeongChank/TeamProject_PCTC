@@ -3,6 +3,7 @@
 - 가상환경 : python -m venv venv
             .\venv\Scripts\activate
 - 환경구축(requirements 다운로드) : pip install -r requirements.txt
+    - pip install -U scikit-learn
 - FLASK 실행(src 폴더의 app.py 실행) 
 - cnn모델
     - 작업+대기시간 예측 : http://10.125.121.220:5001/api/cnn_time_predict
@@ -25,4 +26,7 @@
     - 출력값 : 향후 예측 대기시간(요청 개수만큼)
         - json 형태의 예측값 출력
 
+
+pip freeze > requirements.txt
+pip install -U scikit-learn
 

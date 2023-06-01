@@ -98,13 +98,15 @@ def operate():
 
         common_df['풀(F)공(M)'] = common_df['풀(F)공(M)'].astype('int64')
         common_df = common_df.dropna(subset=['작업+대기시간'])
-
+        print(common_df['작업생성시간'])
+        print(common_df['작업생성시간'].dtype) ## timedelta64[ns]
         ######################## x 축에 시간 넣기 위한 작업#######################
         # 작업생성시간을 Unix timestamp로 변환
         common_df['작업생성시간'] = common_df['작업생성시간'].astype('int64') // 10**9
         #########################################################################
         # common_df['작업+대기시간'] = common_df['작업+대기시간'].dt.total_seconds() /60.0
-        
+        print(common_df['작업생성시간'])
+        print(common_df['작업생성시간'].dtype) ## int64
         common_df['풀(F)공(M)'] = common_df['풀(F)공(M)'].astype('int64')
         #print('common_df',common_df.info())
         common_df = common_df.dropna(subset=['작업+대기시간'])
@@ -114,7 +116,7 @@ def operate():
     def make_model(common_df):
         # print(common_df[['작업생성시간','작업코드','항차_x','야드트럭(번호)','컨테이너(사이즈 코드)','장비번호', '풀(F)공(M)', '수출/수입']])
         # 데이터 준비
-        X = common_df[['작업생성시간','작업코드','항차_x','야드트럭(번호)','컨테이너(사이즈 코드)','장비번호', '풀(F)공(M)', '수출/수입']]
+        X = common_df[['작업생성시간','작업코드','컨테이너(사이즈 코드)','장비번호', '풀(F)공(M)', '수출/수입']]
         y = common_df['작업+대기차량']
 
         # 데이터 전처리
@@ -168,7 +170,7 @@ def operate():
         print('평균 절대 오차 (MAE):', mae)
         print('평균 제곱근 오차 (RMSE):', rmse)
         print('평균 제곱 오차 (MSE):', mse)
-        print('결정 계수 (R^2):', r2)
+        # print('결정 계수 (R^2):', r2)
 
         return time_group, predict_group, actual_group
 
