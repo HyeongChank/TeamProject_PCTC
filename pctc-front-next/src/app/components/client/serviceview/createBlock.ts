@@ -27,6 +27,7 @@ export function createBlock(
   blockName: string,
   blockStatus: number
 ) {
+  console.log("blockStatus >> ", blockStatus);
   const blockSizeConv = conversionMeterTo(blockSize);
   const gapCol = meterTo(-67); // 블럭 사이 간격(미터)
   const gapRow = meterTo(100); // 블럭 사이 간격(미터)
@@ -172,11 +173,11 @@ function rotateRectangle(rectangle: Point[], angle: number): Point[] {
  * @returns 적재율의 수준에 따라 매우 혼잡, 혼잡, 보통, 원활 표시. 수준은 임의로 정했음.
  */
 function blockStatusToString(blockStatus: number) {
-  if (blockStatus < 0.4) {
+  if (blockStatus < 200) {
     return { status: "원활", color: "#00BB00" };
-  } else if (blockStatus < 0.65) {
+  } else if (blockStatus < 300) {
     return { status: "보통", color: "#DDDD00" };
-  } else if (blockStatus < 0.85) {
+  } else if (blockStatus < 450) {
     return { status: "혼잡", color: "#FF8800" };
   } else {
     return { status: "매우 혼잡", color: "#CC0000" };

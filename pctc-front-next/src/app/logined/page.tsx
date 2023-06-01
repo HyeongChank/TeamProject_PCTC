@@ -25,6 +25,6 @@ export default function LoginedPage() {
       console.log("444");
     }
   }
-  // useRouter().push("/");
+  useRouter().push("/");
   return <></>;
 }
