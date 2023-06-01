@@ -1,6 +1,11 @@
 from flask import Flask, render_template, jsonify, request
+<<<<<<< HEAD
+
+# from DA import randomForest_predict
+=======
 from DA import process_model
 from DA import randomForest_predict
+from DA import cnn_predict
 from DA import lstm_retrain
 from DA import cnn_truck_count_predict
 from DA import process_count_model

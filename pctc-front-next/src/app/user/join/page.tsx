@@ -1,10 +1,9 @@
 "use client";
-import { createCookie } from "@/function/cookie/CreateCookie";
 import { getCookie } from "@/function/cookie/GetCookie";
-import { goto } from "@/function/goto/Goto";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { socialLogined } from "../login/socialLogined";
 
 export default function Join() {
   const [loginSession, setLoginSession] = useState({
@@ -17,6 +16,9 @@ export default function Join() {
   const userName = useRef<HTMLInputElement>(null);
 
   const router = useRouter();
+
+  socialLogined();
+
 
   function submitKey(e: any) {
     if (e.keyCode === 13) {

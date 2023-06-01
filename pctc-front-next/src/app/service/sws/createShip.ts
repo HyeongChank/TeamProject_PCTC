@@ -1,4 +1,5 @@
 import "./ship.css";
+import { ShipDataValue } from "./makeShipDataValue";
 
 interface Point {
   La: number;
@@ -22,24 +23,28 @@ export function createShip(
   kakao: any,
   flag: [number, number],
   map: any,
-  completeWorking: number,
-  dataValue: {
-    data: {
-      arrival: string;
-      departure: string;
-      loading: string;
-      name: string;
-      order: string;
-      progress: string;
-      unloading: string;
-    };
-  },
+  dataValue: ShipDataValue
 ) {
   let overlayShip = new kakao.maps.CustomOverlay();
   let overlayShip2 = new kakao.maps.CustomOverlay();
+
+  const preUnloading = dataValue?.unloading.split("/");
+  const preLoading = dataValue?.loading.split("/");
+  const unloading = {
+    scheduled: parseInt(preUnloading[0]),
+    completed: parseInt(preUnloading[2]),
+  };
+  const loading = {
+    scheduled: parseInt(preLoading[0]),
+    completed: parseInt(preLoading[2]),
+  };
+  const completedWorking = unloading.completed + loading.completed;
+  const scheduledWorking = unloading.scheduled + loading.scheduled;
+
   let content = `
   <div class="ship-working">
-    <progress class="ship-complete-working" value=${completeWorking} max="100"></progress>
+    <progress class="ship-complete-working" value=${completedWorking} max=${scheduledWorking}></progress>
+    <div style="font-size: 0.6rem">${dataValue?.name}</div>
     <div class="ship">
       <img src="/ship.svg"/>
     </div>
@@ -63,29 +68,29 @@ export function createShip(
 
   function createOverlay2() {
     // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
-    const preUnloading = dataValue.data.unloading.split("/");
-    const preLoading = dataValue.data.loading.split("/");
+    const preUnloading = dataValue.unloading.split("/");
+    const preLoading = dataValue.loading.split("/");
     const unloading = {
       scheduled: preUnloading[0],
       completed: preUnloading[2],
-    }
+    };
     const loading = {
       scheduled: preLoading[0],
       completed: preLoading[2],
-    }
+    };
 
     overlayShip2 = new kakao.maps.CustomOverlay({
       content: `<div class="border rounded px-2 border-gray-800 bg-white flex flex-col justify-center items-center">
-      <div style="width: 100%; text-align: center; border-bottom: solid 1px #000000; font-weight: bold">${dataValue.data.name}</div>
-      <div style="width: 100%; text-align: center;">입항시간 | ${dataValue.data.arrival}</div> 
-      <div style="width: 100%; text-align: center;">출항시간 | ${dataValue.data.departure}</div>
+      <div style="width: 100%; text-align: center; border-bottom: solid 1px #000000; font-weight: bold">${dataValue.name}</div>
+      <div style="width: 100%; text-align: center;">입항시간 | ${dataValue.arrival}</div> 
+      <div style="width: 100%; text-align: center;">출항시간 | ${dataValue.departure}</div>
       <div class="temptemptemp" style="width: 100%; text-align: center;">양하 | <progress class="ship-unloading" value=${unloading.completed} max=${unloading.scheduled}></progress>${unloading.completed} / ${unloading.scheduled}</div>
       <div class="temptemptemp" style="width: 100%; text-align: center;">적하 | <progress class="ship-loading" value=${loading.completed} max=${loading.scheduled}></progress>${loading.completed} / ${loading.scheduled}</div>
                       </div>`,
       clickable: true,
       map: map,
       zIndex: 1,
-      position: new kakao.maps.LatLng(flag[0]+0.003, flag[1]),
+      position: new kakao.maps.LatLng(flag[0] + 0.003, flag[1]),
     });
 
     overlayShip2.setMap(map);

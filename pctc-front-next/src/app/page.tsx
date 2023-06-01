@@ -16,6 +16,7 @@ export default function Home() {
     }
   }
 
+  // if (true) {
   if (cookies().get("isLogin")?.value === "true") {
     return (
       <main id="root-main">
