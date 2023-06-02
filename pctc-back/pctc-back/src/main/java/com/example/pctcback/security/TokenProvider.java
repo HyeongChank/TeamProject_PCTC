@@ -17,6 +17,7 @@ import java.util.Date;
 public class TokenProvider {
     @Value("${my.secretary}")
     private String SECRET_KEY;
+
     public String create(User userEntity) {
         // 기한 - 1일
         Date expiryDate = Date.from(

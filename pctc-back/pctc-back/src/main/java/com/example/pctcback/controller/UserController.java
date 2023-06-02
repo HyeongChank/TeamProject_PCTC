@@ -7,7 +7,9 @@ import com.example.pctcback.security.TokenProvider;
 import com.example.pctcback.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
     @RestController
-    @RequestMapping("/auth")
+    @RequestMapping
     public class UserController {
         @Autowired
         private UserService userService;
@@ -39,7 +41,6 @@ import org.springframework.web.bind.annotation.*;
                         .nickname(Newuser.getNickname())
                         .username(Newuser.getUsername())
                         .build();
-
                 return ResponseEntity.ok().body(registereduser);
             } catch (Exception e) {
                 if ("Username already exists".equals(e.getMessage())) {
@@ -57,8 +58,9 @@ import org.springframework.web.bind.annotation.*;
             );
             if(user !=null){
                 final String token = tokenProvider.create(user);
-//                HttpHeaders headers = new HttpHeaders();
-//                headers.add(HttpHeaders.SET_COOKIE, ResponseCookie.from("token", token).build().toString());
+                HttpHeaders headers = new HttpHeaders();
+                headers.add(HttpHeaders.SET_COOKIE, ResponseCookie.from("token", token).build().toString());
+                headers.add(HttpHeaders.SET_COOKIE2,ResponseCookie.from("isLogin","true").build().toString());
                 UserDTO responseUserDTO = UserDTO.builder()
                         .username(user.getUsername())
                         .id(user.getId())
