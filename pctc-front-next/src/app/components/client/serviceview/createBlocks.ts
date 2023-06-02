@@ -19,7 +19,6 @@ export function createBlocks(
 ) {
   const rectangles = [];
   const blockAddress = ["A","B","C","D","E","F","G","H","I","J","K",];
-console.log("blockStatus >> ", blockStatus);
   for (let i = 0; i < repeat; i++) {
     const blockName = blockColumn + blockAddress[i];
     const anything = createBlock(kakao, flag, blockSize, map, blockName, blockStatus[blockColumn + blockAddress[i]]);

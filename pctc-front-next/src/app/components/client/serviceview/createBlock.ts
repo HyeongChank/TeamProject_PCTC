@@ -27,7 +27,6 @@ export function createBlock(
   blockName: string,
   blockStatus: number
 ) {
-  console.log("blockStatus >> ", blockStatus);
   const blockSizeConv = conversionMeterTo(blockSize);
   const gapCol = meterTo(-67); // 블럭 사이 간격(미터)
   const gapRow = meterTo(100); // 블럭 사이 간격(미터)
