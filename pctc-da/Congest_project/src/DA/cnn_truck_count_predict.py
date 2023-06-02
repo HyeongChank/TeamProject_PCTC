@@ -102,7 +102,7 @@ def operate():
         #########################################################################
         # common_df['작업+대기시간'] = common_df['작업+대기시간'].dt.total_seconds() /60.0
         
-        common_df['풀(F)공(M)'] = common_df['풀(F)공(M)'].astype('int64')
+        # common_df['풀(F)공(M)'] = common_df['풀(F)공(M)'].astype('int64')
         #print('common_df',common_df.info())
         common_df = common_df.dropna(subset=['작업+대기시간'])
         common_df_complete = common_df
@@ -169,12 +169,14 @@ def operate():
         # 작업생성시간 별로 정렬
         X_test_inverse_df.sort_values('작업생성시간', inplace=True)
         X_test_inverse_df= X_test_inverse_df[['작업생성시간', '실제값', '예측값']]
+
         # 결과 출력
         print(X_test_inverse_df)
         
         # 10분 단위 그룹화(작업생성시간 열은 인덱스가 됨)
         grouped_df = X_test_inverse_df.groupby(pd.Grouper(key='작업생성시간', freq='10min')).mean()
-        print(grouped_df)
+        grouped_df = grouped_df.fillna(grouped_df.ffill().add(grouped_df.bfill()).div(2))
+        grouped_df = grouped_df.iloc[1:-1]
         time_group = grouped_df.index.tolist()
         print(time_group)
         predict_group = grouped_df['예측값'].tolist()

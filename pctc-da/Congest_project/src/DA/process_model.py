@@ -117,6 +117,9 @@ def operate():
         
         # 10분 단위 그룹화(작업생성시간 열은 인덱스가 됨)
         grouped_df = X_test_inverse_df.groupby(pd.Grouper(key='작업생성시간', freq='10min')).mean()
+        grouped_df = grouped_df.fillna(grouped_df.ffill().add(grouped_df.bfill()).div(2))
+        grouped_df = grouped_df.fillna(grouped_df.mean())
+        print(grouped_df)
         time_group = grouped_df.index.tolist()
         predict_group = grouped_df['예측값'].tolist()
         actual_group = grouped_df['실제값'].tolist()
