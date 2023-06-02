@@ -1,4 +1,4 @@
-package com.example.pctcback.model;
+package com.example.pctcback.security;
 
 import com.example.pctcback.Role;
 import lombok.Getter;
@@ -9,11 +9,14 @@ import java.util.Collection;
 import java.util.Map;
 @Getter
 public class CustomOath2User extends DefaultOAuth2User {
-    private String email;
+    private final String nickname;
 
-    private Role role;
+    private final String email;
 
-    private String token;
+    private final Role role;
+
+    private final String token;
+
 
     /**
      * Constructs a {@code DefaultOAuth2User} using the provided parameters.
@@ -23,10 +26,11 @@ public class CustomOath2User extends DefaultOAuth2User {
      * @param nameAttributeKey the key used to access the user's &quot;name&quot; from
      *                         {@link #getAttributes()}
      */
-    public CustomOath2User(Collection<? extends GrantedAuthority> authorities, Map<String, Object> attributes, String nameAttributeKey, String email, Role role, String token) {
+    public CustomOath2User(Collection<? extends GrantedAuthority> authorities, Map<String, Object> attributes, String nameAttributeKey, String email, Role role, String token , String nickname) {
         super(authorities, attributes, nameAttributeKey);
         this.email = email;
         this.role = role;
         this.token = token;
+        this.nickname = nickname;
     }
 }
