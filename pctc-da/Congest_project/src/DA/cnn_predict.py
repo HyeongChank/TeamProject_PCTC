@@ -65,19 +65,29 @@ def operate():
         X_scaled_df = pd.DataFrame(X_scaled, columns=X.columns)
         # 데이터 분할
         X_train, X_test, y_train, y_test = train_test_split(X_scaled_df, y, test_size=0.2, random_state=42)
-        # CNN 모델 구성 합성곱필터 64개, 각 필터의 길이는 3이며, 활성화 함수로 relu 사용
-        # maxpooling1d 는 합성곱 레이어의 출력 이미지에서 주요값(최대값)만 뽑아내는 역할
-        # 2 는 풀링 창의 크기를 2로 하는 maxpooling1d 레이어 생성
+
+        X_train_reshaped = X_train.values.reshape((X_train.shape[0], 1, X_train.shape[1]))
+        X_test_reshaped = X_test.values.reshape((X_test.shape[0], 1, X_test.shape[1]))
+
         model = Sequential()
-        model.add(Conv1D(64, 3, activation='relu', input_shape=(X_train.shape[1], 1)))
+        model.add(Conv1D(64, 3, activation='relu', input_shape=(X_train.shape[1], 8)))
         model.add(MaxPooling1D(2))
         model.add(Flatten())
         model.add(Dense(64, activation='relu'))
         model.add(Dense(1))
+        # CNN 모델 구성 합성곱필터 64개, 각 필터의 길이는 3이며, 활성화 함수로 relu 사용
+        # maxpooling1d 는 합성곱 레이어의 출력 이미지에서 주요값(최대값)만 뽑아내는 역할
+        # 2 는 풀링 창의 크기를 2로 하는 maxpooling1d 레이어 생성
+        # model = Sequential()
+        # model.add(Conv1D(64, 3, activation='relu', input_shape=(X_train.shape[1], 8)))
+        # model.add(MaxPooling1D(2))
+        # model.add(Flatten())
+        # model.add(Dense(64, activation='relu'))
+        # model.add(Dense(1))
         # 모델 컴파일
         model.compile(loss='mean_squared_error', optimizer='adam')
         # 모델 훈련
-        model.fit(X_train, y_train, epochs=250, batch_size=10, validation_data=(X_test, y_test))
+        model.fit(X_train, y_train, epochs=10, batch_size=10, validation_data=(X_test, y_test))
         # 모델 예측
         predictions = model.predict(X_test)
         X_test_df = pd.DataFrame(X_test)

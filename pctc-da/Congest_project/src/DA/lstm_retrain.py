@@ -1,8 +1,7 @@
 import pandas as pd
 import xgboost as xgb
 import numpy as np
-import datetime
-import numpy as np
+from sklearn.metrics import r2_score
 import matplotlib.pyplot as plt
 from tensorflow import keras
 from scipy.interpolate import interp1d
@@ -13,7 +12,6 @@ from tensorflow.keras import backend as K
 import pickle
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
-import matplotlib.pyplot as plt
 import seaborn as sns
 from datetime import datetime
 import matplotlib.pyplot as plt
@@ -56,8 +54,8 @@ def operate(predict_c):
         # 시간 타입 통합
         common_df['작업생성시간'] = pd.to_datetime(common_df['작업생성시간'], format='%Y%m%d%H%M%S')
         common_df['작업완료시간'] = pd.to_datetime(common_df['작업완료시간'], format='%Y%m%d%H%M%S')
-        print('작업생성시간',common_df['작업생성시간'].dtype)
-        print('작업완료시간',common_df['작업완료시간'].dtype)
+        #print('작업생성시간',common_df['작업생성시간'].dtype)
+        #print('작업완료시간',common_df['작업완료시간'].dtype)
         common_df['작업+대기시간'] = common_df['작업완료시간'] -common_df['작업생성시간']
         # common_df = common_df[-200:]
 
@@ -67,87 +65,135 @@ def operate(predict_c):
         common_df = common_df.dropna(subset=['작업+대기시간'])
         common_df_complete = common_df
         common_df_complete.sort_values('작업생성시간', inplace=True)
-        print(common_df_complete[['작업생성시간','작업+대기시간']])
+        #print(common_df_complete[['작업생성시간','작업+대기시간']])
 
 
-        common_df_complete = common_df_complete[['작업생성시간','작업+대기시간']]
-        print(common_df_complete)
-        grouped_df = common_df_complete.groupby(pd.Grouper(key='작업생성시간', freq='10min')).mean()
-        print(grouped_df)
-        df_list = grouped_df['작업+대기시간'].tolist()
-        print(df_list)
-
-        return df_list
+        common_df_complete = common_df_complete[['작업생성시간','작업+대기시간', '작업코드', '장비번호', '풀(F)공(M)', '수출/수입']]
+        common_df_complete['입차시간'] = common_df_complete['작업생성시간']
+        #print(common_df_complete['작업+대기시간'])
+        grouped_df = common_df_complete.groupby(pd.Grouper(key='작업생성시간', freq='5min')).mean()
+        #print('grouped_df',grouped_df['작업+대기시간'])
+        grouped_df['입차시간'] = grouped_df['입차시간'].astype('int64') // 10**9
+        return grouped_df
 
 
     # 데이터 전처리
-    def make_model(data):
+    def make_model(grouped_df):
         nonlocal prediction_list
         nonlocal count
         nonlocal p_count
         lookback = 30
         X, y = [], []
-        for i in range(len(data) - lookback):
-            X.append(data[i:i+lookback])
-            y.append(data[i+lookback])
+        X_data = grouped_df[['입차시간','작업+대기시간', '작업코드', '풀(F)공(M)','수출/수입','장비번호']]
+        y_data = grouped_df['작업+대기시간'].values
+        print('y_data', y_data)
+        for i in range(grouped_df.shape[0] - lookback):
+            X.append(X_data[i:i+lookback])
+            y.append(y_data[i+lookback])
         X = np.array(X)
         y = np.array(y)
+##############
+        # # 데이터 분할
+        # scaler = MinMaxScaler()
+        # X_reshaped = X.reshape(-1, X.shape[-1])
+        # X_scaled = scaler.fit_transform(X_reshaped)
+        # #X_scaled_df = pd.DataFrame(X_scaled, columns=X.columns)
+        # X_scaled_reshaped = X_scaled.reshape(X.shape)
+        # X_train, X_test, y_train, y_test = train_test_split(X_scaled_reshaped, y, test_size=0.2, random_state=42)
+#############
 
+        
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
         previous_data = data[-30:]
         # LSTM 모델 구성
         model = keras.Sequential()
-        model.add(keras.layers.LSTM(units=64, input_shape=(lookback, 1)))
+        model.add(keras.layers.LSTM(units=64, input_shape=(lookback, 6)))
         model.add(keras.layers.Dense(units=1))
         # 모델 컴파일
         model.compile(loss='mean_squared_error', optimizer='adam')
         # 모델 학습
-        model.fit(X, y, epochs=20, batch_size=32)
-        # 이후 30개의 대기시간 예측
-        last_sequence = data[-lookback:]  # 최근 30개의 대기시간 데이터를 가져옵니다.
+        model.fit(X_train, y_train, epochs=30, batch_size=32)
+        
+        # 모델 예측
+        y_pred = model.predict(X_test)
+        print('y_pred',y_pred)
+        # 결정계수 계산
+        r2 = r2_score(y_test, y_pred)
+        print('R-squared: ', r2)
+
+        last_sequence = X_data[-lookback:]  # 최근 30개의 대기시간 데이터를 가져옵니다.
         predicted_data = []
-        for _ in range(1):
+        for _ in range(10):
             sequence = np.array(last_sequence)
-            sequence = np.reshape(sequence, (1, lookback, 1))
+            sequence = np.reshape(sequence, (1, lookback, 6))
             prediction = model.predict(sequence)[0][0]
             predicted_data.append(prediction)
-            last_sequence.append(prediction)
-            # last_sequence = last_sequence[1:]
-        prediction_list.append(predicted_data[0])
+            new_row = np.array([prediction]*6).reshape(1, -1)
+            last_sequence = np.concatenate((last_sequence[1:], new_row), axis=0)
+        
         print(predicted_data)
 
-        # 그래프로 예측 결과와 실제 데이터를 표현합니다.
-        x_axis_previous = range(len(data)-30, len(data))  # 기존 데이터 중 마지막 30개의 인덱스
-        x_axis_predicted = range(len(data), len(data) + 1)  # 이후 1개의 예측 데이터
-        # 개수 오류 계속 났었음. ( x_axis_previous = previous_data 맞춰줘야 하고, x_axis_predicted = predicted_data 맞춰줘야 함)
-        plt.plot(x_axis_previous, previous_data, label='Previous Data')
-        plt.scatter(x_axis_predicted, predicted_data, label='Predicted Data', color='red')
-        plt.xlabel('Time')
-        plt.ylabel('Waiting Time')
-        plt.ylim(0, 100)  # y축 범위 설정
-        plt.legend()
-        graph_image_filename = "test_graph.png"
-        plt.savefig(graph_image_filename)
-        print(f"그래프를 '{graph_image_filename}' 파일로 저장했습니다.")
-        # plt.show()
 
-        # 예측값을 data에 추가
-        for predict_value in predicted_data:
-            data.append(predict_value)
-        print('count', count)
+
+       # scaled된 값 복원
+        X_test_inverse = scaler.inverse_transform(X_test)
+        X_test_inverse_df = pd.DataFrame(X_test_inverse, columns=X.columns)
+        print(X_test_inverse_df)
+
+
+
+        #unix timestamp로 변환되어 있었던 작업생성시간 값 datetime으로 변환
+        X_test_inverse_df['입차시간'] = pd.to_datetime(X_test_inverse_df['입차시간'], unit='s')
+        print(X_test_inverse_df['입차시간'])
+        X_test_inverse_df['실제값'] = y_test
+        X_test_inverse_df['예측값'] = y_pred
+        # 작업생성시간 별로 정렬
+        X_test_inverse_df.sort_values('입차시간', inplace=True)
+        X_test_inverse_df= X_test_inverse_df[['입차시간', '실제값', '예측값']]
+
+        r2 = r2_score(y_test, y_pred)
+
+        print('결정 계수 (R^2):', r2)
+        # 모델 저장
+        with open('pctc-da/Congest_project/models/lstm_model.pkl', 'wb') as f:
+            pickle.dump(model, f)
+
+
+
+        # # 그래프로 예측 결과와 실제 데이터를 표현합니다.
+        # x_axis_previous = range(grouped_df.shape[0]-30, grouped_df.shape[0])  # 기존 데이터 중 마지막 30개의 인덱스
+        # x_axis_predicted = range(grouped_df.shape[0], grouped_df.shape[0] + 1)  # 이후 1개의 예측 데이터
+        # # 개수 오류 계속 났었음. ( x_axis_previous = previous_data 맞춰줘야 하고, x_axis_predicted = predicted_data 맞춰줘야 함)
+        # plt.plot(x_axis_previous, previous_data, label='Previous Data')
+        # plt.scatter(x_axis_predicted, predicted_data, label='Predicted Data', color='red')
+        # plt.xlabel('Time')
+        # plt.ylabel('Waiting Time')
+        # plt.ylim(0, 100)  # y축 범위 설정
+        # plt.legend()
+        # graph_image_filename = "test_graph.png"
+        # plt.savefig(graph_image_filename)
+        # print(f"그래프를 '{graph_image_filename}' 파일로 저장했습니다.")
+        # # plt.show()
+
+        # # 예측값을 data에 추가
+        # for predict_value in predicted_data:
+        #     new_row = pd.DataFrame([[predict_value]*6], columns=X_data.columns)
+        #     X_data = X_data.append(new_row, ignore_index=True)
+        # print('count', count)
         
-        # 입력 횟수만큼 예측값 학습한 값 출력(새로운 값 추가하여 재학습)
-        if count < p_count:
-            count+=1
-            make_model(data)
+        # # 입력 횟수만큼 예측값 학습한 값 출력(새로운 값 추가하여 재학습)
+        # if count < p_count:
+        #     count+=1
+        #     make_model(X_data)
         
-        return prediction_list
+        return predicted_data
     
     data = load()
-    data_list = preprocessing(data)
-    prediction_list = make_model(data_list)    
-    print(prediction_list)
+    grouped_df = preprocessing(data)
+    predicted_data = make_model(grouped_df)    
 
-    return prediction_list
+
+    return predicted_data
 
 if __name__=='__main__':
     predict_c= 3
