@@ -1,7 +1,6 @@
 package com.example.pctcback.security;
 
 import com.example.pctcback.AuthProvider;
-import com.example.pctcback.model.CustomOath2User;
 import com.example.pctcback.model.User;
 import com.example.pctcback.persistence.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +45,7 @@ public class CustomOAth2UserService implements OAuth2UserService<OAuth2UserReque
         OAuthAttributes extractAttributes = OAuthAttributes.of(authProvider, userNameAttributeName,attributes);
         User createdUser = getUser(extractAttributes, authProvider);
         String token = tokenProvider.create(createdUser);
+        String nickname =createdUser.getNickname();
 
 //         CustomOAuth2 USer 가져오기
         return  new CustomOath2User(
@@ -54,7 +54,9 @@ public class CustomOAth2UserService implements OAuth2UserService<OAuth2UserReque
                 extractAttributes.getNameAttributeKey(),
                 createdUser.getEmail(),
                 createdUser.getRole(),
-                token);
+                token,
+                createdUser.getNickname()
+                );
 
     }
 

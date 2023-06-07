@@ -4,7 +4,7 @@ export function socialLogin(provider: any) {
 
     const hostname = window && window.location && window.location.hostname;
 
-    if (hostname === "localhost") {
+    if (hostname === "localhost" || hostname === "10.125.121.207") {
       backendHost = "http://10.125.121.222:8080/";
     }
 

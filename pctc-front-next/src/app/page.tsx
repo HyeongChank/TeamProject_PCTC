@@ -1,6 +1,7 @@
 import { makeTimeLabel, Time } from "@/function/util/makeTimeLabel";
 import { cookies } from "next/dist/client/components/headers";
 import Dashboard from "./Dashboard";
+import Intro from "./Intro";
 
 export default function Home() {
   let flag = true;
@@ -22,12 +23,13 @@ export default function Home() {
       <main id="root-main">
         <Dashboard
           apiKey={process.env.KAKAO_MAP_API_KEY}
-          dataLabel={dataLabel}
           timeLabel={timeLabel}
         />
       </main>
     );
   } else {
-    return <main id="root-main"></main>;
+    return <main id="root-main">
+      <Intro />
+    </main>;
   }
 }
