@@ -27,7 +27,7 @@ import org.springframework.security.web.SecurityFilterChain;
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                     .authorizeHttpRequests(authorize -> authorize
-                            .requestMatchers("/","/auth/**","/oauth2/**","/login/**").permitAll()
+                            .requestMatchers("/**","/port","/auth/**","/oauth2/**","/user/**","/favicon.ico").permitAll()
                             .shouldFilterAllDispatcherTypes(false)
                             .anyRequest()
                             .authenticated())
