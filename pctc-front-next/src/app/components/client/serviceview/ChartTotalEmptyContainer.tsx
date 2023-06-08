@@ -2,17 +2,9 @@
 
 import { Chart } from "chart.js/auto";
 import { useEffect, useRef } from "react";
+import { ChartComponentProps } from "./ChartComponent"
 
-export interface ChartComponentProps {
-  title: string,
-  legend: [string, string]
-  data: number[];
-  labels: string[];
-  width?: number;
-  height?: number;
-}
-
-export default function ChartComponent({
+export default function ChartTotalEmptyContainer({
   title,
   legend,
   data,
@@ -22,43 +14,19 @@ export default function ChartComponent({
 }: ChartComponentProps) {
   const chartRef = useRef<HTMLCanvasElement>(null);
 
-  const data1: any[] = [];
-  const data2: any[] = [];
-
-  for (let i = 1; i <= 21; i++) {
-    if (i < 11) {
-      data1.push(Math.random());
-      data2.push(null);
-    } else if (i === 11) {
-      data1.push(Math.random());
-      data2.push(data1[i-1]);
-    } else {
-      data1.push(null);
-      data2.push(Math.random());
-    }
-  }
-
   useEffect(() => {
     if (chartRef.current) {
       const ctx = chartRef.current.getContext("2d");
       if (ctx) {
         new Chart(ctx, {
-          type: "line",
+          type: "bar",
           data: {
             labels: labels,
             datasets: [
               {
-                label: "실제 값",
-                data: data1,
+                label: "선사별 공컨테이너",
+                data: data,
                 backgroundColor: "rgba(75, 192, 192, 0.6)",
-                fill: true,
-              },
-              {
-                label: "예측 값",
-                data: data2,
-                backgroundColor: "rgba(255, 180, 150, 0.3)",
-                fill: true,
-                borderDash: [5, 5],
               },
             ],
           },
@@ -123,6 +91,8 @@ export default function ChartComponent({
           padding: 1rem;
           display: flex;
           justify-content: center;
+          width: ${width}vw;
+          height: ${height}vh;
         }
         canvas {
           width: ${width}vw;

@@ -1,14 +1,4 @@
-export interface Point {
-  La: number;
-  Ma: number;
-}
-
-export type ConversionBlockSize = {
-  NW: [number, number];
-  SW: [number, number];
-  SE: [number, number];
-  NE: [number, number];
-};
+import { Point, ConversionBlockSize } from "./createBlock";
 
 /**
  *
@@ -16,7 +6,7 @@ export type ConversionBlockSize = {
  * @param flag 블록들이 표시될 기준 위경도
  * @returns
  */
-export function createBlock(
+export function createBlockYardStatus(
   kakao: any,
   flag: {
     La: number;
