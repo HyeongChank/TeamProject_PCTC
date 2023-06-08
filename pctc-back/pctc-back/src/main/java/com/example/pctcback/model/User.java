@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 
-@SuppressWarnings("ALL")
 @Data
 @Entity
 @Builder

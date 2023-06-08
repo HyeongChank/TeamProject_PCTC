@@ -2,7 +2,6 @@
 
 import { createCookie } from "@/function/cookie/CreateCookie";
 import { getURL } from "next/dist/shared/lib/utils";
-import { useRouter } from "next/navigation";
 
 export default function LoginedPage() {
   console.log("111");
@@ -24,7 +23,9 @@ export default function LoginedPage() {
       });
       console.log("444");
     }
+
+    window.location.href = "/";
   }
-  // useRouter().push("/");
+
   return <></>;
 }
