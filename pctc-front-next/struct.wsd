@@ -1,0 +1,112 @@
+@startuml 구조
+
+class app.app {
+  +page.tsx
+  +layout.tsx
+  +error.tsx
+  +loading.tsx
+  +not-found.tsx
+  +Dashboard.tsx <Component>
+  +TitleMenu.tsx <Component>
+  +TitleView.tsx <Component>
+
+}
+
+
+class app.api
+class app.components
+class app.logined {
+  +page.tsx
+}
+class app.service {
+  +layout.tsx
+}
+class app.user
+
+class api.data.getkey.route
+class api.user {
+  +validLogin()
+}
+class api.user.join.route
+class api.user.login.route
+class components.client {
+  +ChartComponent.tsx <Component>
+  +CPVS.tsx <Component>
+  +Signin.tsx <Component>
+  +createBlock()
+  +createBlocks()
+}
+
+class components.server {
+  +Table.tsx <Component>
+  +ValidJoin.tsx <Component>
+  +ValidUser.tsx <Component>
+}
+
+class user.join {
+  +page.tsx <Component>
+}
+class user.login {
+  +page.tsx <Component>
+  +resettingLoginStatus()
+  +socialLogined()
+}
+
+class service.empty {
+  +page.tsx
+}
+class service.shipinout {
+  +page.tsx
+}
+class service.sws {
+  +page.tsx
+  +createShip()
+  +createShips()
+  +makeShipDataValue(): 배 정보
+}
+class service.yard {
+  +page.tsx
+}
+
+
+
+app.app -down-> app.api
+app.app -down-> app.components
+app.app -down-> app.logined
+app.app -down-> app.service
+app.app -down-> app.user
+
+app.api -down-> api.data.getkey.route
+app.api -down-> api.user
+app.api -down-> api.user.join.route
+app.api -down-> api.user.login.route
+
+app.components -down-> components.client
+app.components -down-> components.server
+
+app.service -down-> service.empty
+app.service -down-> service.shipinout
+app.service -down-> service.sws
+app.service -down-> service.yard
+
+app.user -down-> user.join
+app.user -down-> user.login
+
+
+class function.cookie {
+  +createCookie()
+  +deleteCookie()
+  +getCookie()
+}
+class function.goto {
+  +goto()
+}
+class function.signin {
+  +socialLogin()
+}
+class function.util {
+  +Time: Type
+  +makeTimeLabel()
+}
+
+@enduml
