@@ -13,6 +13,8 @@ export default function Login() {
     name: decodeURIComponent(getCookie('username') as string),
   });
 
+  
+
   const userID = useRef<HTMLInputElement>(null);
   const userPW = useRef<HTMLInputElement>(null);
 

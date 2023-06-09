@@ -3,7 +3,7 @@
 import { Chart } from "chart.js/auto";
 import { useEffect, useRef } from "react";
 
-interface ChartComponentProps {
+export interface ChartComponentProps {
   title: string,
   legend: [string, string]
   data: number[];
