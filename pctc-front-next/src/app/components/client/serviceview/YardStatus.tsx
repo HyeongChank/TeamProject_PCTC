@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { createBlocks as createBlocksYardStatus } from "./createBlocks";
+import { createBlocksYardStatus } from "./createBlocksYardStatus";
 
 declare global {
   interface Window {
@@ -32,7 +32,6 @@ const YardStatus = ({ apiKey }: any) => {
       if (typeof window !== "undefined") {
         const { kakao } = window;
         const standardPoint = [35.104516, 129.095172];
-        console.log("kakao >> ", kakao);
         kakao.maps.load(() => {
           const mapContainer = document.getElementById("container");
           const mapOption = {
