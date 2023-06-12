@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react";
 export interface ChartComponentProps {
   title: string,
   legend: [string, string]
-  data: number[];
+  data: [string, number][]
   labels: string[];
   width?: number;
   height?: number;
@@ -22,19 +22,19 @@ export default function ChartComponent({
 }: ChartComponentProps) {
   const chartRef = useRef<HTMLCanvasElement>(null);
 
-  const data1: any[] = [];
+  const data1: any[] = []; // null 할당 해야하므로 number로 바꾸지 말것.
   const data2: any[] = [];
 
   for (let i = 1; i <= 21; i++) {
     if (i < 11) {
-      data1.push(Math.random());
+      data1.push(data?.[i-1]?.[1]);
       data2.push(null);
     } else if (i === 11) {
-      data1.push(Math.random());
+      data1.push(data?.[i-1]?.[1]);
       data2.push(data1[i-1]);
     } else {
       data1.push(null);
-      data2.push(Math.random());
+      data2.push(data?.[i-1]?.[1]);
     }
   }
 
@@ -109,7 +109,7 @@ export default function ChartComponent({
         });
       }
     }
-  }, [data, labels]);
+  }, [labels]);
 
   return (
     <>
