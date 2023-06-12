@@ -37,7 +37,7 @@ def operate(predict_c):
         # data, container_before_data, container_after_data merge
         ycb_common_values = data['컨테이너번호'].isin(cad_data['컨테이너번호']).sum() # 6103개
         yard_con_common_df = pd.merge(data, cad_data, on='컨테이너번호')
-
+        yard_con_common_df = yard_con_common_df[:-300]
 
         return yard_con_common_df
 
@@ -59,21 +59,21 @@ def operate(predict_c):
         #print('작업완료시간',common_df['작업완료시간'].dtype)
         common_df['작업+대기시간'] = common_df['작업완료시간'] -common_df['작업생성시간']
 
-        # 작업+대기차량 구하기
-        common_df['작업+대기차량'] = 0
-        # 행 인덱스를 역순으로 순회
-        for i in range(len(common_df) - 1, -1, -1):
-            # i번째 행의 작업생성시간
-            creation_time = common_df.loc[i, '작업생성시간']
-            # i번째 행보다 앞에 있는 행들 중에서 작업완료시간이 아직 지나지 않은 것들의 수를 계산
-            count = 0
-            for j in range(i - 1, -1, -1):
-                if common_df.loc[j, '작업완료시간'] > creation_time:
-                    count += 1
+        # # 작업+대기차량 구하기
+        # common_df['작업+대기차량'] = 0
+        # # 행 인덱스를 역순으로 순회
+        # for i in range(len(common_df) - 1, -1, -1):
+        #     # i번째 행의 작업생성시간
+        #     creation_time = common_df.loc[i, '작업생성시간']
+        #     # i번째 행보다 앞에 있는 행들 중에서 작업완료시간이 아직 지나지 않은 것들의 수를 계산
+        #     count = 0
+        #     for j in range(i - 1, -1, -1):
+        #         if common_df.loc[j, '작업완료시간'] > creation_time:
+        #             count += 1
             
-            # 계산한 수를 i번째 행의 '대기차량' 열에 저장
-            common_df.loc[i, '작업+대기차량'] = count
-        print(common_df[['작업+대기시간', '작업+대기차량']])
+        #     # 계산한 수를 i번째 행의 '대기차량' 열에 저장
+        #     common_df.loc[i, '작업+대기차량'] = count
+        # print(common_df[['작업+대기시간', '작업+대기차량']])
 
         # 작업+대기시간을 초로 변환
         common_df['작업+대기시간'] = common_df['작업+대기시간'].dt.total_seconds() /60.0
@@ -84,7 +84,7 @@ def operate(predict_c):
         #print(common_df_complete[['작업생성시간','작업+대기시간']])
 
 
-        common_df_complete = common_df_complete[['작업생성시간','작업+대기시간', '작업코드', '장비번호', '풀(F)공(M)', '수출/수입', '컨테이너(사이즈 코드)', '작업+대기차량']]
+        common_df_complete = common_df_complete[['작업생성시간','작업+대기시간', '작업코드', '장비번호', '풀(F)공(M)', '수출/수입', '컨테이너(사이즈 코드)']]
         common_df_complete['입차시간'] = common_df_complete['작업생성시간']
         #print(common_df_complete['작업+대기시간'])
         grouped_df = common_df_complete.groupby(pd.Grouper(key='작업생성시간', freq='5min')).mean()
@@ -98,7 +98,7 @@ def operate(predict_c):
         lookback = 30
 
         # 데이터 전처리
-        X_data = grouped_df[['입차시간', '작업+대기시간', '작업코드', '풀(F)공(M)','수출/수입','장비번호', '컨테이너(사이즈 코드)', '작업+대기차량']]
+        X_data = grouped_df[['입차시간', '작업+대기시간', '작업코드', '풀(F)공(M)','수출/수입','장비번호', '컨테이너(사이즈 코드)']]
         y_data = grouped_df['작업+대기시간'].values
 
         X, y = [], []
@@ -210,13 +210,13 @@ def operate(predict_c):
         plt.ylabel('Values')
         plt.title('Scatter plot of actual and predicted values over time')
         plt.legend()
-        graph_image_filename = "lstm_graph2.png"
+        graph_image_filename = "lstm_graph3.png"
         plt.savefig(graph_image_filename)
         print(f"그래프를 '{graph_image_filename}' 파일로 저장했습니다.")
         plt.show()
   
         # 모델 저장
-        with open('pctc-da/Congest_project/models/lstm_model2.pkl', 'wb') as f:
+        with open('pctc-da/Congest_project/models/lstm_model3.pkl', 'wb') as f:
             pickle.dump(model, f)
         return X_test_time_original, y_train_pred, y_test_pred
         

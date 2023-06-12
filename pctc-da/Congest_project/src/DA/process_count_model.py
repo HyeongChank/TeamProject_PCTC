@@ -132,9 +132,6 @@ def operate():
 
         # 로드된 모델을 사용하여 예측 수행
         predictions = loaded_model.predict(X_test)
-        print(predictions)
-
-
         X_test_df = pd.DataFrame(X_test)
         X_test_with_predictions = X_test_df.copy()
         X_test_with_predictions['예측값'] = predictions
@@ -160,11 +157,13 @@ def operate():
         grouped_df = grouped_df.fillna(grouped_df.ffill().add(grouped_df.bfill()).div(2))
         grouped_df = grouped_df.fillna(grouped_df.mean())
         
-        print(grouped_df)
+
         print(grouped_df.isna().sum())
         time_group = grouped_df.index.tolist()
         predict_group = grouped_df['예측값'].tolist()
         actual_group = grouped_df['실제값'].tolist()
+        print(predict_group)
+        print(actual_group)
 
        #평가 지표 계산
         mae = mean_absolute_error(y_test, predictions)

@@ -31,6 +31,7 @@ def operate():
         ycb_common_values = data['컨테이너번호'].isin(cad_data['컨테이너번호']).sum() # 5181개
         data_cad_data_common_df = pd.merge(data, cad_data, on='컨테이너번호')
         data_cbd_data_common_df = pd.merge(data, cbd_data, on='컨테이너번호')
+
         return data_cbd_data_common_df
 
     def preprocessing(common_df):
@@ -68,22 +69,22 @@ def operate():
 
         X_train_reshaped = X_train.values.reshape((X_train.shape[0], 1, X_train.shape[1]))
         X_test_reshaped = X_test.values.reshape((X_test.shape[0], 1, X_test.shape[1]))
-
-        model = Sequential()
-        model.add(Conv1D(64, 3, activation='relu', input_shape=(X_train.shape[1], 8)))
-        model.add(MaxPooling1D(2))
-        model.add(Flatten())
-        model.add(Dense(64, activation='relu'))
-        model.add(Dense(1))
-        # CNN 모델 구성 합성곱필터 64개, 각 필터의 길이는 3이며, 활성화 함수로 relu 사용
-        # maxpooling1d 는 합성곱 레이어의 출력 이미지에서 주요값(최대값)만 뽑아내는 역할
-        # 2 는 풀링 창의 크기를 2로 하는 maxpooling1d 레이어 생성
+        print(X_train.shape())
         # model = Sequential()
         # model.add(Conv1D(64, 3, activation='relu', input_shape=(X_train.shape[1], 8)))
         # model.add(MaxPooling1D(2))
         # model.add(Flatten())
         # model.add(Dense(64, activation='relu'))
         # model.add(Dense(1))
+        # CNN 모델 구성 합성곱필터 64개, 각 필터의 길이는 3이며, 활성화 함수로 relu 사용
+        # maxpooling1d 는 합성곱 레이어의 출력 이미지에서 주요값(최대값)만 뽑아내는 역할
+        # 2 는 풀링 창의 크기를 2로 하는 maxpooling1d 레이어 생성
+        model = Sequential()
+        model.add(Conv1D(64, 3, activation='relu', input_shape=(X_train.shape[1], 8)))
+        model.add(MaxPooling1D(2))
+        model.add(Flatten())
+        model.add(Dense(64, activation='relu'))
+        model.add(Dense(1))
         # 모델 컴파일
         model.compile(loss='mean_squared_error', optimizer='adam')
         # 모델 훈련

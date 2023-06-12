@@ -77,14 +77,12 @@ def operate():
             for j in range(i - 1, -1, -1):
                 if common_df.loc[j, '작업완료시간'] > creation_time:
                     count += 1
-            
             # 계산한 수를 i번째 행의 '대기차량' 열에 저장
             common_df.loc[i, '작업+대기차량'] = count
 
         print(common_df[['작업+대기시간', '작업+대기차량']])
         #print(common_df['작업+대기시간'].isna().sum())
         #print('common_df',common_df.info())
-
 
         # plt.figure(figsize=(10, 6)) # 그래프 사이즈 지정
         # plt.plot(common_df.index, common_df['작업+대기차량']) # 인덱스를 x축으로, '대기차량'을 y축으로 하는 선 그래프 생성
@@ -160,18 +158,16 @@ def operate():
         X_test_inverse = scaler.inverse_transform(X_test)
         # 열 이름 원래대로
         X_test_inverse_df = pd.DataFrame(X_test_inverse, columns=X.columns)
-        print(X_test_inverse_df)
+
         #unix timestamp로 변환되어 있었던 작업생성시간 값 datetime으로 변환
         X_test_inverse_df['작업생성시간'] = pd.to_datetime(X_test_inverse_df['작업생성시간'], unit='s')
-        print(X_test_inverse_df['작업생성시간'])
+
         X_test_inverse_df['실제값'] = y_test
         X_test_inverse_df['예측값'] = predictions
         # 작업생성시간 별로 정렬
         X_test_inverse_df.sort_values('작업생성시간', inplace=True)
         X_test_inverse_df= X_test_inverse_df[['작업생성시간', '실제값', '예측값']]
 
-        # 결과 출력
-        print(X_test_inverse_df)
         
         # 10분 단위 그룹화(작업생성시간 열은 인덱스가 됨)
         grouped_df = X_test_inverse_df.groupby(pd.Grouper(key='작업생성시간', freq='10min')).mean()
