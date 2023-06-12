@@ -1,4 +1,3 @@
-import { Providers } from "@/redux/provider";
 import { Gowun_Dodum } from "next/font/google";
 import "./globals.css";
 import TitleView from "./TitleView";
@@ -19,10 +18,8 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={gowun_dodum.className}>
-        <Providers>
           <TitleView />
           {children}
-        </Providers>
       </body>
     </html>
   );

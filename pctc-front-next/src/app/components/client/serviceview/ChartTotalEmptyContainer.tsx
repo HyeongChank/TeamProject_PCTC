@@ -512,7 +512,7 @@ let dummyData: any;
 export default function ChartTotalEmptyContainer({
   title,
   legend,
-  data,
+  // data,
   labels,
   width,
   height,
@@ -520,6 +520,8 @@ export default function ChartTotalEmptyContainer({
   const chartRef = useRef<HTMLCanvasElement>(null);
   const detailChartRef = useRef<HTMLCanvasElement>(null);
   const [selectShipCompany, setSelectShipCompany] = useState<string>("");
+
+  const data = [33, 81, 34, 171, 118, 2, 52, 338, 12, 35, 7, 12, 112, 73, 65, 42,354, 11, 7, 27, 13, 11, 30, 11, 44,]
 
   useEffect(() => {
     dummyData = JSON.parse(JSON.stringify(dummyRawData));
