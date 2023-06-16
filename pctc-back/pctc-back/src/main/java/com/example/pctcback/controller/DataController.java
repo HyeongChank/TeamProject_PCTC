@@ -1,26 +1,15 @@
 package com.example.pctcback.controller;
 
-import com.example.pctcback.dto.DataDTO;
 import com.example.pctcback.model.Prediction;
 import com.example.pctcback.model.PredictionTruck;
 import com.example.pctcback.persistence.PredictionRepository;
 import com.example.pctcback.persistence.PredictionTruckRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @RestController
@@ -34,7 +23,6 @@ public class DataController {
     public ResponseEntity<?> PredictTime() throws Exception {
         LocalDateTime currentTime = LocalDateTime.now();
         currentTime= currentTime.withYear(2023).withMonth(3).withDayOfMonth(23);
-//        LocalDateTime currentTime = LocalDateTime.of(2023,03,23,12,33,41);
         System.out.println("Current date and time: " + currentTime);
         LocalDateTime currentMinusTen = currentTime.minusMinutes(10);
         Prediction prediction =predictionRepository.findClosestToCurrentTime(currentTime,currentMinusTen);

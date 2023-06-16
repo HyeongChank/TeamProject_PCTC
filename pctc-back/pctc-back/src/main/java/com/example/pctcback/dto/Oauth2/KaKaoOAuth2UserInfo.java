@@ -19,7 +19,7 @@ public class KaKaoOAuth2UserInfo extends OAuth2UserInfo{
         Map<String, Object> account = (Map<String, Object>) attributes.get("kakao_account");
         Map<String, Object> profile = (Map<String, Object>) account.get("profile");
 
-        if(account == null || profile == null){
+        if(profile == null){
             log.info("Can't get a Account or Profile, check Configuration.");
             return  null;
         }
@@ -35,6 +35,6 @@ public class KaKaoOAuth2UserInfo extends OAuth2UserInfo{
             log.info("Can't get a Account or Profile, check Configuration.");
             return  null;
         }
-        return email;    }
+        return email;}
     }
 
