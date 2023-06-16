@@ -4,6 +4,15 @@ import { Chart } from "chart.js/auto";
 import { useEffect, useRef, useState } from "react";
 import { ChartComponentProps } from "./ChartComponent";
 
+export interface EmptyContainerChartComponentProps {
+  title: string,
+  legend: [string, string]
+  data: number[]
+  labels: string[];
+  width?: number;
+  height?: number;
+}
+
 const dummyRawData = {
   CKL: {
     PL20: 0,
@@ -516,7 +525,7 @@ export default function ChartTotalEmptyContainer({
   labels,
   width,
   height,
-}: ChartComponentProps) {
+}: EmptyContainerChartComponentProps) {
   const chartRef = useRef<HTMLCanvasElement>(null);
   const detailChartRef = useRef<HTMLCanvasElement>(null);
   const [selectShipCompany, setSelectShipCompany] = useState<string>("");
