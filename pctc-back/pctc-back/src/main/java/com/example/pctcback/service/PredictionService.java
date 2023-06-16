@@ -90,7 +90,6 @@ public class PredictionService {
         predictionTruckRepository.deleteAll();
         predictionTruckRepository.saveAll(predictions2);
 
-
     }
 
 

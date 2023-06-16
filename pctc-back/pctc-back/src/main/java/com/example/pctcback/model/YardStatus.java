@@ -16,18 +16,18 @@ public class YardStatus {
     private Long id;
     private String conNumber;
     private String shipCode;
-    private int Conyear;
+    private Integer Conyear;
     private String voyage;
     private String operatorCode;
     private char fullOrEmpty; // 'F' for full, 'M' for empty
     private String containerSizeCode;
     private String containerTypeCode;
-    private double weightInTons;
+    private Double weightInTons;
     private String destinationCode;
     private String block;
-    private int bay_x;
-    private int row_y;
-    private int tier_z;
+    private Integer bay_x;
+    private Integer row_y;
+    private Integer tier_z;
     private boolean isExport; // true for export, false for import
 
 }
