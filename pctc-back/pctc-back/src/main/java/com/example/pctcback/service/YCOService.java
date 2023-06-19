@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -44,6 +45,7 @@ public class YCOService {
 
 
 @Transactional
+@GetMapping("/1")
     public void myMethod(String csvFilePath) {
         try (BufferedReader br = new BufferedReader(new FileReader(csvFilePath))) {
             String line;
@@ -59,7 +61,7 @@ public class YCOService {
                 YardStatus yardStatus = YardStatus.builder()
                         .conNumber(values[0])
                         .shipCode(values[1])
-                        .Conyear(Integer.parseInt(values[2]))
+                        .Conyear(parseInt(values[2]))
                         .voyage(values[3])
                         .operatorCode(values[4])
                         .fullOrEmpty(values[5].charAt(0))
@@ -68,12 +70,12 @@ public class YCOService {
                         .weightInTons(Double.parseDouble(values[8]))
                         .destinationCode(values[9])
                         .block(values[10])
-                        .bay_x(Integer.parseInt(values[11]))
-                        .row_y(Integer.parseInt(values[12]))
-                        .tier_z(Integer.parseInt(values[13]))
+                        .bay_x(parseInt(values[11]))
+                        .row_y(parseInt(values[12]))
+                        .tier_z(parseInt(values[13]))
                         .isExport("M".equals(values[14]))
                         .build();
-//                yardStatusRepository.save(yardStatus);
+                yardStatusRepository.save(yardStatus);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -81,7 +83,8 @@ public class YCOService {
     }
 
 
-
+@Transactional
+@GetMapping("/2")
     public void CreateYCO() {
 
         try (BufferedReader br = new BufferedReader(new FileReader(csvFilePath1))) {
