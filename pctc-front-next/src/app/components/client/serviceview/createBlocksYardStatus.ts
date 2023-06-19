@@ -18,11 +18,22 @@ export function createBlocksYardStatus(
   blockStatus: any // 추후 Input 방식 결정되면 타입 정의해야함.
 ) {
   const rectangles = [];
-  const blockAddress = ["A","B","C","D","E","F","G","H","I","J","K",];
+  const blockAddress = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"];
   for (let i = 0; i < repeat; i++) {
     const blockName = blockColumn + blockAddress[i];
-    const anything = createBlockYardStatus(kakao, flag, blockSize, map, blockName, blockStatus[blockColumn + blockAddress[i]]);
-    anything.polygon.setMap(map);
-    flag = anything.nextPosition;
+    console.log(blockName);
+    console.log(blockStatus[blockName]);
+    if (typeof blockStatus[blockName] !== "undefined") {
+      const anything = createBlockYardStatus(
+        kakao,
+        flag,
+        blockSize,
+        map,
+        blockName,
+        blockStatus[blockName]
+      );
+      anything.polygon.setMap(map);
+      flag = anything.nextPosition;
+    }
   }
 }

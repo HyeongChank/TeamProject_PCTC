@@ -53,23 +53,35 @@ export function createBlockYardStatus(
     };
     let content = `<div class="border rounded px-2 border-gray-800 bg-white flex flex-col justify-center items-center">
     <div style="width: 100%; text-align: center; border-bottom: solid 1px #000000; font-weight: bold">${blockName}</div>
-    <div style="width: 12vw; display: flex; flex-direction: row; justify-content: space-evenly;"><span style="display: inline-flex; width: 5vw; justify-content: center;">현재</span><span> | </span><span>${
+    <div style="width: 12vw; display: flex; flex-direction: row; justify-content: space-evenly;"><span style="display: inline-flex; width: 5vw; justify-content: center;">현재</span><span style="border-left: 1px #282828 solid"> </span><span>${
       blockStatus[0]
-    }</span></div>
-    <div style="width: 12vw; display: flex; flex-direction: row; justify-content: space-evenly;"><span style="display: inline-flex; width: 5vw; justify-content: center;">1시간 후</span><span> | </span><span>${
+    }</span><span style="border-left: 1px #282828 solid"> </span><span>${
       blockStatus[1]
     }</span></div>
-    <div style="width: 12vw; display: flex; flex-direction: row; justify-content: space-evenly;"><span style="display: inline-flex; width: 5vw; justify-content: center;">2시간 후</span><span> | </span><span>${
+    <div style="width: 12vw; display: flex; flex-direction: row; justify-content: space-evenly;"><span style="display: inline-flex; width: 5vw; justify-content: center;">1시간 후</span><span style="border-left: 1px #282828 solid"> </span><span>${
       blockStatus[2]
-    }</span></div>
-    <div style="width: 12vw; display: flex; flex-direction: row; justify-content: space-evenly;"><span style="display: inline-flex; width: 5vw; justify-content: center;">3시간 후</span><span> | </span><span>${
+    }</span><span style="border-left: 1px #282828 solid"> </span><span>${
       blockStatus[3]
     }</span></div>
-    <div style="width: 12vw; display: flex; flex-direction: row; justify-content: space-evenly;"><span style="display: inline-flex; width: 5vw; justify-content: center;">4시간 후</span><span> | </span><span>${
+    <div style="width: 12vw; display: flex; flex-direction: row; justify-content: space-evenly;"><span style="display: inline-flex; width: 5vw; justify-content: center;">2시간 후</span><span style="border-left: 1px #282828 solid"> </span><span>${
       blockStatus[4]
-    }</span></div>
-    <div style="width: 12vw; display: flex; flex-direction: row; justify-content: space-evenly;"><span style="display: inline-flex; width: 5vw; justify-content: center;">5시간 후</span><span> | </span><span>${
+    }</span><span style="border-left: 1px #282828 solid"> </span><span>${
       blockStatus[5]
+    }</span></div>
+    <div style="width: 12vw; display: flex; flex-direction: row; justify-content: space-evenly;"><span style="display: inline-flex; width: 5vw; justify-content: center;">3시간 후</span><span style="border-left: 1px #282828 solid"> </span><span>${
+      blockStatus[6]
+    }</span><span style="border-left: 1px #282828 solid"> </span><span>${
+      blockStatus[7]
+    }</span></div>
+    <div style="width: 12vw; display: flex; flex-direction: row; justify-content: space-evenly;"><span style="display: inline-flex; width: 5vw; justify-content: center;">4시간 후</span><span style="border-left: 1px #282828 solid"> </span><span>${
+      blockStatus[8]
+    }</span><span style="border-left: 1px #282828 solid"> </span><span>${
+      blockStatus[9]
+    }</span></div>
+    <div style="width: 12vw; display: flex; flex-direction: row; justify-content: space-evenly;"><span style="display: inline-flex; width: 5vw; justify-content: center;">5시간 후</span><span style="border-left: 1px #282828 solid"> </span><span>${
+      blockStatus[10]
+    }</span><span style="border-left: 1px #282828 solid"> </span><span>${
+      blockStatus[11]
     }</span></div>
                     </div>`;
 
@@ -89,14 +101,14 @@ export function createBlockYardStatus(
 
   // 다각형에 마우스오버 이벤트가 발생했을 때 변경할 채우기 옵션입니다
   let mouseoverOption = {
-    fillColor: "#55F", // 채우기 색깔입니다
+    fillColor: "#000", // 채우기 색깔입니다
     fillOpacity: 1, // 채우기 불투명도 입니다
   };
 
   // 다각형에 마우스아웃 이벤트가 발생했을 때 변경할 채우기 옵션입니다
   let mouseoutOption = {
     fillColor: "#000000", // 채우기 색깔입니다
-    fillOpacity: 0.8, // 채우기 불투명도 입니다
+    fillOpacity: 0.5, // 채우기 불투명도 입니다
   };
 
   // 다각형에 마우스오버 이벤트를 등록합니다

@@ -135,7 +135,7 @@ const CPVS = ({ apiKey }: any) => {
               standardPoint[1] - 0.0005
             ),
             [75, 25],
-            9,
+            8,
             map,
             1,
             blockStatus
@@ -159,7 +159,7 @@ const CPVS = ({ apiKey }: any) => {
               standardPoint[1] - 0.0004
             ),
             [75, 25],
-            11,
+            10,
             map,
             3,
             blockStatus
@@ -171,7 +171,7 @@ const CPVS = ({ apiKey }: any) => {
               standardPoint[1] - 0.00035
             ),
             [75, 25],
-            9,
+            7,
             map,
             4,
             blockStatus
@@ -183,7 +183,7 @@ const CPVS = ({ apiKey }: any) => {
               standardPoint[1] - 0.0003
             ),
             [75, 25],
-            8,
+            6,
             map,
             5,
             blockStatus
@@ -207,7 +207,7 @@ const CPVS = ({ apiKey }: any) => {
               standardPoint[1] - 0.0002
             ),
             [75, 25],
-            7,
+            4,
             map,
             7,
             blockStatus
@@ -219,21 +219,9 @@ const CPVS = ({ apiKey }: any) => {
               standardPoint[1] - 0.00015
             ),
             [75, 25],
-            7,
+            4,
             map,
             8,
-            blockStatus
-          );
-          createBlocks(
-            kakao,
-            new kakao.maps.LatLng(
-              standardPoint[0] + 0.0005,
-              standardPoint[1] - 0.0001
-            ),
-            [75, 25],
-            7,
-            map,
-            9,
             blockStatus
           );
         });
