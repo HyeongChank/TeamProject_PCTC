@@ -1,11 +1,12 @@
 import ChartTotalEmptyContainer from "@/app/components/client/serviceview/ChartTotalEmptyContainer";
 import { cookies } from "next/dist/client/components/headers";
+import styles from "./styles.module.css";
 
 export default function CTS() {
   if (cookies().get("isLogin")?.value === "true") {
     return (
       <>
-        <main>
+        <main className={styles.section}>
           <ChartTotalEmptyContainer
             title="선사별 공컨테이너 수"
             legend={["선사", "공컨테이너 수"]}

@@ -3,5 +3,5 @@ export default function BASLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <div className="flex justify-center mt-10">{children}</div>;
+  return <div>{children}</div>;
 }

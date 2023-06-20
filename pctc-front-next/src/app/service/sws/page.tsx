@@ -96,13 +96,31 @@ export default function SWS() {
 
   return (
     <>
-      <div className="sws">
+      <section>
         <div id="container" ref={container} />
-      </div>
+      </section>
       <style jsx>{`
-        .sws {
+        section {
+          width: 100vw;
+          height: 882px;
           display: flex;
-          z-index: 0;
+          justify-content: center;
+          align-items: center;
+          
+          font-size: 2rem;
+          background-image: url("/bgimage.jpg");
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+        }
+        section::after {
+          content: "";
+          position: absolute;
+          top: 96px;
+          left: 0px;
+          width: 100vw;
+          height: 100px;
+          background: linear-gradient(to bottom, #FFFFFF, #FFFFFF00);
         }
         #container {
           width: 80vw;
@@ -110,6 +128,7 @@ export default function SWS() {
           border: solid 1px #282828;
           border-radius: 10px;
           z-index: 0;
+          box-shadow: 1px 1px 3px 0px #14141480;
         }
       `}</style>
     </>

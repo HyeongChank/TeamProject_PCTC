@@ -123,6 +123,7 @@ export default function ChartComponent({
           padding: 1rem;
           display: flex;
           justify-content: center;
+          background-color: white;
         }
         canvas {
           width: ${width}vw;
