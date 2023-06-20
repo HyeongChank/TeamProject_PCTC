@@ -729,6 +729,8 @@ export default function ChartTotalEmptyContainer({
           width: ${width}vw;
           height: ${height}vh;
           margin-bottom: 1vh;
+          background-color: white;
+          box-shadow: 1px 1px 3px 0px #14141480;
         }
         canvas {
           width: ${width}vw;

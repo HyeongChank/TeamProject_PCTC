@@ -12,14 +12,9 @@ declare global {
 const YardStatus = ({ apiKey }: any) => {
   const [serviceViewOpacity, setServiceViewOpacity] = useState(1);
   const [blockStatus, setBlockStatus] = useState({});
-  const [script, setScript] = useState<HTMLScriptElement>(document.createElement("script"));
   const container = useRef(null);
 
   useEffect(() => {
-    script.src =
-      "//dapi.kakao.com/v2/maps/sdk.js?appkey=" + apiKey + "&autoload=false";
-    document.head.appendChild(script);
-
     (async function () {
       const res = await fetch("http://10.125.121.222:8080/api/SCO");
       const result = await res.json();
@@ -30,6 +25,11 @@ const YardStatus = ({ apiKey }: any) => {
   }, []);
 
   useEffect(() => {
+    const script = document.createElement("script");
+    script.src =
+      "//dapi.kakao.com/v2/maps/sdk.js?appkey=" + apiKey + "&autoload=false";
+    document.head.appendChild(script);
+
     script.onload = () => {
       if (typeof window !== "undefined") {
         const { kakao } = window;
@@ -164,7 +164,6 @@ const YardStatus = ({ apiKey }: any) => {
         height 80vh;
         display: flex;
         justify-content: center;
-        box-shadow: 1px 1px 3px 0px #14141480;
       }
       #container {
         width: 80vw;

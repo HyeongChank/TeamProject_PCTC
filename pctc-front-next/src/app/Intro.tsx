@@ -1,23 +1,33 @@
-'use client';
+"use client";
 
-export default function Intro () {
+export default function Intro() {
   return (
     <>
       <section>
-        Intro (업데이트 예정)
+        
       </section>
       <style jsx>{`
         section {
-          width: 80vw;
-          height: 80vh;
-          border: solid 1px #282828;
-          border-radius: 1rem;
+          width: 100vw;
+          height: 882px;
           display: flex;
           justify-content: center;
           align-items: center;
-          margin-top: 2rem;
-          margin-right: 1rem;
+          
           font-size: 2rem;
+          background-image: url("/bgimage.jpg");
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+        }
+        section::after {
+          content: "";
+          position: absolute;
+          top: 96px;
+          left: 0px;
+          width: 100vw;
+          height: 100px;
+          background: linear-gradient(to bottom, #FFFFFF, #FFFFFF00);
         }
       `}</style>
     </>

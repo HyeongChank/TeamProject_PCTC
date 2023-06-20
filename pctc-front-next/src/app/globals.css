@@ -29,3 +29,18 @@ body {
   align-items: center;
   justify-content: space-between;
 }
+
+.fc-toolbar-chunk, .fc-toolbar-title {
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: red;
+}
+
+.fc-header-toolbar, .fc-toolbar  {
+  display: none !important;
+}
+
+.fc-datagrid-cell-frame, .fc-datagrid-cell-cushion, .fc-scrollgrid-sync-inner, .fc-timeline-slot-frame {
+  display: flex !important;
+  justify-content: center !important;
+}
