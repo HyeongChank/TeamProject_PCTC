@@ -37,6 +37,7 @@ public class OAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
             log.info("Social Login Success. ");
             log.info("token {}", token);
             response.sendRedirect("http://10.125.121.207:3000/logined?"+token+"nickname?"+encodedNickname);
+//            response.sendRedirect("http://localhost:3000/logined?"+token+"nickname?"+encodedNickname);
         }
     }
 }

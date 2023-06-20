@@ -1,9 +1,52 @@
-import Table from "@/app/components/server/Table";
+import ChartTotalEmptyContainer from "@/app/components/client/serviceview/ChartTotalEmptyContainer";
+import { cookies } from "next/dist/client/components/headers";
 
 export default function CTS() {
-  return (
-    <>
-      <Table tableTitle={"공컨테이너 현황(신선대)"} tableHead={["번호","터미널","모선코드","수출입구분","호출부호","입항횟수","시설코드","TEU","입출항일자","선사/대리점"]} />
-    </>
-  );
+  if (cookies().get("isLogin")?.value === "true") {
+    return (
+      <>
+        <main>
+          <ChartTotalEmptyContainer
+            title="선사별 공컨테이너 수"
+            legend={["선사", "공컨테이너 수"]}
+            data={[
+              33, 81, 34, 171, 118, 2, 52, 338, 12, 35, 7, 12, 112, 73, 65, 42,
+              354, 11, 7, 27, 13, 11, 30, 11, 44,
+            ]}
+            labels={[
+              "CKL",
+              "CMA",
+              "COS",
+              "DJS",
+              "DYS",
+              "GFL",
+              "HAD",
+              "HAS",
+              "HHS",
+              "HMM",
+              "HSL",
+              "HXD",
+              "KMD",
+              "NSL",
+              "PCL",
+              "POL",
+              "SKR",
+              "SML",
+              "TCL",
+              "TJM",
+              "TMS",
+              "TSL",
+              "WSL",
+              "YML",
+              "ZIM",
+            ]}
+            width={50}
+            height={40}
+          />
+        </main>
+      </>
+    );
+  } else {
+    return <></>;
+  }
 }

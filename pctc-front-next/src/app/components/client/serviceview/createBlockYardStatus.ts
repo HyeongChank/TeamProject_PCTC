@@ -1,14 +1,4 @@
-export interface Point {
-  La: number;
-  Ma: number;
-}
-
-export type ConversionBlockSize = {
-  NW: [number, number];
-  SW: [number, number];
-  SE: [number, number];
-  NE: [number, number];
-};
+import { Point, ConversionBlockSize } from "./createBlock";
 
 /**
  *
@@ -16,7 +6,7 @@ export type ConversionBlockSize = {
  * @param flag 블록들이 표시될 기준 위경도
  * @returns
  */
-export function createBlock(
+export function createBlockYardStatus(
   kakao: any,
   flag: {
     La: number;
@@ -25,7 +15,7 @@ export function createBlock(
   blockSize: [number, number],
   map: any,
   blockName: string,
-  blockStatus: number
+  blockStatus: number[]
 ) {
   const blockSizeConv = conversionMeterTo(blockSize);
   const gapCol = meterTo(-67); // 블럭 사이 간격(미터)
@@ -52,20 +42,47 @@ export function createBlock(
     strokeColor: "#000000", // 선의 색깔입니다
     strokeOpacity: 0, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
     strokeStyle: "solid", // 선의 스타일입니다
-    fillColor: blockStatusToString(blockStatus).color, // 채우기 색깔입니다
+    fillColor: "#000000", // 채우기 색깔입니다
     fillOpacity: 0.5, // 채우기 불투명도 입니다
   });
   
   function createOverlay() {
     const center = {
       La: (polygonPathRoteted[0].La + polygonPathRoteted[2].La) / 2,
-      Ma: (polygonPathRoteted[0].Ma + polygonPathRoteted[2].Ma) / 2 + 0.001,
+      Ma: (polygonPathRoteted[0].Ma + polygonPathRoteted[2].Ma) / 2 + 0.002,
     };
     let content = `<div class="border rounded px-2 border-gray-800 bg-white flex flex-col justify-center items-center">
     <div style="width: 100%; text-align: center; border-bottom: solid 1px #000000; font-weight: bold">${blockName}</div>
-    <div style="width: 100%; text-align: center;">블록 적재도 | ${
-      blockStatusToString(blockStatus).status
-    }</div> 
+    <div style="width: 12vw; display: flex; flex-direction: row; justify-content: space-evenly;"><span style="display: inline-flex; width: 5vw; justify-content: center;">현재</span><span style="border-left: 1px #282828 solid"> </span><span>${
+      blockStatus[0]
+    }</span><span style="border-left: 1px #282828 solid"> </span><span>${
+      blockStatus[1]
+    }</span></div>
+    <div style="width: 12vw; display: flex; flex-direction: row; justify-content: space-evenly;"><span style="display: inline-flex; width: 5vw; justify-content: center;">1시간 후</span><span style="border-left: 1px #282828 solid"> </span><span>${
+      blockStatus[2]
+    }</span><span style="border-left: 1px #282828 solid"> </span><span>${
+      blockStatus[3]
+    }</span></div>
+    <div style="width: 12vw; display: flex; flex-direction: row; justify-content: space-evenly;"><span style="display: inline-flex; width: 5vw; justify-content: center;">2시간 후</span><span style="border-left: 1px #282828 solid"> </span><span>${
+      blockStatus[4]
+    }</span><span style="border-left: 1px #282828 solid"> </span><span>${
+      blockStatus[5]
+    }</span></div>
+    <div style="width: 12vw; display: flex; flex-direction: row; justify-content: space-evenly;"><span style="display: inline-flex; width: 5vw; justify-content: center;">3시간 후</span><span style="border-left: 1px #282828 solid"> </span><span>${
+      blockStatus[6]
+    }</span><span style="border-left: 1px #282828 solid"> </span><span>${
+      blockStatus[7]
+    }</span></div>
+    <div style="width: 12vw; display: flex; flex-direction: row; justify-content: space-evenly;"><span style="display: inline-flex; width: 5vw; justify-content: center;">4시간 후</span><span style="border-left: 1px #282828 solid"> </span><span>${
+      blockStatus[8]
+    }</span><span style="border-left: 1px #282828 solid"> </span><span>${
+      blockStatus[9]
+    }</span></div>
+    <div style="width: 12vw; display: flex; flex-direction: row; justify-content: space-evenly;"><span style="display: inline-flex; width: 5vw; justify-content: center;">5시간 후</span><span style="border-left: 1px #282828 solid"> </span><span>${
+      blockStatus[10]
+    }</span><span style="border-left: 1px #282828 solid"> </span><span>${
+      blockStatus[11]
+    }</span></div>
                     </div>`;
 
     // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
@@ -84,14 +101,14 @@ export function createBlock(
 
   // 다각형에 마우스오버 이벤트가 발생했을 때 변경할 채우기 옵션입니다
   let mouseoverOption = {
-    fillColor: "#55F", // 채우기 색깔입니다
+    fillColor: "#000", // 채우기 색깔입니다
     fillOpacity: 1, // 채우기 불투명도 입니다
   };
 
   // 다각형에 마우스아웃 이벤트가 발생했을 때 변경할 채우기 옵션입니다
   let mouseoutOption = {
-    fillColor: blockStatusToString(blockStatus).color, // 채우기 색깔입니다
-    fillOpacity: 0.8, // 채우기 불투명도 입니다
+    fillColor: "#000000", // 채우기 색깔입니다
+    fillOpacity: 0.5, // 채우기 불투명도 입니다
   };
 
   // 다각형에 마우스오버 이벤트를 등록합니다

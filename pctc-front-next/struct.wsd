@@ -1,0 +1,189 @@
+@startuml 구조
+
+package external {
+
+  class external.socialLogin {}
+
+}
+
+package src {
+  package app {
+    class app.page {}
+    class app.layout {}
+    class app.error {}
+    class app.loading {}
+    class app.not-found {}
+    class Dashboard <<Component>>
+    class TitleMenu <<Component>>
+    class TitleView <<Component>>
+
+    package api {
+
+      package data {
+
+        package @apikey {
+
+          package getkey {
+
+            class getkey.route <<Function>>
+
+          }
+
+        }
+
+      }
+
+      package user {
+
+        package @sign {
+
+          package join {
+
+            class join.route <<Function>>
+
+          }
+
+          package login {
+
+            class login.route <<Function>>
+
+          }
+
+        }
+
+      }
+
+    }
+
+    package components {
+
+      package client {
+
+        package serviceview {
+
+          class ChartComponent <<Component>>
+          class ChartTotalEmptyContainer <<Component>>
+          class CPVS <<Component>>
+          class YardStatus <<Component>>
+          annotation createBlock <<Function>>
+          annotation createBlocks <<Function>>
+          annotation createBlocksYardStatus <<Function>>
+          annotation createBlockYardStatus <<Function>>
+
+        }
+
+        package signin {
+          class Signin <<Component>>
+        }
+
+      }
+
+      package server {
+
+        class Table <<Component>>
+        class validJoin <<Function>>
+        class validUser <<Function>>
+
+      }
+
+    }
+
+    package logined {
+
+      class logined.page {}
+
+    }
+
+    package service {
+
+      package service.empty {
+        class service.empty.page
+      }
+      package service.shipinout {
+        class service.shipinout.page
+      }
+      package service.sws {
+        class service.sws.page
+        annotation service.sws.createShip <<Function>>
+        annotation service.sws.createShips <<Function>>
+        annotation service.sws.makeShipDataValue <<Function>>
+        class service.sws.ship <<css>>        
+      }
+      package service.yard {
+        class service.yard.page
+      }
+
+      class service.layout
+    }
+
+    package user {
+
+      package user.join {
+
+        class user.join.page
+
+      }
+
+      package user.login {
+
+        class user.login.page {}
+
+        annotation resettingLoginStatus <<Function>> {
+          +resettingLoginStatus()
+        }
+
+        annotation socialLogined <<Function>> {
+          +socialLogined()
+        }
+
+      }
+
+    }
+
+  }
+  package function {
+    class function.cookie {
+      +createCookie()
+      +deleteCookie()
+      +getCookie()
+    }
+    class function.goto {
+      +goto()
+    }
+    class function.signin {
+      +socialLogin()
+    }
+    class function.util {
+      +Time: Type
+      +makeTimeLabel()
+    }
+  }
+}
+
+TitleView --> app.page: routing to main
+TitleView -d-> service.empty.page: routing
+TitleView -d-> service.yard.page: routing
+TitleView -d-> service.shipinout.page: routing
+TitleView -d-> service.sws.page: routing
+
+user.join.page -u-> external.socialLogin: To Backend Server
+user.login.page -u-> external.socialLogin: To Backend Server
+external.socialLogin --> logined.page: 로그인 후 임시페이지로 리다이렉트
+logined.page --> app.page: redirect("/")
+
+service.sws.createShip .u.> service.sws.page
+service.sws.createShips .u.> service.sws.page
+service.sws.makeShipDataValue .u.> service.sws.page
+service.sws.ship .u.> service.sws.page
+
+ChartComponent ..> Dashboard
+ChartTotalEmptyContainer ..> service.yard.page
+CPVS ..> Dashboard
+YardStatus ..> service.yard.page
+createBlock ..> createBlocks
+createBlocks ..> CPVS
+createBlocksYardStatus ..> YardStatus
+createBlockYardStatus ..> createBlocksYardStatus
+
+
+@enduml

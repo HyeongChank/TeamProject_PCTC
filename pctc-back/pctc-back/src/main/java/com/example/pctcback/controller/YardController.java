@@ -1,6 +1,6 @@
 package com.example.pctcback.controller;
 
-import com.example.pctcback.service.ScrapyService;
+import com.example.pctcback.service.CrawlingService;
 import com.example.pctcback.service.YCOService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ public class YardController {
     @Autowired
     YCOService ycoservice;
     @Autowired
-    ScrapyService scrapyService;
+    CrawlingService crawlingService;
     @GetMapping("/yard")
     public ResponseEntity<?> YardStatusController(){
         String blockstr =  "1A,1B,1C,1D,1E,1F,1G,1H,1I," +
@@ -43,7 +43,7 @@ public class YardController {
     public ResponseEntity<?> PortStatusController(){
 
 
-        return ResponseEntity.ok().body(scrapyService.PortStatus());
+        return ResponseEntity.ok().body(crawlingService.PortStatus());
 
     }
 
