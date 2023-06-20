@@ -28,25 +28,25 @@ def operate(predict_c):
     prediction_list = []
     def load():
         # new_data 들어오면 기존 df 에 합치면 됨
-        data = pd.read_excel("data/TSB_data.xlsx", sheet_name='야드크레이인_작업이력')
+        data = pd.read_excel("data/TSB_data2.xlsx", sheet_name='야드크레이인_작업이력2_추가데이터')
         # scd_data = pd.read_excel("data/TSB_data.xlsx", sheet_name='반출입_예정컨테이너')
         # cbd_data = pd.read_excel("data/TSB_data.xlsx", sheet_name='장치장_전')
-        cad_data = pd.read_excel("data/TSB_data.xlsx", sheet_name='장치장_후')
+        # cad_data = pd.read_excel("data/TSB_data.xlsx", sheet_name='장치장_후')
         # quay_work_data = pd.read_excel("data/TSB_data.xlsx", sheet_name='본선크레인_작업이력')
 
         # # data, container_before_data, container_after_data merge
-        ycb_common_values = data['컨테이너번호'].isin(cad_data['컨테이너번호']).sum() # 6103개
-        yard_con_common_df = pd.merge(data, cad_data, on='컨테이너번호')
+        #ycb_common_values = data['컨테이너번호'].isin(cad_data['컨테이너번호']).sum() # 6103개
+        #yard_con_common_df = pd.merge(data, cad_data, on='컨테이너번호')
         # # yard_con_common_df = yard_con_common_df[:-300]
 
-        return yard_con_common_df
+        return data
 
     def preprocessing(common_df):
         # 데이터 전처리
         common_df['작업코드'] = common_df['작업코드'].replace({'VU': 1, 'VL': 2, 'GR': 3, 'GD': 4, 'TM':5,'TS':6})
         common_df['장비번호'] = common_df['장비번호'].replace({'Y02': 1})
         common_df['풀(F)공(M)'] = common_df['풀(F)공(M)'].replace({'M':1, 'F':2})
-        common_df['수출/수입'] = common_df['수출/수입'].replace({'X':1,'I':2,'S':3,'M':4})
+        #common_df['수출/수입'] = common_df['수출/수입'].replace({'X':1,'I':2,'S':3,'M':4})
         
         # 외부트럭에 1 넣기
         common_df['야드트럭(번호)'] = common_df['야드트럭(번호)'].fillna(1)
@@ -55,8 +55,6 @@ def operate(predict_c):
         # 시간 타입 통합
         common_df['작업생성시간'] = pd.to_datetime(common_df['작업생성시간'], format='%Y%m%d%H%M%S')
         common_df['작업완료시간'] = pd.to_datetime(common_df['작업완료시간'], format='%Y%m%d%H%M%S')
-        #print('작업생성시간',common_df['작업생성시간'].dtype)
-        #print('작업완료시간',common_df['작업완료시간'].dtype)
         common_df['작업+대기시간'] = common_df['작업완료시간'] -common_df['작업생성시간']
 
         # # 작업+대기차량 구하기
@@ -84,9 +82,8 @@ def operate(predict_c):
         #print(common_df_complete[['작업생성시간','작업+대기시간']])
 
 
-        common_df_complete = common_df_complete[['작업생성시간','작업+대기시간', '수출/수입', '작업코드', '장비번호', '풀(F)공(M)','컨테이너(사이즈 코드)']]
+        common_df_complete = common_df_complete[['작업생성시간','작업+대기시간', '작업코드', '장비번호', '풀(F)공(M)','컨테이너(사이즈 코드)']]
         common_df_complete['입차시간'] = common_df_complete['작업생성시간']
-        #print(common_df_complete['작업+대기시간'])
         grouped_df = common_df_complete.groupby(pd.Grouper(key='작업생성시간', freq='5min')).mean()
         #print('grouped_df',grouped_df['작업+대기시간'])
         grouped_df['입차시간'] = grouped_df['입차시간'].astype('int64') // 10**9
@@ -95,12 +92,14 @@ def operate(predict_c):
 
     # 데이터 전처리
     def make_model(grouped_df):
-        lookback = 30
+        lookback = 100
 
         # 데이터 전처리
-        X_data = grouped_df[['입차시간','작업코드', '수출/수입', '풀(F)공(M)','장비번호', '컨테이너(사이즈 코드)']]
+        X_data = grouped_df[['입차시간','작업코드', '풀(F)공(M)','장비번호', '컨테이너(사이즈 코드)']]
         y_data = grouped_df['작업+대기시간'].values
-
+        ########################### x 값에 nan값 다 없애고 와야 함
+        print(len(y_data))
+        print('y_data', y_data)
         X, y = [], []
         for i in range(grouped_df.shape[0] - lookback):
             X.append(X_data[i:i+lookback].values)
@@ -114,7 +113,8 @@ def operate(predict_c):
         # 시간 순서를 유지하면서 데이터 분할
         X_train, X_test = X[:train_size], X[train_size:]
         y_train, y_test = y[:train_size], y[train_size:]
-
+        print('X_train', X_train)
+        print(y_train)
         print(X_train.shape)
         # 데이터 정규화
         scaler = MinMaxScaler()
@@ -140,11 +140,12 @@ def operate(predict_c):
         # 모델 컴파일
         model.compile(loss='mean_squared_error', optimizer='adam')
         # 모델 학습
-        model.fit(X_train_scaled, y_train_scaled, epochs=100, batch_size=32)
+        model.fit(X_train_scaled, y_train_scaled, epochs=5, batch_size=32)
         # 모델 예측
         y_train_pred_scaled = model.predict(X_train_scaled)
         y_test_pred_scaled = model.predict(X_test_scaled)
         # 예측값을 원래의 스케일로 되돌리기
+        
         y_train_pred = scaler_y.inverse_transform(y_train_pred_scaled)
         y_test_pred = scaler_y.inverse_transform(y_test_pred_scaled)
         # 원래의 스케일로 되돌린 실제값
@@ -172,9 +173,9 @@ def operate(predict_c):
         actual_values = combined_real.tolist()
         predict_values = combined_pred.tolist()
         # print('time', datetime_list)
-        # print(len(datetime_list))
+        print(len(datetime_list))
         # print('actual_values',actual_values)
-        # print(len(actual_values))
+        print(len(actual_values))
         # print('predict_values',predict_values)
 
         # Mean Absolute Error (MAE)
@@ -209,7 +210,7 @@ def operate(predict_c):
         plt.ylabel('Values')
         plt.title('Scatter plot of actual and predicted values over time')
         plt.legend()
-        graph_image_filename = "lstm_graph3.png"
+        graph_image_filename = "lstm_graph4.png"
         plt.savefig(graph_image_filename)
         print(f"그래프를 '{graph_image_filename}' 파일로 저장했습니다.")
         plt.show()
