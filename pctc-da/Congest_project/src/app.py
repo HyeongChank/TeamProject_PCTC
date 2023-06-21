@@ -6,6 +6,8 @@ from DA import process_model
 # from DA import lstm_retrain
 # from DA import cnn_truck_count_predict
 from DA import process_count_model
+from DA import lstm_now
+from DA import process_time_result
 import json
 import requests
 from flask_cors import CORS
@@ -33,7 +35,7 @@ cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 def cnn_prediction():
     if request.method == 'POST':
         print('******************request in*********************')
-        time_group, predict_group, actual_group = process_model.operate()
+        time_group, predict_group, actual_group = process_time_result.operate()
         
         return jsonify({'time': time_group, 'predict_group': predict_group, 'actual_group': actual_group})
     else:

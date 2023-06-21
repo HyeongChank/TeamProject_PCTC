@@ -101,7 +101,7 @@ def operate():
     # 데이터 전처리
     def make_model(grouped_df, time_list):
         lookback = 100
-        # grouped_df = grouped_df[0:300]
+        #grouped_df = grouped_df[0:300]
         # 데이터 전처리
         X_data = grouped_df[['작업코드', '풀(F)공(M)','장비번호', '컨테이너(사이즈 코드)']]
         y_data = grouped_df['작업+대기시간'].values
@@ -139,17 +139,10 @@ def operate():
         print('y_train_scaled', y_train_scaled)
         num_nans = np.isnan(y_train_scaled).sum()
         print(num_nans)
-        # LSTM 모델 구성
-        model = keras.Sequential()
-        model.add(keras.layers.LSTM(units=64, input_shape=(lookback, X_train.shape[-1])))
-        model.add(keras.layers.Dense(units=64, activation='relu'))
-        model.add(keras.layers.Dense(units=32, activation='relu'))
-        model.add(keras.layers.Dense(units=1))
+        # 모델 로드
+        with open('pctc-da/Congest_project/models/lstm_model_notime_days.pkl', 'rb') as f:
+            model = pickle.load(f)
 
-        # 모델 컴파일
-        model.compile(loss='mean_squared_error', optimizer='adam')
-        # 모델 학습
-        model.fit(X_train_scaled, y_train_scaled, epochs=100, batch_size=32)
         # 모델 예측
         y_train_pred_scaled = model.predict(X_train_scaled)
         y_test_pred_scaled = model.predict(X_test_scaled)
@@ -203,11 +196,11 @@ def operate():
         df.reset_index(inplace=True)
         df['Time'] = df['Time'].dt.strftime('%Y-%m-%dT%H:%M:%S')
         print('df', df)
+        df = df[:100]
 
         time_group = df['Time'].tolist()
         predict_time = df['Prediction'].tolist()
         actual_time = df['Actual'].tolist()
-
 
         # Mean Absolute Error (MAE)
         mae_train = mean_absolute_error(y_train_real, y_train_pred)
@@ -235,12 +228,13 @@ def operate():
 
         # 그래프의 크기 설정
         plt.figure(figsize=(14, 7))
-        plt.scatter(time_list, actual_values, color='blue', label='Actual values')
-        plt.scatter(time_list, predict_values, color='red', label='Predicted values')
+        plt.scatter(time_group, actual_time, color='blue', label='Actual values')
+        plt.scatter(time_group, predict_time, color='red', label='Predicted values')
         plt.xlabel('Time')
         plt.ylabel('Values')
         plt.title('Scatter plot of actual and predicted values over time')
         plt.legend()
+        plt.xticks(rotation=45, fontsize=7)
         graph_image_filename = "lstm_graph_notime_days2.png"
         plt.savefig(graph_image_filename)
         print(f"그래프를 '{graph_image_filename}' 파일로 저장했습니다.")
