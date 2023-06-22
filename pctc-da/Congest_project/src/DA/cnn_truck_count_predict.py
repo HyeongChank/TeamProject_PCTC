@@ -175,6 +175,7 @@ def operate():
         grouped_df = grouped_df.iloc[1:-1]
         time_group = grouped_df.index.tolist()
         print(time_group)
+        print('timetype' , type(time_group))
         predict_group = grouped_df['예측값'].tolist()
         print(predict_group)
         actual_group = grouped_df['실제값'].tolist()

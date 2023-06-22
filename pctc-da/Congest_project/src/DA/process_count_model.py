@@ -23,11 +23,11 @@ rc('font', family=font_name)
 def operate():
     def load():
         # new_data 들어오면 기존 df 에 합치면 됨
-        data = pd.read_excel("data/TSB_data.xlsx", sheet_name='야드크레이인_작업이력')
-        scd_data = pd.read_excel("data/TSB_data.xlsx", sheet_name='반출입_예정컨테이너')
-        cbd_data = pd.read_excel("data/TSB_data.xlsx", sheet_name='장치장_전')
-        cad_data = pd.read_excel("data/TSB_data.xlsx", sheet_name='장치장_후')
-        quay_work_data = pd.read_excel("data/TSB_data.xlsx", sheet_name='본선크레인_작업이력')
+        data = pd.read_excel("D:/김형찬/teamproject2/TeamProject_PCTC/data/TSB_data.xlsx", sheet_name='야드크레이인_작업이력')
+        scd_data = pd.read_excel("D:/김형찬/teamproject2/TeamProject_PCTC/data/TSB_data.xlsx", sheet_name='반출입_예정컨테이너')
+        cbd_data = pd.read_excel("D:/김형찬/teamproject2/TeamProject_PCTC/data/TSB_data.xlsx", sheet_name='장치장_전')
+        cad_data = pd.read_excel("D:/김형찬/teamproject2/TeamProject_PCTC/data/TSB_data.xlsx", sheet_name='장치장_후')
+        quay_work_data = pd.read_excel("D:/김형찬/teamproject2/TeamProject_PCTC/data/TSB_data.xlsx", sheet_name='본선크레인_작업이력')
         # data, container_before_data, container_after_data merge
         ycb_common_values = data['컨테이너번호'].isin(cad_data['컨테이너번호']).sum() # 5181개
         #print('ycb_common_values', ycb_common_values)
@@ -114,6 +114,7 @@ def operate():
         return common_df_complete
 
     def make_model(common_df):
+        common_df = common_df[0:300]
         # print(common_df[['작업생성시간','작업코드','항차_x','야드트럭(번호)','컨테이너(사이즈 코드)','장비번호', '풀(F)공(M)', '수출/수입']])
         # 데이터 준비
         X = common_df[['작업생성시간','작업코드','컨테이너(사이즈 코드)','장비번호', '풀(F)공(M)', '수출/수입']]
@@ -127,7 +128,7 @@ def operate():
         X_train, X_test, y_train, y_test = train_test_split(X_scaled_df, y, test_size=0.2, random_state=42)
 
         # 모델 로드
-        with open('pctc-da/Congest_project/models/cnn_model_truck_count.pkl', 'rb') as f:
+        with open('D:/김형찬/teamproject2/TeamProject_PCTC/pctc-da/Congest_project/models/cnn_model_truck_count.pkl', 'rb') as f:
             loaded_model = pickle.load(f)
 
         # 로드된 모델을 사용하여 예측 수행
@@ -160,6 +161,7 @@ def operate():
 
         print(grouped_df.isna().sum())
         time_group = grouped_df.index.tolist()
+        print('timetype' , type(time_group[0]))
         predict_group = grouped_df['예측값'].tolist()
         actual_group = grouped_df['실제값'].tolist()
         print(predict_group)
