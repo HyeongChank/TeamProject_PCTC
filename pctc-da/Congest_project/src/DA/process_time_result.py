@@ -196,8 +196,8 @@ def operate():
         df.reset_index(inplace=True)
         df['Time'] = df['Time'].dt.strftime('%Y-%m-%dT%H:%M:%S')
         print('df', df)
-        df = df[:100]
-
+        # df = df[:100]
+        df = df.dropna()
         time_group = df['Time'].tolist()
         predict_time = df['Prediction'].tolist()
         actual_time = df['Actual'].tolist()
