@@ -8,6 +8,7 @@ from DA import process_model
 from DA import process_count_model
 from DA import lstm_now
 from DA import process_time_result
+from DA import process_oneday
 import json
 import requests
 from flask_cors import CORS
@@ -35,7 +36,7 @@ cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 def cnn_prediction():
     if request.method == 'POST':
         print('******************request in*********************')
-        time_group, predict_group, actual_group = process_time_result.operate()
+        time_group, predict_group, actual_group = process_oneday.operate()
         
         return jsonify({'time': time_group, 'predict_group': predict_group, 'actual_group': actual_group})
     else:

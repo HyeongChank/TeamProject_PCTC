@@ -28,15 +28,15 @@ def operate():
     prediction_list = []
     def load():
         # new_data 들어오면 기존 df 에 합치면 됨
-        data = pd.read_excel("D:/김형찬/teamproject2/TeamProject_PCTC/data/TSB_data2.xlsx", sheet_name='야드크레이인_작업이력2_추가데이터')
+        data = pd.read_excel("data/TSB_data.xlsx", sheet_name='야드크레이인_작업이력')
         # scd_data = pd.read_excel("data/TSB_data.xlsx", sheet_name='반출입_예정컨테이너')
         # cbd_data = pd.read_excel("data/TSB_data.xlsx", sheet_name='장치장_전')
         # cad_data = pd.read_excel("data/TSB_data.xlsx", sheet_name='장치장_후')
-        # quay_work_data = pd.read_excel("data/TSB_data.xlsx", sheet_name='본선크레인_작업이력')
+        # # quay_work_data = pd.read_excel("data/TSB_data.xlsx", sheet_name='본선크레인_작업이력')
 
         # # data, container_before_data, container_after_data merge
-        #ycb_common_values = data['컨테이너번호'].isin(cad_data['컨테이너번호']).sum() # 6103개
-        #yard_con_common_df = pd.merge(data, cad_data, on='컨테이너번호')
+        # ycb_common_values = data['컨테이너번호'].isin(cad_data['컨테이너번호']).sum() # 6103개
+        # yard_con_common_df = pd.merge(data, cad_data, on='컨테이너번호')
         # # yard_con_common_df = yard_con_common_df[:-300]
 
         return data
@@ -100,8 +100,8 @@ def operate():
 
     # 데이터 전처리
     def make_model(grouped_df, time_list):
-        lookback = 100
-        grouped_df = grouped_df[0:300]
+        lookback = 50
+        # grouped_df = grouped_df[0:300]
         # 데이터 전처리
         X_data = grouped_df[['작업코드', '풀(F)공(M)','장비번호', '컨테이너(사이즈 코드)']]
         y_data = grouped_df['작업+대기시간'].values
@@ -139,10 +139,17 @@ def operate():
         print('y_train_scaled', y_train_scaled)
         num_nans = np.isnan(y_train_scaled).sum()
         print(num_nans)
-        # 모델 로드
-        with open('D:/김형찬/teamproject2/TeamProject_PCTC/pctc-da/Congest_project/models/lstm_model_notime_days.pkl', 'rb') as f:
-            model = pickle.load(f)
+        # LSTM 모델 구성
+        model = keras.Sequential()
+        model.add(keras.layers.LSTM(units=64, input_shape=(lookback, X_train.shape[-1])))
+        model.add(keras.layers.Dense(units=64, activation='relu'))
+        model.add(keras.layers.Dense(units=32, activation='relu'))
+        model.add(keras.layers.Dense(units=1))
 
+        # 모델 컴파일
+        model.compile(loss='mean_squared_error', optimizer='adam')
+        # 모델 학습
+        model.fit(X_train_scaled, y_train_scaled, epochs=100, batch_size=32)
         # 모델 예측
         y_train_pred_scaled = model.predict(X_train_scaled)
         y_test_pred_scaled = model.predict(X_test_scaled)
@@ -163,7 +170,6 @@ def operate():
         # print(combined_time)
         # print(len(combined_time))
         print(len(time_list))
-        print('timetype', type(time_list))
         combined_pred = np.concatenate((y_test_pred, y_train_pred), axis=0)
         print(len(combined_pred))
         combined_real = np.concatenate((y_test_real, y_train_real), axis=0)
@@ -190,26 +196,18 @@ def operate():
             'Prediction':predict_values,
             'Actual': actual_values
         })
-        # df['your_column']은 변경하려는 컬럼명입니다.
-        
-
         print(df.dtypes)
         print('df', df)
         df = df.groupby(pd.Grouper(key='Time', freq='10min')).mean()
         # 인덱스를 다시 열로 변경
         df.reset_index(inplace=True)
-        # df['Time'] = df['Time'].dt.strftime('%Y-%m-%dT%H:%M:%S')
-        df['Time'] = pd.to_datetime(df['Time'])
-
-        
-
+        df['Time'] = df['Time'].dt.strftime('%Y-%m-%dT%H:%M:%S')
         print('df', df)
-        # df = df[:100]
-        df = df.dropna()
+
         time_group = df['Time'].tolist()
-        print(type(time_group[0]))
         predict_time = df['Prediction'].tolist()
         actual_time = df['Actual'].tolist()
+
 
         # Mean Absolute Error (MAE)
         mae_train = mean_absolute_error(y_train_real, y_train_pred)
@@ -237,21 +235,20 @@ def operate():
 
         # 그래프의 크기 설정
         plt.figure(figsize=(14, 7))
-        plt.scatter(time_group, actual_time, color='blue', label='Actual values')
-        plt.scatter(time_group, predict_time, color='red', label='Predicted values')
+        plt.scatter(time_list, actual_values, color='blue', label='Actual values')
+        plt.scatter(time_list, predict_values, color='red', label='Predicted values')
         plt.xlabel('Time')
         plt.ylabel('Values')
         plt.title('Scatter plot of actual and predicted values over time')
         plt.legend()
-        plt.xticks(rotation=45, fontsize=7)
         graph_image_filename = "lstm_graph_notime_days2.png"
         plt.savefig(graph_image_filename)
         print(f"그래프를 '{graph_image_filename}' 파일로 저장했습니다.")
         # plt.show()
   
-        # # 모델 저장
-        # with open('pctc-da/Congest_project/models/lstm_model_notime_days.pkl', 'wb') as f:
-        #     pickle.dump(model, f)
+        # 모델 저장
+        with open('pctc-da/Congest_project/models/lstm_model_notime_days222.pkl', 'wb') as f:
+            pickle.dump(model, f)
         return time_group, predict_time, actual_time
         
        

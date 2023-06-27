@@ -28,7 +28,7 @@ def operate():
     prediction_list = []
     def load():
         # new_data 들어오면 기존 df 에 합치면 됨
-        data = pd.read_excel("D:/김형찬/teamproject2/TeamProject_PCTC/data/TSB_data2.xlsx", sheet_name='야드크레이인_작업이력2_추가데이터')
+        data = pd.read_excel("D:/김형찬/teamproject2/TeamProject_PCTC/data/TSB_data.xlsx", sheet_name='야드크레이인_작업이력')
         # scd_data = pd.read_excel("data/TSB_data.xlsx", sheet_name='반출입_예정컨테이너')
         # cbd_data = pd.read_excel("data/TSB_data.xlsx", sheet_name='장치장_전')
         # cad_data = pd.read_excel("data/TSB_data.xlsx", sheet_name='장치장_후')
@@ -100,8 +100,8 @@ def operate():
 
     # 데이터 전처리
     def make_model(grouped_df, time_list):
-        lookback = 100
-        grouped_df = grouped_df[0:300]
+        lookback = 50
+        #grouped_df = grouped_df[0:300]
         # 데이터 전처리
         X_data = grouped_df[['작업코드', '풀(F)공(M)','장비번호', '컨테이너(사이즈 코드)']]
         y_data = grouped_df['작업+대기시간'].values
@@ -140,7 +140,7 @@ def operate():
         num_nans = np.isnan(y_train_scaled).sum()
         print(num_nans)
         # 모델 로드
-        with open('D:/김형찬/teamproject2/TeamProject_PCTC/pctc-da/Congest_project/models/lstm_model_notime_days.pkl', 'rb') as f:
+        with open('D:/김형찬/teamproject2/TeamProject_PCTC/pctc-da/Congest_project/models/lstm_model_notime_days222.pkl', 'rb') as f:
             model = pickle.load(f)
 
         # 모델 예측

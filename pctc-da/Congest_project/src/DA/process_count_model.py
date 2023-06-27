@@ -114,7 +114,7 @@ def operate():
         return common_df_complete
 
     def make_model(common_df):
-        common_df = common_df[0:300]
+        # common_df = common_df[0:300]
         # print(common_df[['작업생성시간','작업코드','항차_x','야드트럭(번호)','컨테이너(사이즈 코드)','장비번호', '풀(F)공(M)', '수출/수입']])
         # 데이터 준비
         X = common_df[['작업생성시간','작업코드','컨테이너(사이즈 코드)','장비번호', '풀(F)공(M)', '수출/수입']]
